@@ -5,6 +5,19 @@
   </view>
 </template>
 
+<script>
+import statusbar from './components/statusbar.vue';
+
+export default {
+  
+}
+
+components : {
+    statusbar
+  }
+
+</script>
+
 <style >
 .construction {
     background-color: red;

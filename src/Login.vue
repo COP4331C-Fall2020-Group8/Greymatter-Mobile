@@ -1,5 +1,6 @@
 <template>
   <view class="container">
+    <statusbar/>
     <text>Login</text>
     <TextInput class="user-input" v-model="usernameInput" hint="Username"/>
     <text>Password</text>
@@ -9,7 +10,7 @@
       <text>Login</text>
     </touchable-opacity>
 
-    <text @press="goToCreateUserScreen">Create Account</text>
+    <text :on-press="goToCreateUserScreen">Create Account</text>
   </view>
 </template>
 

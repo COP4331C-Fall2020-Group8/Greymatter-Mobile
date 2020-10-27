@@ -1,10 +1,5 @@
 <template>
-    <view class="statusbar"></view>
+    <view >
+        <status-bar background-color="darkslategrey" bar-style="light-content"/>
+    </view>
 </template>
-
-<style>
-    .statusbar {
-        background-color: darkslategrey;
-        height: 25px;
-    }
-</style>
