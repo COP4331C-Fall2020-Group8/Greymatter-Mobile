@@ -2,6 +2,12 @@
   <view class="construction">
     <statusbar/>
     <text>Under Construction</text>
+    <button 
+      color="black" 
+      class="homeBtn" 
+      title="GO BACK" 
+      @press="goToHomeScreen">
+    </button>
   </view>
 </template>
 
@@ -9,12 +15,23 @@
 import statusbar from './components/statusbar.vue';
 
 export default {
-  
-}
 
-components : {
+  components: {
     statusbar
+  },
+
+  props: {
+    navigation: {
+      type: Object
+    }
+  },
+  
+  methods: {
+    goToHomeScreen() {
+      this.navigation.navigate("Home");
+    },
   }
+}
 
 </script>
 
