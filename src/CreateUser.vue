@@ -4,9 +4,9 @@
     <text>Username</text>
     <TextInput class="user-input" v-model="usernameInput" hint="Username" />
     <text>Password</text>
-    <TextInput class="user-input" v-model="passwordInput" hint="Password" />
+    <TextInput class="user-input" secureTextEntry v-model="passwordInput" hint="Password" />
     <text>Confirm Password</text>
-    <TextInput class="user-input" v-model="confirmPasswordInput" hint="Confirm Password" />
+    <TextInput class="user-input" secureTextEntry v-model="confirmPasswordInput" hint="Confirm Password" />
     <text>E-mail Address</text>
     <TextInput class="user-input" v-model="emailInput" hint="E-mail Address" />
     <button 
@@ -27,7 +27,7 @@
 import statusbar from './components/statusbar.vue';
 
 export default {
-  data () {
+  data: function() {
     return {
       usernameInput: "",
       passwordInput: "",
