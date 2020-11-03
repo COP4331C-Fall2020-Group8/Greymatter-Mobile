@@ -8,16 +8,18 @@ import {
   createStackNavigator,
 } from "vue-native-router";
 
+import HomePage from "./src/Home.vue";
 import LoginPage from "./src/Login.vue";
 import CreateUserPage from "./src/CreateUser.vue";
 
 const StackNavigator = createStackNavigator(
   {
+    Home: HomePage,
     Login: LoginPage,
     CreateUser: CreateUserPage,
   },
   {
-    initialRouteName: 'Login',
+    initialRouteName: 'Home',
     headerMode: 'none'
   }
 );
