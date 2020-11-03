@@ -4,7 +4,7 @@
     <text>Login</text>
     <TextInput class="user-input" v-model="usernameInput" hint="Username"/>
     <text>Password</text>
-    <TextInput class="user-input" v-model="passwordInput" hint="Password" secure="true"/>
+    <TextInput class="user-input" secureTextEntry v-model="passwordInput" hint="Password" secure="true"/>
 
     <touchable-opacity class="login-btn" :on-press="loginButton">
       <text>Login</text>
