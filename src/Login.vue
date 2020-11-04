@@ -38,6 +38,14 @@ export default {
   methods : {
     goToCreateUserScreen() {
       this.navigation.navigate("CreateUser");
+    },
+    loginButton() {
+      if (this.usernameInput == "" || this.passwordInput == "") {
+        alert("Please fill in all required fields.");
+      }
+      else {
+        alert("This will check the database for the login validation.");
+      }
     }
   }
 
