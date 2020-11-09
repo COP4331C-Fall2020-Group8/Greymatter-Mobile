@@ -1,6 +1,7 @@
 <template>
-  <view class="construction">
+  <view class="container">
     <statusbar/>
+    <image class="logoImage" :source="require('./images/brain.png')"/>
     <text>Username</text>
     <TextInput class="user-input" v-model="usernameInput" hint="Username" />
     <text>Password</text>
@@ -68,15 +69,25 @@ export default {
 </script>
 
 <style>
-.construction {
-    background-color: red;
-    align-items: center;
-    justify-content: center;
-    flex: 1;
+.logoImage {
+  width: 200;
+  height: 200;
+}
+
+.container {
+  align-items: center;
+  justify-content: center;
+  background-color: grey;
+  flex: 1;
+}
+
+.login-btn {
+  background-color: lightblue;
+  padding: 5;
 }
 
 .user-input {
-  background-color: white;
+  background-color:white;
   width: 150;
 }
 </style>
