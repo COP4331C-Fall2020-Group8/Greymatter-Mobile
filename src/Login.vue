@@ -1,15 +1,21 @@
 <template>
   <view class="container">
     <statusbar/>
+    <image class="logoImage" :source="require('./images/brain.png')"/>
     <text>Login</text>
     <TextInput class="user-input" v-model="usernameInput" hint="Username"/>
     <text>Password</text>
     <TextInput class="user-input" secureTextEntry v-model="passwordInput" hint="Password" secure="true"/>
-
-    <touchable-opacity class="login-btn" :on-press="loginButton">
-      <text>Login</text>
-    </touchable-opacity>
-
+    <button
+      color="black"
+      title="Login"
+      @press="userLogin"
+    />
+    <button
+      color="black"
+      title="Test Login"
+      @press="goToUserDashboard"
+    />
     <text :on-press="goToCreateUserScreen">Create Account</text>
   </view>
 </template>
@@ -39,6 +45,11 @@ export default {
     goToCreateUserScreen() {
       this.navigation.navigate("CreateUser");
     },
+
+    goToUserDashboard() {
+      this.navigation.navigate("Dashboard");
+    },
+
     loginButton() {
       if (this.usernameInput == "" || this.passwordInput == "") {
         alert("Please fill in all required fields.");
@@ -53,6 +64,11 @@ export default {
 </script>
 
 <style>
+.logoImage {
+  width: 200;
+  height: 200;
+}
+
 .container {
   align-items: center;
   justify-content: center;

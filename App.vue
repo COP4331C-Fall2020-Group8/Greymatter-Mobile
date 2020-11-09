@@ -11,12 +11,14 @@ import {
 import HomePage from "./src/Home.vue";
 import LoginPage from "./src/Login.vue";
 import CreateUserPage from "./src/CreateUser.vue";
+import UserDashboard from "./src/UserDashboard.vue";
 
 const StackNavigator = createStackNavigator(
   {
     Home: HomePage,
     Login: LoginPage,
     CreateUser: CreateUserPage,
+    Dashboard: UserDashboard,
   },
   {
     initialRouteName: 'Home',
