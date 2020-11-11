@@ -12,6 +12,7 @@ import HomePage from "./src/Home.vue";
 import LoginPage from "./src/Login.vue";
 import CreateUserPage from "./src/CreateUser.vue";
 import UserDashboard from "./src/UserDashboard.vue";
+import ViewSetsPage from "./src/ViewSets.vue";
 
 const StackNavigator = createStackNavigator(
   {
@@ -19,6 +20,7 @@ const StackNavigator = createStackNavigator(
     Login: LoginPage,
     CreateUser: CreateUserPage,
     Dashboard: UserDashboard,
+    ViewSets: ViewSetsPage
   },
   {
     initialRouteName: 'Home',

@@ -44,9 +44,21 @@ export default {
 
 
     methods: {
-        goToHomeScreen() {
-        this.navigation.navigate("Home");
+        createSet() {
+            alert("Under construction!");
         },
+
+        goToHomeScreen() {
+            this.navigation.navigate("Home");
+        },
+
+        preWrittenSets() {
+            alert("Under construction!");
+        },
+
+        viewSets() {
+            this.navigation.navigate("ViewSets");
+        }
     }
 }
 </script>
