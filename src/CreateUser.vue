@@ -8,6 +8,8 @@
     <TextInput class="user-input" secureTextEntry v-model="passwordInput" hint="Password" />
     <text>Confirm Password</text>
     <TextInput class="user-input" secureTextEntry v-model="confirmPasswordInput" hint="Confirm Password" />
+    <text>Full Name</text>
+    <TextInput class="user-input" v-model="nameInput" hint="Full Name" />
     <text>E-mail Address</text>
     <TextInput class="user-input" v-model="emailInput" hint="E-mail Address" />
     <button 
@@ -26,15 +28,18 @@
 
 <script>
 import statusbar from './components/statusbar.vue';
+import axios from 'axios';
 
 export default {
-  data: function() {
+
+   data: function() {
     return {
-      usernameInput: "",
-      passwordInput: "",
-      confirmPasswordInput: "",
-      emailInput: "",
-    }
+      usernameInput: '',
+      passwordInput: '',
+      confirmPasswordInput: '',
+      nameInput: '',
+      emailInput: ''
+    };
   },
 
   components: {
@@ -56,6 +61,18 @@ export default {
         alert("Passwords do not match.");
       }
       else {
+         axios.post('https://grey-matter-backend.herokuapp.com/api/register', {
+            _id: this.usernameInput,
+            password: this.passwordInput,
+            name: this.nameInput,
+            email: this.emailInput
+            })
+            .then(function (response) {
+              console.log(response);
+            })
+            .catch(function (error) {
+              console.log(error);
+          });
         alert("A new user account has been created.\nYou will now be taken to the home screen.");
         this.navigation.navigate("Home");
       }
@@ -63,7 +80,8 @@ export default {
     goToHomeScreen() {
       this.navigation.navigate("Home");
     },
-  }
+  },
+
 }
 
 </script>

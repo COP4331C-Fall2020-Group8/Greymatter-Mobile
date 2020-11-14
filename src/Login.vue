@@ -9,7 +9,7 @@
     <button
       color="black"
       title="Login"
-      @press="userLogin"
+      @press="loginButton"
     />
     <button
       color="black"
@@ -22,12 +22,13 @@
 
 <script>
 import statusbar from './components/statusbar.vue';
+import axios from 'axios';
 
 export default {
   data () {
     return {
       usernameInput: '',
-      passwordInput: '',
+      passwordInput: ''
     }
   },
 
@@ -42,6 +43,7 @@ export default {
   },
 
   methods : {
+
     goToCreateUserScreen() {
       this.navigation.navigate("CreateUser");
     },
@@ -55,7 +57,16 @@ export default {
         alert("Please fill in all required fields.");
       }
       else {
-        alert("This will check the database for the login validation.");
+        axios.post('https://grey-matter-backend.herokuapp.com/api/login', {
+            _id: this.usernameInput,
+            password: this.passwordInput,
+            })
+            .then(function (response) {
+              console.log(response);
+            })
+            .catch(function (error) {
+              console.log(error);
+          });
       }
     }
   }
