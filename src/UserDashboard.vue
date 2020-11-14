@@ -53,7 +53,7 @@ export default {
         },
 
         preWrittenSets() {
-            alert("Under construction!");
+            this.navigation.navigate("PreWrittenSets");
         },
 
         viewSets() {
