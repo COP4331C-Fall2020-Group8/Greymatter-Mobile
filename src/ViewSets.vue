@@ -1,12 +1,14 @@
 <template>
     <view class="container">
         <text class="pageHeader">View your sets!</text>
-        <text class="searchLabel">Search Sets</text>
         <view class="searchView">
-            <text-input class="searchInput" v-model="searchStr" hint="Search set name here" />
-            <touchable-opacity class="searchBtn">
-                <image class="searchImg" slot="right" :source="require('./images/zoom.png') "/>
-            </touchable-opacity>
+            <text class="searchLabel">Search Sets</text>
+            <view class="searchHorizWrapper">
+                <text-input class="searchInput" v-model="searchStr" hint="Search set name here" />
+                <touchable-opacity class="searchBtn" :on-press="() => search(this.searchStr)">
+                    <image class="searchImg" slot="right" :source="require('./images/zoom.png') "/>
+                </touchable-opacity>
+            </view>
         </view>
         <scroll-view class="setView">
             <touchable-opacity class="set" :on-press="() => viewSet(0)">
@@ -18,6 +20,42 @@
             <touchable-opacity class="set" :on-press="() => viewSet(1)">
                 <text class="set-header">Sample Set 2</text>
                 <view v-if="setExpand === 1">
+                    <text>Test</text>
+                </view>
+            </touchable-opacity>
+            <touchable-opacity class="set" :on-press="() => viewSet(2)">
+                <text class="set-header">Sample Set 3</text>
+                <view v-if="setExpand === 2">
+                    <text>Test</text>
+                </view>
+            </touchable-opacity>
+            <touchable-opacity class="set" :on-press="() => viewSet(3)">
+                <text class="set-header">Sample Set 4</text>
+                <view v-if="setExpand === 3">
+                    <text>Test</text>
+                </view>
+            </touchable-opacity>
+            <touchable-opacity class="set" :on-press="() => viewSet(4)">
+                <text class="set-header">Sample Set 5</text>
+                <view v-if="setExpand === 4">
+                    <text>Test</text>
+                </view>
+            </touchable-opacity>
+            <touchable-opacity class="set" :on-press="() => viewSet(5)">
+                <text class="set-header">Sample Set 6</text>
+                <view v-if="setExpand === 5">
+                    <text>Test</text>
+                </view>
+            </touchable-opacity>
+            <touchable-opacity class="set" :on-press="() => viewSet(6)">
+                <text class="set-header">Sample Set 7</text>
+                <view v-if="setExpand === 6">
+                    <text>Test</text>
+                </view>
+            </touchable-opacity>
+            <touchable-opacity class="set" :on-press="() => viewSet(7)">
+                <text class="set-header">Sample Set 8</text>
+                <view v-if="setExpand === 7">
                     <text>Test</text>
                 </view>
             </touchable-opacity>
@@ -56,6 +94,9 @@ export default {
         goBack() {
             this.navigation.goBack();
         },
+        search(str) {
+            alert("Search term entered:\n" + this.searchStr);
+        },
         viewSet(num) {
             this.setExpand = num;
         }
@@ -74,6 +115,20 @@ export default {
     text-align: center;
 }
 
+.searchBtn {
+    margin-right: 8px;
+}
+
+.searchHorizWrapper {
+    flex-direction: row;
+    width: auto;
+}
+
+.searchImg {
+    height: 66px;
+    width: 66px;
+}
+
 .searchInput {
     background-color: white;
     flex-grow: 1;
@@ -89,8 +144,7 @@ export default {
 }
 
 .searchView {
-    flex-direction: row;
-    width: auto;
+    margin-bottom: 8px;
 }
 
 .set {
