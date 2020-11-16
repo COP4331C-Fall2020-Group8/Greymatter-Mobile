@@ -1,8 +1,13 @@
 <template>
     <view class="container">
         <text class="pageHeader">View your sets!</text>
-        <text class="label">Search Sets</text>
-        <text-input class="textFilter" v-model="searchStr" :on-focus="() => viewSet(-1)" hint="Search set name here" />
+        <text class="searchLabel">Search Sets</text>
+        <view class="searchView">
+            <text-input class="searchInput" v-model="searchStr" hint="Search set name here" />
+            <touchable-opacity class="searchBtn">
+                <image class="searchImg" slot="right" :source="require('./images/zoom.png') "/>
+            </touchable-opacity>
+        </view>
         <scroll-view class="setView">
             <touchable-opacity class="set" :on-press="() => viewSet(0)">
                 <text class="set-header">Sample Set</text>
@@ -61,17 +66,31 @@ export default {
 <style>
 .container {
     background-color: grey;
-    flex-direction: column;
     flex: 1;
-}
-
-.label {
-    margin-left: 10px;
 }
 
 .pageHeader {
     font-size: 40px;
     text-align: center;
+}
+
+.searchInput {
+    background-color: white;
+    flex-grow: 1;
+    font-size: 30px;
+    margin-left: 10px;
+}
+
+.searchLabel {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 4px;
+    margin-left: 10px;
+}
+
+.searchView {
+    flex-direction: row;
+    width: auto;
 }
 
 .set {
@@ -91,12 +110,5 @@ export default {
 .set-header {
     font-size: 36px;
     text-align: center;
-}
-
-.textFilter {
-    background-color: white;
-    width: auto;
-    margin-left: 10px;
-    margin-right: 10px;
 }
 </style>
