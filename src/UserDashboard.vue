@@ -2,6 +2,11 @@
   <view class="container">
     <text class="welcomeText">Welcome User!</text>
     <button
+    class="logoutBtn"
+    title="Logout"
+    @press="userLogout"
+    />
+    <button
     class="createSetBtn"
     title="Create New Set"
     @press="createSet"

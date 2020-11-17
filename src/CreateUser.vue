@@ -8,8 +8,10 @@
     <TextInput class="user-input" secureTextEntry v-model="passwordInput" hint="Password" />
     <text>Confirm Password</text>
     <TextInput class="user-input" secureTextEntry v-model="confirmPasswordInput" hint="Confirm Password" />
-    <text>Full Name</text>
-    <TextInput class="user-input" v-model="nameInput" hint="Full Name" />
+    <text>First Name</text>
+    <TextInput class="user-input" v-model="nameInput.first" hint="First Name" />
+    <text>Last Name</text>
+    <TextInput class="user-input" v-model="nameInput.last" hint="Last Name" />
     <text>E-mail Address</text>
     <TextInput class="user-input" v-model="emailInput" hint="E-mail Address" />
     <button 
@@ -34,11 +36,14 @@ export default {
 
    data: function() {
     return {
-      usernameInput: '',
-      passwordInput: '',
-      confirmPasswordInput: '',
-      nameInput: '',
-      emailInput: ''
+      usernameInput: "",
+      passwordInput: "",
+      confirmPasswordInput: "",
+      nameInput: {
+        first: "",
+        last: ""
+      },
+      emailInput: ""
     };
   },
 
@@ -49,11 +54,12 @@ export default {
   props: {
     navigation: {
       type: Object
-    }
+    },
   },
   
   methods: {
     createUser() {
+
       if (this.usernameInput == "" || this.passwordInput == "" || this.confirmPasswordInput == "" || this.emailInput == "") {
         alert("Please fill in all required fields.");
       }
