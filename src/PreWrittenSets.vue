@@ -5,7 +5,7 @@
         <TextInput class="user-input" v-model="numQuestions" hint="numQuestions" />
         <Picker
         :selectedValue="categorySelected"
-        :onValueChange="val => {selected = val}"
+        :onValueChange="val => {categorySelected = val}"
         >
         <Item label="Choose Category" value="" />
         <Item label="General Knowledge" value="9" />
@@ -35,7 +35,7 @@
         </Picker>
         <Picker
         :selectedValue="difficultySelected"
-        :onValueChange="val => {selected = val}"
+        :onValueChange="val => {difficultySelected = val}"
         >
         <Item label="Choose Difficulty" value="" />
         <Item label="Easy" value="easy" />
@@ -44,7 +44,7 @@
         </Picker>
         <Picker
         :selectedValue="questionTypeSelected"
-        :onValueChange="val => {selected = val}"
+        :onValueChange="val => {questionTypeSelected = val}"
         >
         <Item label="Select Question Type" value="" />
         <Item label="Multiple Choice" value="multiple" />
@@ -68,14 +68,15 @@
 import statusbar from "./components/statusbar.vue";
 import React from 'react';
 import { Picker } from 'react-native';
+import axios from 'axios';
 
 export default {
     data() {
         return {
-            numQuestions: '',
-            categorySelected: '',
-            difficultySelected: '',
-            questionTypeSelected: ''
+            numQuestions: "",
+            categorySelected: "",
+            difficultySelected: "",
+            questionTypeSelected: ""
         }
     },
 
@@ -93,7 +94,19 @@ export default {
 
     methods: {
         confirmSelections () {
-            alert("Confirmed");
+            axios.get('https://opentdb.com/api.php?amount=' 
+                + this.numQuestions + '&category=' + this.categorySelected
+                + '&difficulty=' + this.difficultySelected + 
+                '&type=' + this.questionTypeSelected, {
+            })
+            .then(function (response) {
+              console.log(response);
+              var dataReturned = JSON.stringify(response);
+              alert(dataReturned);
+            })
+            .catch(function (error) {
+              console.log(error);
+          });
         },
 
         goBack() {

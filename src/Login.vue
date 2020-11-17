@@ -16,19 +16,22 @@
       title="Test Login"
       @press="goToUserDashboard"
     />
-    <text :on-press="goToCreateUserScreen">Create Account</text>
+    <text @press="goToCreateUserScreen">Create Account</text>
   </view>
 </template>
 
 <script>
 import statusbar from './components/statusbar.vue';
 import axios from 'axios';
+import { AsyncStorage } from 'react-native';
 
 export default {
   data () {
     return {
-      usernameInput: '',
-      passwordInput: ''
+      usernameInput: "",
+      passwordInput: "",
+      isAuthorized: false,
+      isLoggedIn: false
     }
   },
 
@@ -53,20 +56,29 @@ export default {
     },
 
     loginButton() {
+
       if (this.usernameInput == "" || this.passwordInput == "") {
         alert("Please fill in all required fields.");
       }
       else {
         axios.post('https://grey-matter-backend.herokuapp.com/api/login', {
             _id: this.usernameInput,
-            password: this.passwordInput,
+            password: this.passwordInput
             })
             .then(function (response) {
               console.log(response);
+              var welcomeMsg = JSON.stringify(response.data.message);
+              if (welcomeMsg != null) {
+                alert(welcomeMsg);
+              }
+              else {
+                alert("Invalid Username");
+              }
             })
             .catch(function (error) {
               console.log(error);
           });
+          this.navigation.navigate("Dashboard");
       }
     }
   }
