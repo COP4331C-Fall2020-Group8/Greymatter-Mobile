@@ -1,82 +1,100 @@
 <template>
     <view class="container">
-        <text class="pageHeader">View your sets!</text>
+        <text class="header">View your sets!</text>
         <view class="searchView">
             <text class="searchLabel">Search Sets</text>
             <view class="searchHorizWrapper">
                 <text-input class="searchInput" v-model="searchStr" hint="Search set name here" />
                 <touchable-opacity class="searchBtn" :on-press="() => search(this.searchStr)">
-                    <image class="searchImg" slot="right" :source="require('./images/zoom.png') "/>
+                    <image class="icon searchImg" slot="right" :source="require('./images/icon/search.png') "/>
                 </touchable-opacity>
             </view>
         </view>
         <scroll-view class="setView">
-            <touchable-opacity class="set" :on-press="() => viewSet(0)">
+            <touchable-opacity class="set" :on-press="() => { selectedSet = 0 }">
                 <text class="set-header">Sample Set</text>
-                <view v-if="setExpand === 0">
+                <view v-if="selectedSet === 0">
                     <text>Test</text>
                 </view>
             </touchable-opacity>
-            <touchable-opacity class="set" :on-press="() => viewSet(1)">
+            <touchable-opacity class="set" :on-press="() => { selectedSet = 1 }">
                 <text class="set-header">Sample Set 2</text>
-                <view v-if="setExpand === 1">
+                <view v-if="selectedSet === 1">
                     <text>Test</text>
                 </view>
             </touchable-opacity>
-            <touchable-opacity class="set" :on-press="() => viewSet(2)">
+            <touchable-opacity class="set" :on-press="() => { selectedSet = 2 }">
                 <text class="set-header">Sample Set 3</text>
-                <view v-if="setExpand === 2">
+                <view v-if="selectedSet === 2">
                     <text>Test</text>
                 </view>
             </touchable-opacity>
-            <touchable-opacity class="set" :on-press="() => viewSet(3)">
+            <touchable-opacity class="set" :on-press="() => { selectedSet = 3 }">
                 <text class="set-header">Sample Set 4</text>
-                <view v-if="setExpand === 3">
+                <view v-if="selectedSet === 3">
                     <text>Test</text>
                 </view>
             </touchable-opacity>
-            <touchable-opacity class="set" :on-press="() => viewSet(4)">
+            <touchable-opacity class="set" :on-press="() => { selectedSet = 4 }">
                 <text class="set-header">Sample Set 5</text>
-                <view v-if="setExpand === 4">
+                <view v-if="selectedSet === 4">
                     <text>Test</text>
                 </view>
             </touchable-opacity>
-            <touchable-opacity class="set" :on-press="() => viewSet(5)">
+            <touchable-opacity class="set" :on-press="() => { selectedSet = 5 }">
                 <text class="set-header">Sample Set 6</text>
-                <view v-if="setExpand === 5">
+                <view v-if="selectedSet === 5">
                     <text>Test</text>
                 </view>
             </touchable-opacity>
-            <touchable-opacity class="set" :on-press="() => viewSet(6)">
+            <touchable-opacity class="set" :on-press="() => { selectedSet = 6 }">
                 <text class="set-header">Sample Set 7</text>
-                <view v-if="setExpand === 6">
+                <view v-if="selectedSet === 6">
                     <text>Test</text>
                 </view>
             </touchable-opacity>
-            <touchable-opacity class="set" :on-press="() => viewSet(7)">
+            <touchable-opacity class="set" :on-press="() => { selectedSet = 7 }">
                 <text class="set-header">Sample Set 8</text>
-                <view v-if="setExpand === 7">
+                <view v-if="selectedSet === 7">
+                    <text>Test</text>
+                </view>
+            </touchable-opacity>
+            <touchable-opacity class="set" :on-press="() => { selectedSet = 8 }">
+                <text class="set-header">Sample Set 9</text>
+                <view v-if="selectedSet === 8">
+                    <text>Test</text>
+                </view>
+            </touchable-opacity>
+            <touchable-opacity class="set" :on-press="() => { selectedSet = 9 }">
+                <text class="set-header">Sample Set 10</text>
+                <view v-if="selectedSet === 9">
                     <text>Test</text>
                 </view>
             </touchable-opacity>
         </scroll-view>
-        <button
-            color="black"
-            class="backBtn"
-            title="Go Back"
-            @press="goBack"
-        />
+        <view class="footer">
+            <touchable-opacity class="backBtn footerBtn" :on-press="goBack">
+                <image class="backImg icon" :source="require('./images/icon/return.png') "/>
+            </touchable-opacity>
+            <touchable-opacity class="deleteBtn footerBtn" :on-press="deleteSet">
+                <image class="deleteImg icon" :source="require('./images/icon/trashcanOpen.png') "/>
+            </touchable-opacity>
+            <touchable-opacity class="openBtn footerBtn" :on-press="openSet">
+                <image class="openImg icon" :source="require('./images/icon/open.png') "/>
+            </touchable-opacity>
+        </view>
     </view>
 </template>
 
 <script>
 import statusbar from "./components/statusbar.vue";
+import { Alert } from "react-native";
 
 export default {
     data() {
         return {
             searchStr: '',
-            setExpand: -1
+            selectedSet: -1
         }
     },
 
@@ -91,14 +109,35 @@ export default {
     },
 
     methods: {
+        deleteSet() {
+            if (this.selectedSet == -1)
+                alert("Please select a set to delete.");
+            else
+                Alert.alert(
+                    "Confirm Delete",
+                    "Are you sure you want to delete this set?",
+                    [
+                        {
+                            text: "Yes",
+                            onPress: () => alert("Under construction")
+                        },
+                        {
+                            text: "No"
+                        }
+                    ]
+                );
+        },
         goBack() {
             this.navigation.goBack();
+        },
+        openSet() {
+            alert("Under construction");
         },
         search(str) {
             alert("Search term entered:\n" + this.searchStr);
         },
         viewSet(num) {
-            this.setExpand = num;
+            this.selectedSet = num;
         }
     }
 }
@@ -110,9 +149,24 @@ export default {
     flex: 1;
 }
 
-.pageHeader {
+.footer {
+    background-color: black;
+    flex-direction: row;
+}
+
+.footerBtn {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.header {
     font-size: 40px;
     text-align: center;
+}
+
+.icon {
+    height: 66px;
+    width: 66px;
 }
 
 .searchBtn {
@@ -122,11 +176,6 @@ export default {
 .searchHorizWrapper {
     flex-direction: row;
     width: auto;
-}
-
-.searchImg {
-    height: 66px;
-    width: 66px;
 }
 
 .searchInput {
@@ -148,7 +197,7 @@ export default {
 }
 
 .set {
-    background-color: crimson;
+    background-color: lightgray;
     border-style: solid;
     border-width: 2px;
 
@@ -156,7 +205,7 @@ export default {
     margin-top: 8px;
     margin-right: auto;
     margin-bottom: 8px;
-    padding: 4px;
+    padding: 20px;
 
     width: 360px;
 }
