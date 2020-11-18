@@ -12,6 +12,7 @@ import HomePage from "./src/Home.vue";
 import LoginPage from "./src/Login.vue";
 import CreateUserPage from "./src/CreateUser.vue";
 import UserDashboard from "./src/UserDashboard.vue";
+import ViewIndividualSetPage from "./src/ViewSet.vue";
 import ViewSetsPage from "./src/ViewSets.vue";
 import PreWrittenSetsPage from "./src/PreWrittenSets.vue";
 
@@ -21,6 +22,7 @@ const StackNavigator = createStackNavigator(
     Login: LoginPage,
     CreateUser: CreateUserPage,
     Dashboard: UserDashboard,
+    ViewIndividualSet: ViewIndividualSetPage,
     ViewSets: ViewSetsPage,
     PreWrittenSets: PreWrittenSetsPage
   },
