@@ -1,19 +1,29 @@
 <template>
     <view class="container">
-        <text class="header">Set Name</text>
+        <view class="header">
+            <text class="headerText">Set Name</text>
+        </view>
+
         <view class="content">
             
         </view>
+        
         <view class="footer">
             <touchable-opacity class="backBtn footerBtn" :on-press="goBack">
                 <image class="backImg icon" :source="require('./images/icon/return.png') "/>
             </touchable-opacity>
-            <touchable-opacity class="deleteBtn footerBtn" :on-press="deleteCard">
+            <touchable-opacity class="deleteBtn footerBtn" v-if="selectedCard != -1" :on-press="deleteCard">
                 <image class="deleteImg icon" :source="require('./images/icon/trashcanOpen.png') "/>
             </touchable-opacity>
-            <touchable-opacity class="addBtn footerBtn" :on-press="addCard">
-                <image class="addImg icon" :source="require('./images/icon/plus.png') "/>
+            <view class="deleteBtn footerBtn disabled" v-else>
+                <image class="deleteImg icon" :source="require('./images/icon/trashcanOpen.png') "/>
+            </view>
+            <touchable-opacity class="openBtn footerBtn" v-if="selectedCard != -1" :on-press="addCard">
+                <image class="openImg icon" :source="require('./images/icon/plus.png') "/>
             </touchable-opacity>
+            <view class="openBtn footerBtn disabled" v-else>
+                <image class="openImg icon" :source="require('./images/icon/plus.png') "/>
+            </view>
         </view>
     </view>
 </template>
@@ -25,7 +35,7 @@ import { Alert } from "react-native";
 export default {
     data() {
         return {
-
+            selectedCard: -1
         }
     },
 
@@ -40,6 +50,12 @@ export default {
     },
 
     methods: {
+        addCard() {
+
+        },
+        deleteCard() {
+
+        },
         goBack() {
             this.navigation.goBack();
         }
@@ -53,9 +69,14 @@ export default {
     flex: 1;
 }
 
+.disabled {
+    opacity: 0.2;
+}
+
 .footer {
     background-color: black;
     flex-direction: row;
+    margin-top: auto;
 }
 
 .footerBtn {
@@ -64,8 +85,16 @@ export default {
 }
 
 .header {
+    margin-bottom: auto;
+}
+
+.headerText {
     font-size: 40px;
     text-align: center;
 }
 
+.icon {
+    height: 66px;
+    width: 66px;
+}
 </style>
