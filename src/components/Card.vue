@@ -1,5 +1,5 @@
 <template>
-    <touchable-opacity class="cardWrapper" :on-press="() => { flipped = !flipped }">
+    <touchable-opacity class="cardWrapper" :activeOpacity="0.5" :on-press="() => { if (flippable) { flipped = !flipped } }">
         <view class="card">
             <text class="cardText" v-if="flipped">{{back}}</text>
             <text class="cardText" v-else>{{front}}</text>
@@ -17,7 +17,10 @@ export default {
     props: {
         back: String,
         front: String,
-        onPress: Function
+        flippable: {
+            type: Boolean,
+            default: true
+        }
     }
 }
 </script>
@@ -42,7 +45,7 @@ export default {
     margin-left: auto;
     margin-right: auto;
     margin-top: auto;
-    
+
     text-align: center;
 }
 
