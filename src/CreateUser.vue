@@ -68,7 +68,7 @@ export default {
       }
       else {
          axios.post('https://grey-matter-backend.herokuapp.com/api/register', {
-            _id: this.usernameInput,
+            id: this.usernameInput,
             password: this.passwordInput,
             name: this.nameInput,
             email: this.emailInput
@@ -79,8 +79,8 @@ export default {
             .catch(function (error) {
               console.log(error);
           });
-        alert("A new user account has been created.\nYou will now be taken to the home screen.");
-        this.navigation.navigate("Home");
+          alert("A new user account has been created.\nYou will now be taken to the home screen.");
+          this.props.navigation.navigate("Home");
       }
     },
     goToHomeScreen() {
