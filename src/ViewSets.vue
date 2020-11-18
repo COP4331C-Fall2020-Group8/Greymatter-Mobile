@@ -1,77 +1,83 @@
 <template>
     <view class="container">
-        <text class="header">View your sets!</text>
-        <view class="searchView">
-            <text class="searchLabel">Search Sets</text>
-            <view class="searchHorizWrapper">
-                <text-input class="searchInput" v-model="searchStr" hint="Search set name here" />
-                <touchable-opacity class="searchBtn" :on-press="() => search(this.searchStr)">
-                    <image class="icon searchImg" slot="right" :source="require('./images/icon/search.png') "/>
-                </touchable-opacity>
-            </view>
+        <view class="header">
+            <text class="headerText">View your sets!</text>
         </view>
-        <scroll-view class="setView">
-            <touchable-opacity class="set" :on-press="() => { selectedSet = 0 }">
-                <text class="set-header">Sample Set</text>
-                <view v-if="selectedSet === 0">
-                    <text>Test</text>
+
+        <view class="content">
+            <view class="searchView">
+                <text class="searchLabel">Search Sets</text>
+                <view class="searchHorizWrapper">
+                    <text-input class="searchInput" v-model="searchStr" hint="Search set name here" />
+                    <touchable-opacity class="searchBtn" :on-press="() => search(this.searchStr)">
+                        <image class="icon searchImg" :source="require('./images/icon/search.png') "/>
+                    </touchable-opacity>
                 </view>
-            </touchable-opacity>
-            <touchable-opacity class="set" :on-press="() => { selectedSet = 1 }">
-                <text class="set-header">Sample Set 2</text>
-                <view v-if="selectedSet === 1">
-                    <text>Test</text>
-                </view>
-            </touchable-opacity>
-            <touchable-opacity class="set" :on-press="() => { selectedSet = 2 }">
-                <text class="set-header">Sample Set 3</text>
-                <view v-if="selectedSet === 2">
-                    <text>Test</text>
-                </view>
-            </touchable-opacity>
-            <touchable-opacity class="set" :on-press="() => { selectedSet = 3 }">
-                <text class="set-header">Sample Set 4</text>
-                <view v-if="selectedSet === 3">
-                    <text>Test</text>
-                </view>
-            </touchable-opacity>
-            <touchable-opacity class="set" :on-press="() => { selectedSet = 4 }">
-                <text class="set-header">Sample Set 5</text>
-                <view v-if="selectedSet === 4">
-                    <text>Test</text>
-                </view>
-            </touchable-opacity>
-            <touchable-opacity class="set" :on-press="() => { selectedSet = 5 }">
-                <text class="set-header">Sample Set 6</text>
-                <view v-if="selectedSet === 5">
-                    <text>Test</text>
-                </view>
-            </touchable-opacity>
-            <touchable-opacity class="set" :on-press="() => { selectedSet = 6 }">
-                <text class="set-header">Sample Set 7</text>
-                <view v-if="selectedSet === 6">
-                    <text>Test</text>
-                </view>
-            </touchable-opacity>
-            <touchable-opacity class="set" :on-press="() => { selectedSet = 7 }">
-                <text class="set-header">Sample Set 8</text>
-                <view v-if="selectedSet === 7">
-                    <text>Test</text>
-                </view>
-            </touchable-opacity>
-            <touchable-opacity class="set" :on-press="() => { selectedSet = 8 }">
-                <text class="set-header">Sample Set 9</text>
-                <view v-if="selectedSet === 8">
-                    <text>Test</text>
-                </view>
-            </touchable-opacity>
-            <touchable-opacity class="set" :on-press="() => { selectedSet = 9 }">
-                <text class="set-header">Sample Set 10</text>
-                <view v-if="selectedSet === 9">
-                    <text>Test</text>
-                </view>
-            </touchable-opacity>
-        </scroll-view>
+            </view>
+            <scroll-view class="setView">
+                <touchable-opacity class="set" :on-press="() => { selectedSet = 0 }">
+                    <text class="set-header">Sample Set</text>
+                    <view v-if="selectedSet === 0">
+                        <text>Test</text>
+                    </view>
+                </touchable-opacity>
+                <touchable-opacity class="set" :on-press="() => { selectedSet = 1 }">
+                    <text class="set-header">Sample Set 2</text>
+                    <view v-if="selectedSet === 1">
+                        <text>Test</text>
+                    </view>
+                </touchable-opacity>
+                <touchable-opacity class="set" :on-press="() => { selectedSet = 2 }">
+                    <text class="set-header">Sample Set 3</text>
+                    <view v-if="selectedSet === 2">
+                        <text>Test</text>
+                    </view>
+                </touchable-opacity>
+                <touchable-opacity class="set" :on-press="() => { selectedSet = 3 }">
+                    <text class="set-header">Sample Set 4</text>
+                    <view v-if="selectedSet === 3">
+                        <text>Test</text>
+                    </view>
+                </touchable-opacity>
+                <touchable-opacity class="set" :on-press="() => { selectedSet = 4 }">
+                    <text class="set-header">Sample Set 5</text>
+                    <view v-if="selectedSet === 4">
+                        <text>Test</text>
+                    </view>
+                </touchable-opacity>
+                <touchable-opacity class="set" :on-press="() => { selectedSet = 5 }">
+                    <text class="set-header">Sample Set 6</text>
+                    <view v-if="selectedSet === 5">
+                        <text>Test</text>
+                    </view>
+                </touchable-opacity>
+                <touchable-opacity class="set" :on-press="() => { selectedSet = 6 }">
+                    <text class="set-header">Sample Set 7</text>
+                    <view v-if="selectedSet === 6">
+                        <text>Test</text>
+                    </view>
+                </touchable-opacity>
+                <touchable-opacity class="set" :on-press="() => { selectedSet = 7 }">
+                    <text class="set-header">Sample Set 8</text>
+                    <view v-if="selectedSet === 7">
+                        <text>Test</text>
+                    </view>
+                </touchable-opacity>
+                <touchable-opacity class="set" :on-press="() => { selectedSet = 8 }">
+                    <text class="set-header">Sample Set 9</text>
+                    <view v-if="selectedSet === 8">
+                        <text>Test</text>
+                    </view>
+                </touchable-opacity>
+                <touchable-opacity class="set" :on-press="() => { selectedSet = 9 }">
+                    <text class="set-header">Sample Set 10</text>
+                    <view v-if="selectedSet === 9">
+                        <text>Test</text>
+                    </view>
+                </touchable-opacity>
+            </scroll-view>
+        </view>
+
         <view class="footer">
             <touchable-opacity class="backBtn footerBtn" :on-press="goBack">
                 <image class="backImg icon" :source="require('./images/icon/return.png') "/>
@@ -134,7 +140,7 @@ export default {
             this.navigation.goBack();
         },
         openSet() {
-            alert("Under construction");
+            this.navigation.navigate("ViewIndividualSet");
         },
         search(str) {
             alert("Search term entered:\n" + this.searchStr);
@@ -149,6 +155,10 @@ export default {
 <style>
 .container {
     background-color: grey;
+    flex: 1;
+}
+
+.content{
     flex: 1;
 }
 
@@ -167,6 +177,10 @@ export default {
 }
 
 .header {
+    margin-bottom: auto;
+}
+
+.headerText {
     font-size: 40px;
     text-align: center;
 }
@@ -190,6 +204,8 @@ export default {
     flex-grow: 1;
     font-size: 30px;
     margin-left: 10px;
+    padding: 10px;
+    width: 300px;
 }
 
 .searchLabel {
