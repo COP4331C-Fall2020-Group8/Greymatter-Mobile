@@ -76,12 +76,18 @@
             <touchable-opacity class="backBtn footerBtn" :on-press="goBack">
                 <image class="backImg icon" :source="require('./images/icon/return.png') "/>
             </touchable-opacity>
-            <touchable-opacity class="deleteBtn footerBtn" :on-press="deleteSet">
+            <touchable-opacity class="deleteBtn footerBtn" v-if="selectedSet != -1" :on-press="deleteSet">
                 <image class="deleteImg icon" :source="require('./images/icon/trashcanOpen.png') "/>
             </touchable-opacity>
-            <touchable-opacity class="openBtn footerBtn" :on-press="openSet">
+            <view class="deleteBtn footerBtn disabled" v-else>
+                <image class="deleteImg icon" :source="require('./images/icon/trashcanOpen.png') "/>
+            </view>
+            <touchable-opacity class="openBtn footerBtn" v-if="selectedSet != -1" :on-press="openSet">
                 <image class="openImg icon" :source="require('./images/icon/open.png') "/>
             </touchable-opacity>
+            <view class="openBtn footerBtn disabled" v-else>
+                <image class="openImg icon" :source="require('./images/icon/open.png') "/>
+            </view>
         </view>
     </view>
 </template>
@@ -110,22 +116,19 @@ export default {
 
     methods: {
         deleteSet() {
-            if (this.selectedSet == -1)
-                alert("Please select a set to delete.");
-            else
-                Alert.alert(
-                    "Confirm Delete",
-                    "Are you sure you want to delete this set?",
-                    [
-                        {
-                            text: "Yes",
-                            onPress: () => alert("Under construction")
-                        },
-                        {
-                            text: "No"
-                        }
-                    ]
-                );
+            Alert.alert(
+                "Confirm Delete",
+                "Are you sure you want to delete this set?",
+                [
+                    {
+                        text: "Yes",
+                        onPress: () => alert("Under construction")
+                    },
+                    {
+                        text: "No"
+                    }
+                ]
+            );
         },
         goBack() {
             this.navigation.goBack();
@@ -147,6 +150,10 @@ export default {
 .container {
     background-color: grey;
     flex: 1;
+}
+
+.disabled {
+    opacity: 0.2;
 }
 
 .footer {
