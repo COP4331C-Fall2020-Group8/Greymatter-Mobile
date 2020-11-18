@@ -76,7 +76,7 @@ export default {
             numQuestions: "",
             categorySelected: "",
             difficultySelected: "",
-            questionTypeSelected: ""
+            questionTypeSelected: "",
         }
     },
 
@@ -101,8 +101,8 @@ export default {
             })
             .then(function (response) {
               console.log(response);
-              var dataReturned = JSON.stringify(response);
-              alert(dataReturned);
+              var dataReturned = JSON.stringify(response.results);
+              alert(response.results.category);
             })
             .catch(function (error) {
               console.log(error);

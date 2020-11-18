@@ -33,7 +33,15 @@
 </template>
 
 <script>
+import { Dimensions, Platform } from "react-native";
 import statusbar from './components/statusbar.vue';
+import { NavigationActions, StackActions } from 'vue-native-router';
+import store from './store';
+
+const resetAction = StackActions.reset({
+                        index: 0,
+                        actions: [NavigationActions.navigate({routeName: "Home"})]
+                    });
 
 export default {
 
@@ -63,7 +71,17 @@ export default {
 
         viewSets() {
             this.navigation.navigate("ViewSets");
-        }
+        },
+
+        userLogout () {
+            store.dispatch('logout', () => this.navigation.dispatch(resetAction));
+        },
+
+        computed: {
+        userData () {
+            return store.state.userObj;
+    }
+  },
     }
 }
 </script>

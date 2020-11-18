@@ -3,9 +3,9 @@
     <statusbar/>
     <image class="logoImage" :source="require('./images/brain.png')"/>
     <text>Login</text>
-    <TextInput class="user-input" v-model="usernameInput" hint="Username"/>
+    <TextInput class="user-input" v-model="id" hint="Username"/>
     <text>Password</text>
-    <TextInput class="user-input" secureTextEntry v-model="passwordInput" hint="Password" secure="true"/>
+    <TextInput class="user-input" secureTextEntry v-model="password" hint="Password" secure="true"/>
     <button
       color="black"
       title="Login"
@@ -23,15 +23,21 @@
 <script>
 import statusbar from './components/statusbar.vue';
 import axios from 'axios';
-import { AsyncStorage } from 'react-native';
+import { Dimensions, Platform, AsyncStorage } from "react-native";
+import store from './store';
 
 export default {
   data () {
     return {
-      usernameInput: "",
-      passwordInput: "",
-      isAuthorized: false,
-      isLoggedIn: false
+      id: "",
+      password: "",
+      loaded: false
+    }
+  },
+
+  computed: {
+    logging_in () {
+      return store.state.logging_in;
     }
   },
 
@@ -43,6 +49,18 @@ export default {
     navigation: {
       type: Object
     }
+  },
+
+  created() {
+    AsyncStorage.getItem("id").then((val) => {
+      if (val) {
+        this.loaded = true
+        this.navigation.navigate("Dashboard")
+        store.dispatch('SET_USER', {userObj: {id: val}})
+      } else {
+        this.loaded = true
+      }
+    })
   },
 
   methods : {
@@ -62,7 +80,7 @@ export default {
       }
       else {
         axios.post('https://grey-matter-backend.herokuapp.com/api/login', {
-            _id: this.usernameInput,
+            id: this.usernameInput,
             password: this.passwordInput
             })
             .then(function (response) {
@@ -78,7 +96,10 @@ export default {
             .catch(function (error) {
               console.log(error);
           });
-          this.navigation.navigate("Dashboard");
+          store.dispatch('login', {
+          userObj: {id: this.id, password: this.password},
+          navigate: this.navigation.navigate
+        });
       }
     }
   }
