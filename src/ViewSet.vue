@@ -126,19 +126,11 @@ export default {
 
     methods: {
         addCard() {
-
+            alert("Under construction");
         },
         goBack() {
             this.navigation.goBack();
         },
-        selectCard(e) {
-            if (this.deleteMode) {
-                alert(e);
-            }
-            else {
-                alert("Under construction");
-            }
-        }
     }
 }
 </script>
