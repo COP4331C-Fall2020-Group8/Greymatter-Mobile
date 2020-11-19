@@ -80,8 +80,8 @@
         </view>
 
         <view class="footer">
-            <touchable-opacity class="backBtn footerBtn" :on-press="goBack">
-                <image class="backImg icon" :source="require('./images/icon/return.png') "/>
+            <touchable-opacity class="logoutBtn footerBtn" :on-press="logout">
+                <image class="logoutImg icon" :source="require('./images/icon/exit.png') "/>
             </touchable-opacity>
             <touchable-opacity class="deleteBtn footerBtn" v-if="selectedSet != -1" :on-press="deleteSet">
                 <image class="deleteImg icon" :source="require('./images/icon/trashcanOpen.png') "/>
@@ -109,6 +109,14 @@
 import statusbar from "./components/statusbar.vue";
 import set from "./components/Set.vue";
 import { Alert } from "react-native";
+
+import { NavigationActions, StackActions } from 'vue-native-router';
+import store from './store';
+
+const resetAction = StackActions.reset({
+                        index: 0,
+                        actions: [NavigationActions.navigate({routeName: "Home"})]
+                    });
 
 export default {
     data() {
@@ -145,8 +153,8 @@ export default {
                 ]
             );
         },
-        goBack() {
-            this.navigation.goBack();
+        logout() {
+            store.dispatch('logout', () => this.navigation.dispatch(resetAction));
         },
         openSet() {
             this.navigation.navigate("ViewIndividualSet");

@@ -14,7 +14,7 @@
     <button
       color="black"
       title="Test Login"
-      @press="goToUserDashboard"
+      @press="testLogin"
     />
     <text @press="goToCreateUserScreen">Create Account</text>
   </view>
@@ -55,7 +55,7 @@ export default {
     AsyncStorage.getItem("id").then((val) => {
       if (val) {
         this.loaded = true
-        this.navigation.navigate("Dashboard")
+        this.navigation.navigate("ViewSets")
         store.dispatch('SET_USER', {userObj: {id: val}})
       } else {
         this.loaded = true
@@ -69,8 +69,8 @@ export default {
       this.navigation.navigate("CreateUser");
     },
 
-    goToUserDashboard() {
-      this.navigation.navigate("Dashboard");
+    testLogin() {
+      this.navigation.navigate("ViewSets");
     },
 
     loginButton() {

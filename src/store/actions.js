@@ -27,7 +27,7 @@ export function login ({ commit, state}, {userObj, navigate}) {
             setTimeout(() => {
                 commit('LOGIN_SUCCESFULL', {userObj})
                 AsyncStorage.setItem('id', userObj.id)
-                navigate('Dashboard');
+                navigate('ViewSets');
                 resolve();
               }, 1000)
           }
