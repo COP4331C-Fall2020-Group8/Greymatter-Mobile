@@ -23,6 +23,7 @@ export function login ({ commit, state}, {userObj, navigate}) {
           console.log(response);
           var welcomeMsg = JSON.stringify(response.data.message);
           if (welcomeMsg != null) {
+            alert(welcomeMsg);
             setTimeout(() => {
                 commit('LOGIN_SUCCESFULL', {userObj})
                 AsyncStorage.setItem('id', userObj.id)
@@ -32,7 +33,7 @@ export function login ({ commit, state}, {userObj, navigate}) {
           }
         })
         .catch(function (error) {
-          console.log("Invalid Username or Passworder");
+          console.log("Invalid Username or Password");
           reject(error);
       });
   })

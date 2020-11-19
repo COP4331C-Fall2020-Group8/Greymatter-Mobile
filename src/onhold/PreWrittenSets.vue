@@ -1,5 +1,6 @@
 <template>
     <view class="container">
+        <statusbar/>
         <text class="pageHeader">Test Your Knowledge</text>
         <text>Number of Questions (Max 50):</text>
         <TextInput class="user-input" v-model="numQuestions" hint="numQuestions" />
@@ -77,6 +78,7 @@ export default {
             categorySelected: "",
             difficultySelected: "",
             questionTypeSelected: "",
+            questionData: []
         }
     },
 
@@ -100,15 +102,18 @@ export default {
                 '&type=' + this.questionTypeSelected, {
             })
             .then(function (response) {
-              console.log(response);
-              var dataReturned = JSON.stringify(response.results);
-              alert(response.results.category);
+              //console.log(response.data);
+              this.questionData = response.data.results;
+              console.log(questionData);
+              //alert(response.results);
+              //var dataReturned = JSON.stringify(response.results);
+              //alert(dataReturned);
             })
             .catch(function (error) {
               console.log(error);
           });
+          //this.navigation.navigate("PreWrittenCard");
         },
-
         goBack() {
             this.navigation.goBack();
         },
