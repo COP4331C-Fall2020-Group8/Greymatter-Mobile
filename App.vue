@@ -14,8 +14,8 @@ import CreateUserPage from "./src/CreateUser.vue";
 import UserDashboard from "./src/UserDashboard.vue";
 import ViewIndividualSetPage from "./src/ViewSet.vue";
 import ViewSetsPage from "./src/ViewSets.vue";
-import PreWrittenSetsPage from "./src/PreWrittenSets.vue";
-import PreWrittenCardPage from "./src/PreWrittenCard.vue";
+// import PreWrittenSetsPage from "./src/onhold/PreWrittenSets.vue";
+// import PreWrittenCardPage from "./src/onhold/PreWrittenCard.vue";
 import QuizPage from "./src/Quizzing.vue";
 
 const StackNavigator = createStackNavigator(
@@ -26,12 +26,12 @@ const StackNavigator = createStackNavigator(
     Dashboard: UserDashboard,
     ViewIndividualSet: ViewIndividualSetPage,
     ViewSets: ViewSetsPage,
-    PreWrittenSets: PreWrittenSetsPage,
-    PreWrittenCard: PreWrittenCardPage,
+    // PreWrittenSets: PreWrittenSetsPage,
+    // PreWrittenCard: PreWrittenCardPage,
     Quizzing: QuizPage
   },
   {
-    initialRouteName: 'Quizzing',
+    initialRouteName: 'Home',
     headerMode: 'none'
   }
 );
