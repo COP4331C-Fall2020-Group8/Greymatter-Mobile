@@ -1,7 +1,8 @@
 <template>
     <view class="container">
         <view class="header">
-            <text class="headerText">View your sets!</text>
+            <text class="headerText">Welcome,</text>
+            <text class="headerText">user!</text>
         </view>
 
         <view class="content">
@@ -16,64 +17,64 @@
             </view>
             <scroll-view class="setView">
                 <touchable-opacity class="set" :on-press="() => { selectedSet = 0 }">
-                    <text class="set-header">Sample Set</text>
-                    <view v-if="selectedSet === 0">
-                        <text>Test</text>
-                    </view>
+                    <set
+                        name="Sample Set"
+                        category="Sample"
+                    />
                 </touchable-opacity>
                 <touchable-opacity class="set" :on-press="() => { selectedSet = 1 }">
-                    <text class="set-header">Sample Set 2</text>
-                    <view v-if="selectedSet === 1">
-                        <text>Test</text>
-                    </view>
+                    <set
+                        name="Sample Set 2"
+                        category="Sample"
+                    />
                 </touchable-opacity>
                 <touchable-opacity class="set" :on-press="() => { selectedSet = 2 }">
-                    <text class="set-header">Sample Set 3</text>
-                    <view v-if="selectedSet === 2">
-                        <text>Test</text>
-                    </view>
+                    <set
+                        name="Sample Set 3"
+                        category="Sample"
+                    />
                 </touchable-opacity>
                 <touchable-opacity class="set" :on-press="() => { selectedSet = 3 }">
-                    <text class="set-header">Sample Set 4</text>
-                    <view v-if="selectedSet === 3">
-                        <text>Test</text>
-                    </view>
+                    <set
+                        name="Sample Set 4"
+                        category="Sample"
+                    />
                 </touchable-opacity>
                 <touchable-opacity class="set" :on-press="() => { selectedSet = 4 }">
-                    <text class="set-header">Sample Set 5</text>
-                    <view v-if="selectedSet === 4">
-                        <text>Test</text>
-                    </view>
+                    <set
+                        name="Sample Set 5"
+                        category="Sample"
+                    />
                 </touchable-opacity>
                 <touchable-opacity class="set" :on-press="() => { selectedSet = 5 }">
-                    <text class="set-header">Sample Set 6</text>
-                    <view v-if="selectedSet === 5">
-                        <text>Test</text>
-                    </view>
+                    <set
+                        name="Sample Set 6"
+                        category="Sample"
+                    />
                 </touchable-opacity>
                 <touchable-opacity class="set" :on-press="() => { selectedSet = 6 }">
-                    <text class="set-header">Sample Set 7</text>
-                    <view v-if="selectedSet === 6">
-                        <text>Test</text>
-                    </view>
+                    <set
+                        name="Sample Set 7"
+                        category="Sample"
+                    />
                 </touchable-opacity>
                 <touchable-opacity class="set" :on-press="() => { selectedSet = 7 }">
-                    <text class="set-header">Sample Set 8</text>
-                    <view v-if="selectedSet === 7">
-                        <text>Test</text>
-                    </view>
+                    <set
+                        name="Sample Set 8"
+                        category="Sample"
+                    />
                 </touchable-opacity>
                 <touchable-opacity class="set" :on-press="() => { selectedSet = 8 }">
-                    <text class="set-header">Sample Set 9</text>
-                    <view v-if="selectedSet === 8">
-                        <text>Test</text>
-                    </view>
+                    <set
+                        name="Sample Set 9"
+                        category="Sample"
+                    />
                 </touchable-opacity>
                 <touchable-opacity class="set" :on-press="() => { selectedSet = 9 }">
-                    <text class="set-header">Sample Set 10</text>
-                    <view v-if="selectedSet === 9">
-                        <text>Test</text>
-                    </view>
+                    <set
+                        name="Sample Set 10"
+                        category="Sample"
+                    />
                 </touchable-opacity>
             </scroll-view>
         </view>
@@ -89,10 +90,16 @@
                 <image class="deleteImg icon" :source="require('./images/icon/trashcanOpen.png') "/>
             </view>
             <touchable-opacity class="openBtn footerBtn" v-if="selectedSet != -1" :on-press="openSet">
-                <image class="openImg icon" :source="require('./images/icon/open.png') "/>
+                <image class="openImg icon" :source="require('./images/icon/toolPencil.png') "/>
             </touchable-opacity>
             <view class="openBtn footerBtn disabled" v-else>
-                <image class="openImg icon" :source="require('./images/icon/open.png') "/>
+                <image class="openImg icon" :source="require('./images/icon/toolPencil.png') "/>
+            </view>
+            <touchable-opacity class="quizBtn footerBtn" v-if="selectedSet != -1" :on-press="quizSet">
+                <image class="quizImg icon" :source="require('./images/icon/exclamation.png') "/>
+            </touchable-opacity>
+            <view class="quizBtn footerBtn disabled" v-else>
+                <image class="quizImg icon" :source="require('./images/icon/exclamation.png') "/>
             </view>
         </view>
     </view>
@@ -100,6 +107,7 @@
 
 <script>
 import statusbar from "./components/statusbar.vue";
+import set from "./components/Set.vue";
 import { Alert } from "react-native";
 
 export default {
@@ -111,7 +119,8 @@ export default {
     },
 
     components: {
-        statusbar
+        statusbar,
+        set
     },
 
     props: {
@@ -144,6 +153,9 @@ export default {
         },
         search(str) {
             alert("Search term entered:\n" + this.searchStr);
+        },
+        quizSet() {
+            alert("Under construction");
         },
         viewSet(num) {
             this.selectedSet = num;
@@ -217,24 +229,5 @@ export default {
 
 .searchView {
     margin-bottom: 8px;
-}
-
-.set {
-    background-color: lightgray;
-    border-style: solid;
-    border-width: 2px;
-
-    margin-left: auto;
-    margin-top: 8px;
-    margin-right: auto;
-    margin-bottom: 8px;
-    padding: 20px;
-
-    width: 360px;
-}
-
-.set-header {
-    font-size: 36px;
-    text-align: center;
 }
 </style>
