@@ -13,7 +13,7 @@ import axios from 'axios';
 
 export function login ({ commit, state}, {userObj, navigate}) {
 
-  commit('LOGGING_IN', true)
+  commit('LOGGING_IN', true);
   return new Promise((resolve, reject) => {
     axios.post('https://grey-matter-backend.herokuapp.com/api/login', {
             id: userObj.id,
