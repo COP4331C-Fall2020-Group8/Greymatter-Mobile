@@ -79,23 +79,6 @@ export default {
         alert("Please fill in all required fields.");
       }
       else {
-        axios.post('https://grey-matter-backend.herokuapp.com/api/login', {
-            id: this.usernameInput,
-            password: this.passwordInput
-            })
-            .then(function (response) {
-              console.log(response);
-              var welcomeMsg = JSON.stringify(response.data.message);
-              if (welcomeMsg != null) {
-                alert(welcomeMsg);
-              }
-              else {
-                alert("Invalid Username");
-              }
-            })
-            .catch(function (error) {
-              console.log(error);
-          });
           store.dispatch('login', {
           userObj: {id: this.id, password: this.password},
           navigate: this.navigation.navigate

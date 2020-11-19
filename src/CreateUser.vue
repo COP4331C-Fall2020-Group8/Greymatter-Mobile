@@ -80,7 +80,7 @@ export default {
               console.log(error);
           });
           alert("A new user account has been created.\nYou will now be taken to the home screen.");
-          this.props.navigation.navigate("Home");
+          this.navigation.navigate("Home");
       }
     },
     goToHomeScreen() {
