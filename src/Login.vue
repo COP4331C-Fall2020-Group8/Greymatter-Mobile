@@ -74,8 +74,7 @@ export default {
     },
 
     loginButton() {
-
-      if (this.usernameInput == "" || this.passwordInput == "") {
+      if (this.id == "" || this.password == "") {
         alert("Please fill in all required fields.");
       }
       else {
