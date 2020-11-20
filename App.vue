@@ -14,6 +14,7 @@ import CreateUserPage from "./src/CreateUser.vue";
 import UserDashboard from "./src/UserDashboard.vue";
 import ViewIndividualSetPage from "./src/ViewSet.vue";
 import ViewSetsPage from "./src/ViewSets.vue";
+import AddSetPage from "./src/AddSet.vue";
 //import PreWrittenSetsPage from "./src/PreWrittenSets.vue";
 //import PreWrittenCardPage from "./src/PreWrittenCard.vue";
 import QuizFRPage from "./src/QuizFR.vue";
@@ -26,6 +27,7 @@ const StackNavigator = createStackNavigator(
     Dashboard: UserDashboard,
     ViewIndividualSet: ViewIndividualSetPage,
     ViewSets: ViewSetsPage,
+    AddSet: AddSetPage,
     //PreWrittenSets: PreWrittenSetsPage,
     //PreWrittenCard: PreWrittenCardPage,
     QuizFR: QuizFRPage
