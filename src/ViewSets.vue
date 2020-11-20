@@ -233,13 +233,13 @@ export default {
 }
 
 .headerText {
-    font-size: 40px;
+    font-size: 32px;
     text-align: center;
 }
 
 .icon {
-    height: 66px;
-    width: 66px;
+    height: 50px;
+    width: 50px;
 }
 
 .noSets {
@@ -248,7 +248,8 @@ export default {
 }
 
 .searchBtn {
-    margin-right: 8px;
+    margin-left: 8px;
+    margin-right: 16px;
 }
 
 .searchHorizWrapper {
@@ -259,20 +260,21 @@ export default {
 .searchInput {
     background-color: white;
     flex-grow: 1;
-    font-size: 30px;
+    font-size: 24px;
     margin-left: 10px;
     padding: 10px;
     width: 300px;
 }
 
 .searchLabel {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
     margin: 4px;
     margin-left: 10px;
 }
 
 .searchView {
+    margin-left: 8px;
     margin-bottom: 8px;
 }
 
