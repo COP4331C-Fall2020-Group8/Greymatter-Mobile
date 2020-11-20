@@ -16,15 +16,20 @@
                 </view>
             </view>
             <scroll-view class="setView">
-                <template v-for="setObj in sets">
-                    <touchable-opacity class="set" :key="setObj.name" :style="{ borderColor: setBorderColor[setObj.name] }" :on-press="() => { selectSet(setObj.name) }">
-                        <set
-                            :name="setObj.name"
-                            :category="setObj.category"
-                            :numCards="setObj.num_cards"
-                        />
-                    </touchable-opacity>
-                </template>
+                <view v-if="searching">
+                    <text class="noSets" v-if="searching">Searching for sets...</text>
+                </view>
+                <view v-else>
+                    <template v-for="setObj in sets">
+                        <touchable-opacity class="set" :key="setObj.name" :style="{ borderColor: setBorderColor[setObj.name] }" :on-press="() => { selectSet(setObj.name) }">
+                            <set
+                                :name="setObj.name"
+                                :category="setObj.category"
+                                :numCards="setObj.num_cards"
+                            />
+                        </touchable-opacity>
+                    </template>
+                </view>
             </scroll-view>
         </view>
 
@@ -77,6 +82,7 @@ export default {
             searchStr: '',
             selectedSet: null,
             user: "user",
+            searching: false,
 
             sets: [],
 
@@ -142,6 +148,7 @@ export default {
         //Returns a list of sets based on the search string.
         search(str) {
             this.selectSet(this.selectedSet); //Auto unselects any set.
+            this.searching = true;
             this.sets = [];
             this.setBorderColor = [];
             AsyncStorage.removeItem("setSearch").then(() => {});
@@ -161,6 +168,7 @@ export default {
                     }
                     console.log(this.sets);
                 });
+                this.searching = false;
             }, 100);
         },
 
@@ -229,6 +237,11 @@ export default {
 .icon {
     height: 66px;
     width: 66px;
+}
+
+.noSets {
+    font-size: 20px;
+    text-align: center;
 }
 
 .searchBtn {
