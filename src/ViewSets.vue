@@ -172,7 +172,7 @@ export default {
                 });
                 this.searching = false;
                 AsyncStorage.removeItem("setSearch").then(() => {});
-            }, 100);
+            }, 250);
         },
 
         //Highlights or un-highlights a set when touched.
