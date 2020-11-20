@@ -10,96 +10,48 @@
                 <text class="searchLabel">Search Sets</text>
                 <view class="searchHorizWrapper">
                     <text-input class="searchInput" v-model="searchStr" hint="Search set name here" />
-                    <touchable-opacity class="searchBtn" :on-press="() => search(this.searchStr)">
+                    <touchable-opacity class="searchBtn" :on-press="() => search(searchStr)">
                         <image class="icon searchImg" :source="require('./images/icon/search.png') "/>
                     </touchable-opacity>
                 </view>
             </view>
             <scroll-view class="setView">
-                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[0] }" :on-press="() => { selectSet(0) }">
-                    <set
-                        name="Sample Set"
-                        category="Sample"
-                    />
-                </touchable-opacity>
-                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[1] }" :on-press="() => { selectSet(1) }">
-                    <set
-                        name="Sample Set 2"
-                        category="Sample"
-                    />
-                </touchable-opacity>
-                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[2] }" :on-press="() => { selectSet(2) }">
-                    <set
-                        name="Sample Set 3"
-                        category="Sample"
-                    />
-                </touchable-opacity>
-                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[3] }" :on-press="() => { selectSet(3) }">
-                    <set
-                        name="Sample Set 4"
-                        category="Sample"
-                    />
-                </touchable-opacity>
-                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[4] }" :on-press="() => { selectSet(4) }">
-                    <set
-                        name="Sample Set 5"
-                        category="Sample"
-                    />
-                </touchable-opacity>
-                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[5] }" :on-press="() => { selectSet(5) }">
-                    <set
-                        name="Sample Set 6"
-                        category="Sample"
-                    />
-                </touchable-opacity>
-                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[6] }" :on-press="() => { selectSet(6) }">
-                    <set
-                        name="Sample Set 7"
-                        category="Sample"
-                    />
-                </touchable-opacity>
-                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[7] }" :on-press="() => { selectSet(7) }">
-                    <set
-                        name="Sample Set 8"
-                        category="Sample"
-                    />
-                </touchable-opacity>
-                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[8] }" :on-press="() => { selectSet(8) }">
-                    <set
-                        name="Sample Set 9"
-                        category="Sample"
-                    />
-                </touchable-opacity>
-                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[9] }" :on-press="() => { selectSet(9) }">
-                    <set
-                        name="Sample Set 10"
-                        category="Sample"
-                    />
-                </touchable-opacity>
+                <template v-for="setObj in sets">
+                    <touchable-opacity class="set" :key="setObj.name" :style="{ borderColor: setBorderColor[setObj.name] }" :on-press="() => { selectSet(setObj.name) }">
+                        <set
+                            :name="setObj.name"
+                            :category="setObj.category"
+                            :numCards="setObj.num_cards"
+                        />
+                    </touchable-opacity>
+                </template>
             </scroll-view>
         </view>
 
         <view class="footer">
             <touchable-opacity class="logoutBtn footerBtn" :on-press="logout">
-                <image class="logoutImg icon" :source="require('./images/icon/exit.png') "/>
+                <image class="logoutImg icon" :source="require('./images/icon/exit.png')" />
             </touchable-opacity>
-            <touchable-opacity class="deleteBtn footerBtn" v-if="selectedSet != -1" :on-press="deleteSet">
-                <image class="deleteImg icon" :source="require('./images/icon/trashcanOpen.png') "/>
+            <touchable-opacity class="addBtn footerBtn" :on-press="addSet">
+                <image class="addBtn icon" :source="require('./images/icon/plus.png')" />
+            </touchable-opacity>
+            <touchable-opacity class="deleteBtn footerBtn" v-if="selectedSet != null" :on-press="deleteSet">
+                <image class="deleteImg icon" :source="require('./images/icon/trashcanOpen.png')" />
             </touchable-opacity>
             <view class="deleteBtn footerBtn disabled" v-else>
-                <image class="deleteImg icon" :source="require('./images/icon/trashcanOpen.png') "/>
+                <image class="deleteImg icon" :source="require('./images/icon/trashcanOpen.png')" />
             </view>
-            <touchable-opacity class="openBtn footerBtn" v-if="selectedSet != -1" :on-press="openSet">
-                <image class="openImg icon" :source="require('./images/icon/toolPencil.png') "/>
+            <touchable-opacity class="openBtn footerBtn" v-if="selectedSet != null" :on-press="openSet">
+                <image class="openImg icon" :source="require('./images/icon/toolPencil.png')" />
             </touchable-opacity>
             <view class="openBtn footerBtn disabled" v-else>
-                <image class="openImg icon" :source="require('./images/icon/toolPencil.png') "/>
+                <image class="openImg icon" :source="require('./images/icon/toolPencil.png')" />
             </view>
-            <touchable-opacity class="quizBtn footerBtn" v-if="selectedSet != -1" :on-press="quizSet">
-                <image class="quizImg icon" :source="require('./images/icon/exclamation.png') "/>
+            <touchable-opacity class="quizBtn footerBtn" v-if="selectedSet != null" :on-press="quizSet">
+                <image class="quizImg icon" :source="require('./images/icon/exclamation.png')" />
             </touchable-opacity>
             <view class="quizBtn footerBtn disabled" v-else>
-                <image class="quizImg icon" :source="require('./images/icon/exclamation.png') "/>
+                <image class="quizImg icon" :source="require('./images/icon/exclamation.png')" />
             </view>
         </view>
     </view>
@@ -123,10 +75,13 @@ export default {
     data() {
         return {
             searchStr: '',
-            selectedSet: -1,
+            selectedSet: null,
             user: "user",
 
-            setBorderColor: ["black", "black", "black", "black", "black", "black", "black", "black", "black", "black"]
+            sets: [],
+
+            //Dynamic style variables.
+            setBorderColor: []
         }
     },
 
@@ -145,47 +100,90 @@ export default {
         AsyncStorage.getItem("id").then((val) => {
             console.log("Logged in user: " + val);
             this.user = (val == null ? "user" : val);
-        })
+            this.search("");
+        });
     },
 
     methods: {
-        deleteSet() {
-            Alert.alert(
-                "Confirm Delete",
-                "Are you sure you want to delete this set?",
-                [
-                    {
-                        text: "Yes",
-                        onPress: () => alert("Under construction")
-                    },
-                    {
-                        text: "No"
-                    }
-                ]
-            );
+        //Adds a set to the database.
+        addSet() {
+            alert("Under construction.");
         },
+
+        //Removes a set from the database.
+        deleteSet() {
+            if (this.selectedSet != null)
+                Alert.alert(
+                    "Confirm Delete",
+                    "Are you sure you want to delete this set?",
+                    [
+                        {
+                            text: "Yes",
+                            onPress: () => alert("Under construction")
+                        },
+                        {
+                            text: "No"
+                        }
+                    ]
+                );
+        },
+
+        //Logs the user out.
         logout() {
             store.dispatch('logout', () => this.navigation.dispatch(resetAction));
         },
+
+        //Opens the set for viewing/editing.
         openSet() {
-            this.navigation.navigate("ViewIndividualSet");
+            if (this.selectedSet != null)
+                this.navigation.navigate("ViewIndividualSet");
         },
+
+        //Returns a list of sets based on the search string.
         search(str) {
-            alert("Search term entered:\n" + this.searchStr);
+            this.selectSet(this.selectedSet); //Auto unselects any set.
+            this.sets = [];
+            this.setBorderColor = [];
+            AsyncStorage.removeItem("setSearch").then(() => {});
+
+            store.dispatch("searchSets", {
+                queryObj: {
+                    user_id: this.user,
+                    searchStr: str
+                }
+            });
+            
+            setTimeout(() => {
+                AsyncStorage.getItem("setSearch").then((val) => {
+                    this.sets = JSON.parse(val);
+                    for (var i = 0; i < this.sets.length; i++) {
+                        this.setBorderColor.push("black");
+                    }
+                    console.log(this.sets);
+                });
+            }, 100);
         },
+
+        //Highlights or un-highlights a set when touched.
         selectSet(index) {
+            //Unhighlights the already selected set.
             if (this.selectedSet == index) {
                 this.setBorderColor[index] = "black";
-                this.selectedSet = -1;
+                this.selectedSet = null;
             }
+
+            //Highlights the unselected set.
             else {
-                if (this.selectedSet != -1)
+                if (this.selectedSet != null)
                     this.setBorderColor[this.selectedSet] = "black";
                 this.setBorderColor[index] = "yellow";
                 this.selectedSet = index;
             }
         },
+
+        //
         quizSet() {
+            if (this.selectedSet != null)
             alert("Under construction");
         },
         viewSet(num) {
@@ -268,6 +266,6 @@ export default {
     margin-right: auto;
     margin-bottom: 8px;
 
-    border-width: 2px;
+    border-width: 4px;
 }
 </style>

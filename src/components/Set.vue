@@ -1,7 +1,8 @@
 <template>
     <view class="setWrapper">
-        <text class="setName">{{name}}</text>
-        <text class="setCategory">{{category}}</text>
+        <text class="label setName">{{name}}</text>
+        <text class="label setCategory">{{category}}</text>
+        <text class="label setNumCards">Number of Cards: {{numCards}}</text>
     </view>
 </template>
 
@@ -15,21 +16,30 @@ export default {
         category: {
             type: String,
             required: true
+        },
+        numCards: {
+            type: Number,
+            default: 0
         }
     }
 }
 </script>
 
 <style>
+.label {
+    text-align: center;
+}
+
 .setCategory {
     font-size: 18px;
-    text-align: center;
 }
 
 .setName {
     font-size: 30px;
     font-weight: bold;
-    text-align: center;
+}
+.setNumCards {
+    font-size: 14px;
 }
 
 .setWrapper {
