@@ -61,11 +61,12 @@ export function searchSets({commit, state}, {queryObj}) {
       search: queryObj.searchStr
     })
     .then(function(response) {
-      console.log(response.data);
+      AsyncStorage.setItem("setSearch", JSON.stringify(response.data.results));
       resolve();
     })
     .catch(function(error) {
       console.log(error);
+      reject(error);
     });
   });
 }

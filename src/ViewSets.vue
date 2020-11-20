@@ -16,12 +16,12 @@
                 </view>
             </view>
             <scroll-view class="setView">
-                <template v-for="id in 10">
-                    <touchable-opacity class="set" :key="id" :style="{ borderColor: setBorderColor[id] }" :on-press="() => { selectSet(id) }">
+                <template v-for="setObj in sets">
+                    <touchable-opacity class="set" :key="setObj.name" :style="{ borderColor: setBorderColor[setObj.name] }" :on-press="() => { selectSet(setObj.name) }">
                         <set
-                            :name="'Sample Set ' + id"
-                            category="Sample"
-                            :numCards="id"
+                            :name="setObj.name"
+                            :category="setObj.category"
+                            :numCards="setObj.num_cards"
                         />
                     </touchable-opacity>
                 </template>
@@ -30,25 +30,28 @@
 
         <view class="footer">
             <touchable-opacity class="logoutBtn footerBtn" :on-press="logout">
-                <image class="logoutImg icon" :source="require('./images/icon/exit.png') "/>
+                <image class="logoutImg icon" :source="require('./images/icon/exit.png')" />
             </touchable-opacity>
-            <touchable-opacity class="deleteBtn footerBtn" v-if="selectedSet != -1" :on-press="deleteSet">
-                <image class="deleteImg icon" :source="require('./images/icon/trashcanOpen.png') "/>
+            <touchable-opacity class="addBtn footerBtn" :on-press="addSet">
+                <image class="addBtn icon" :source="require('./images/icon/plus.png')" />
+            </touchable-opacity>
+            <touchable-opacity class="deleteBtn footerBtn" v-if="selectedSet != null" :on-press="deleteSet">
+                <image class="deleteImg icon" :source="require('./images/icon/trashcanOpen.png')" />
             </touchable-opacity>
             <view class="deleteBtn footerBtn disabled" v-else>
-                <image class="deleteImg icon" :source="require('./images/icon/trashcanOpen.png') "/>
+                <image class="deleteImg icon" :source="require('./images/icon/trashcanOpen.png')" />
             </view>
-            <touchable-opacity class="openBtn footerBtn" v-if="selectedSet != -1" :on-press="openSet">
-                <image class="openImg icon" :source="require('./images/icon/toolPencil.png') "/>
+            <touchable-opacity class="openBtn footerBtn" v-if="selectedSet != null" :on-press="openSet">
+                <image class="openImg icon" :source="require('./images/icon/toolPencil.png')" />
             </touchable-opacity>
             <view class="openBtn footerBtn disabled" v-else>
-                <image class="openImg icon" :source="require('./images/icon/toolPencil.png') "/>
+                <image class="openImg icon" :source="require('./images/icon/toolPencil.png')" />
             </view>
-            <touchable-opacity class="quizBtn footerBtn" v-if="selectedSet != -1" :on-press="quizSet">
-                <image class="quizImg icon" :source="require('./images/icon/exclamation.png') "/>
+            <touchable-opacity class="quizBtn footerBtn" v-if="selectedSet != null" :on-press="quizSet">
+                <image class="quizImg icon" :source="require('./images/icon/exclamation.png')" />
             </touchable-opacity>
             <view class="quizBtn footerBtn disabled" v-else>
-                <image class="quizImg icon" :source="require('./images/icon/exclamation.png') "/>
+                <image class="quizImg icon" :source="require('./images/icon/exclamation.png')" />
             </view>
         </view>
     </view>
@@ -72,12 +75,13 @@ export default {
     data() {
         return {
             searchStr: '',
-            selectedSet: -1,
+            selectedSet: null,
             user: "user",
 
             sets: [],
 
-            setBorderColor: ["black", "black", "black", "black", "black", "black", "black", "black", "black", "black"]
+            //Dynamic style variables.
+            setBorderColor: []
         }
     },
 
@@ -101,21 +105,27 @@ export default {
     },
 
     methods: {
+        //Adds a set to the database.
+        addSet() {
+            alert("Under construction.");
+        },
+
         //Removes a set from the database.
         deleteSet() {
-            Alert.alert(
-                "Confirm Delete",
-                "Are you sure you want to delete this set?",
-                [
-                    {
-                        text: "Yes",
-                        onPress: () => alert("Under construction")
-                    },
-                    {
-                        text: "No"
-                    }
-                ]
-            );
+            if (this.selectedSet != null)
+                Alert.alert(
+                    "Confirm Delete",
+                    "Are you sure you want to delete this set?",
+                    [
+                        {
+                            text: "Yes",
+                            onPress: () => alert("Under construction")
+                        },
+                        {
+                            text: "No"
+                        }
+                    ]
+                );
         },
 
         //Logs the user out.
@@ -125,28 +135,46 @@ export default {
 
         //Opens the set for viewing/editing.
         openSet() {
-            this.navigation.navigate("ViewIndividualSet");
+            if (this.selectedSet != null)
+                this.navigation.navigate("ViewIndividualSet");
         },
 
         //Returns a list of sets based on the search string.
         search(str) {
-            alert("Search term entered:\n" + str);
+            this.selectSet(this.selectedSet); //Auto unselects any set.
+            this.sets = [];
+            this.setBorderColor = [];
+            AsyncStorage.removeItem("setSearch").then(() => {});
+
             store.dispatch("searchSets", {
                 queryObj: {
                     user_id: this.user,
                     searchStr: str
                 }
             });
+            
+            setTimeout(() => {
+                AsyncStorage.getItem("setSearch").then((val) => {
+                    this.sets = JSON.parse(val);
+                    for (var i = 0; i < this.sets.length; i++) {
+                        this.setBorderColor.push("black");
+                    }
+                    console.log(this.sets);
+                });
+            }, 100);
         },
 
         //Highlights or un-highlights a set when touched.
         selectSet(index) {
+            //Unhighlights the already selected set.
             if (this.selectedSet == index) {
                 this.setBorderColor[index] = "black";
-                this.selectedSet = -1;
+                this.selectedSet = null;
             }
+
+            //Highlights the unselected set.
             else {
-                if (this.selectedSet != -1)
+                if (this.selectedSet != null)
                     this.setBorderColor[this.selectedSet] = "black";
                 this.setBorderColor[index] = "yellow";
                 this.selectedSet = index;
@@ -155,6 +183,7 @@ export default {
 
         //
         quizSet() {
+            if (this.selectedSet != null)
             alert("Under construction");
         },
         viewSet(num) {
