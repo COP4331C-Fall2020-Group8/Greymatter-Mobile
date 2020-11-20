@@ -151,7 +151,6 @@ export default {
             this.searching = true;
             this.sets = [];
             this.setBorderColor = [];
-            AsyncStorage.removeItem("setSearch").then(() => {});
 
             store.dispatch("searchSets", {
                 queryObj: {
@@ -162,13 +161,17 @@ export default {
             
             setTimeout(() => {
                 AsyncStorage.getItem("setSearch").then((val) => {
-                    this.sets = JSON.parse(val);
-                    for (var i = 0; i < this.sets.length; i++) {
-                        this.setBorderColor.push("black");
+                    console.log(val);
+                    if (val) {
+                        this.sets = JSON.parse(val);
+                        for (var i = 0; i < this.sets.length; i++) {
+                            this.setBorderColor.push("black");
+                        }
+                        console.log(this.sets);
                     }
-                    console.log(this.sets);
                 });
                 this.searching = false;
+                AsyncStorage.removeItem("setSearch").then(() => {});
             }, 100);
         },
 
