@@ -39,43 +39,6 @@
                         name="Sample Set 4"
                         category="Sample"
                     />
-                </touchable-opacity>
-                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[4] }" :on-press="() => { selectSet(4) }">
-                    <set
-                        name="Sample Set 5"
-                        category="Sample"
-                    />
-                </touchable-opacity>
-                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[5] }" :on-press="() => { selectSet(5) }">
-                    <set
-                        name="Sample Set 6"
-                        category="Sample"
-                    />
-                </touchable-opacity>
-                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[6] }" :on-press="() => { selectSet(6) }">
-                    <set
-                        name="Sample Set 7"
-                        category="Sample"
-                    />
-                </touchable-opacity>
-                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[7] }" :on-press="() => { selectSet(7) }">
-                    <set
-                        name="Sample Set 8"
-                        category="Sample"
-                    />
-                </touchable-opacity>
-                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[8] }" :on-press="() => { selectSet(8) }">
-                    <set
-                        name="Sample Set 9"
-                        category="Sample"
-                    />
-                </touchable-opacity>
-                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[9] }" :on-press="() => { selectSet(9) }">
-                    <set
-                        name="Sample Set 10"
-                        category="Sample"
-                    />
-                </touchable-opacity>
             </scroll-view>
         </view>
 
@@ -149,6 +112,7 @@ export default {
     },
 
     methods: {
+        //Removes a set from the database.
         deleteSet() {
             Alert.alert(
                 "Confirm Delete",
@@ -164,15 +128,29 @@ export default {
                 ]
             );
         },
+
+        //Logs the user out.
         logout() {
             store.dispatch('logout', () => this.navigation.dispatch(resetAction));
         },
+
+        //Opens the set for viewing/editing.
         openSet() {
             this.navigation.navigate("ViewIndividualSet");
         },
+
+        //Returns a list of sets based on the search string.
         search(str) {
             alert("Search term entered:\n" + this.searchStr);
+            store.dispatch("searchSets", {
+                queryObj: {
+                    user_id: this.user,
+                    searchStr: this.searchStr
+                }
+            });
         },
+
+        //Highlights or un-highlights a set when touched.
         selectSet(index) {
             if (this.selectedSet == index) {
                 this.setBorderColor[index] = "black";
@@ -185,6 +163,8 @@ export default {
                 this.selectedSet = index;
             }
         },
+
+        //
         quizSet() {
             alert("Under construction");
         },
@@ -268,6 +248,6 @@ export default {
     margin-right: auto;
     margin-bottom: 8px;
 
-    border-width: 2px;
+    border-width: 4px;
 }
 </style>

@@ -11,11 +11,13 @@ import axios from 'axios';
     });
 }*/
 
+var dbUrl = 'https://grey-matter-backend.herokuapp.com/api/';
+
 export function login ({ commit, state}, {userObj, navigate}) {
 
   commit('LOGGING_IN', true);
   return new Promise((resolve, reject) => {
-    axios.post('https://grey-matter-backend.herokuapp.com/api/login', {
+    axios.post(dbUrl + 'login', {
             id: userObj.id,
             password: userObj.password
         })
@@ -50,4 +52,20 @@ export function logout ({ commit, state}, callback) {
         resolve();
       })
   })
+}
+
+export function searchSets({commit, state}, {queryObj}) {
+  return new Promise((resolve, reject) => {
+    axios.post(dbUrl + 'searchSet', {
+      user_id: queryObj.user_id,
+      search: queryObj.searchStr
+    })
+    .then(function(response) {
+      console.log(response.data);
+      resolve();
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+  });
 }
