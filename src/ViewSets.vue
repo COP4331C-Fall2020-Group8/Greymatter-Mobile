@@ -10,35 +10,21 @@
                 <text class="searchLabel">Search Sets</text>
                 <view class="searchHorizWrapper">
                     <text-input class="searchInput" v-model="searchStr" hint="Search set name here" />
-                    <touchable-opacity class="searchBtn" :on-press="() => search(this.searchStr)">
+                    <touchable-opacity class="searchBtn" :on-press="() => search(searchStr)">
                         <image class="icon searchImg" :source="require('./images/icon/search.png') "/>
                     </touchable-opacity>
                 </view>
             </view>
             <scroll-view class="setView">
-                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[0] }" :on-press="() => { selectSet(0) }">
-                    <set
-                        name="Sample Set"
-                        category="Sample"
-                    />
-                </touchable-opacity>
-                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[1] }" :on-press="() => { selectSet(1) }">
-                    <set
-                        name="Sample Set 2"
-                        category="Sample"
-                    />
-                </touchable-opacity>
-                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[2] }" :on-press="() => { selectSet(2) }">
-                    <set
-                        name="Sample Set 3"
-                        category="Sample"
-                    />
-                </touchable-opacity>
-                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[3] }" :on-press="() => { selectSet(3) }">
-                    <set
-                        name="Sample Set 4"
-                        category="Sample"
-                    />
+                <template v-for="id in 10">
+                    <touchable-opacity class="set" :key="id" :style="{ borderColor: setBorderColor[id] }" :on-press="() => { selectSet(id) }">
+                        <set
+                            :name="'Sample Set ' + id"
+                            category="Sample"
+                            :numCards="id"
+                        />
+                    </touchable-opacity>
+                </template>
             </scroll-view>
         </view>
 
@@ -89,6 +75,8 @@ export default {
             selectedSet: -1,
             user: "user",
 
+            sets: [],
+
             setBorderColor: ["black", "black", "black", "black", "black", "black", "black", "black", "black", "black"]
         }
     },
@@ -108,7 +96,8 @@ export default {
         AsyncStorage.getItem("id").then((val) => {
             console.log("Logged in user: " + val);
             this.user = (val == null ? "user" : val);
-        })
+            this.search("");
+        });
     },
 
     methods: {
@@ -141,11 +130,11 @@ export default {
 
         //Returns a list of sets based on the search string.
         search(str) {
-            alert("Search term entered:\n" + this.searchStr);
+            alert("Search term entered:\n" + str);
             store.dispatch("searchSets", {
                 queryObj: {
                     user_id: this.user,
-                    searchStr: this.searchStr
+                    searchStr: str
                 }
             });
         },

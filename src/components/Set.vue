@@ -9,10 +9,6 @@
 <script>
 export default {
     props: {
-        id: {
-            type: String,
-            required: false
-        },
         name: {
             type: String,
             required: true
