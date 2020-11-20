@@ -2,7 +2,7 @@
     <view class="container">
         <view class="header">
             <text class="headerText">Welcome,</text>
-            <text class="headerText">user!</text>
+            <text class="headerText">{{user}}!</text>
         </view>
 
         <view class="content">
@@ -16,61 +16,61 @@
                 </view>
             </view>
             <scroll-view class="setView">
-                <touchable-opacity class="set" :on-press="() => { selectedSet = 0 }">
+                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[0] }" :on-press="() => { selectSet(0) }">
                     <set
                         name="Sample Set"
                         category="Sample"
                     />
                 </touchable-opacity>
-                <touchable-opacity class="set" :on-press="() => { selectedSet = 1 }">
+                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[1] }" :on-press="() => { selectSet(1) }">
                     <set
                         name="Sample Set 2"
                         category="Sample"
                     />
                 </touchable-opacity>
-                <touchable-opacity class="set" :on-press="() => { selectedSet = 2 }">
+                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[2] }" :on-press="() => { selectSet(2) }">
                     <set
                         name="Sample Set 3"
                         category="Sample"
                     />
                 </touchable-opacity>
-                <touchable-opacity class="set" :on-press="() => { selectedSet = 3 }">
+                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[3] }" :on-press="() => { selectSet(3) }">
                     <set
                         name="Sample Set 4"
                         category="Sample"
                     />
                 </touchable-opacity>
-                <touchable-opacity class="set" :on-press="() => { selectedSet = 4 }">
+                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[4] }" :on-press="() => { selectSet(4) }">
                     <set
                         name="Sample Set 5"
                         category="Sample"
                     />
                 </touchable-opacity>
-                <touchable-opacity class="set" :on-press="() => { selectedSet = 5 }">
+                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[5] }" :on-press="() => { selectSet(5) }">
                     <set
                         name="Sample Set 6"
                         category="Sample"
                     />
                 </touchable-opacity>
-                <touchable-opacity class="set" :on-press="() => { selectedSet = 6 }">
+                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[6] }" :on-press="() => { selectSet(6) }">
                     <set
                         name="Sample Set 7"
                         category="Sample"
                     />
                 </touchable-opacity>
-                <touchable-opacity class="set" :on-press="() => { selectedSet = 7 }">
+                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[7] }" :on-press="() => { selectSet(7) }">
                     <set
                         name="Sample Set 8"
                         category="Sample"
                     />
                 </touchable-opacity>
-                <touchable-opacity class="set" :on-press="() => { selectedSet = 8 }">
+                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[8] }" :on-press="() => { selectSet(8) }">
                     <set
                         name="Sample Set 9"
                         category="Sample"
                     />
                 </touchable-opacity>
-                <touchable-opacity class="set" :on-press="() => { selectedSet = 9 }">
+                <touchable-opacity class="set" :style="{ borderColor: setBorderColor[9] }" :on-press="() => { selectSet(9) }">
                     <set
                         name="Sample Set 10"
                         category="Sample"
@@ -107,8 +107,9 @@
 
 <script>
 import statusbar from "./components/statusbar.vue";
+import axios from "axios";
 import set from "./components/Set.vue";
-import { Alert } from "react-native";
+import { Alert, AsyncStorage, StyleSheet } from "react-native";
 
 import { NavigationActions, StackActions } from 'vue-native-router';
 import store from './store';
@@ -122,7 +123,10 @@ export default {
     data() {
         return {
             searchStr: '',
-            selectedSet: -1
+            selectedSet: -1,
+            user: "user",
+
+            setBorderColor: ["black", "black", "black", "black", "black", "black", "black", "black", "black", "black"]
         }
     },
 
@@ -135,6 +139,13 @@ export default {
         navigation: {
             type: Object
         }
+    },
+
+    created() {
+        AsyncStorage.getItem("id").then((val) => {
+            console.log("Logged in user: " + val);
+            this.user = (val == null ? "user" : val);
+        })
     },
 
     methods: {
@@ -161,6 +172,18 @@ export default {
         },
         search(str) {
             alert("Search term entered:\n" + this.searchStr);
+        },
+        selectSet(index) {
+            if (this.selectedSet == index) {
+                this.setBorderColor[index] = "black";
+                this.selectedSet = -1;
+            }
+            else {
+                if (this.selectedSet != -1)
+                    this.setBorderColor[this.selectedSet] = "black";
+                this.setBorderColor[index] = "yellow";
+                this.selectedSet = index;
+            }
         },
         quizSet() {
             alert("Under construction");
@@ -237,5 +260,14 @@ export default {
 
 .searchView {
     margin-bottom: 8px;
+}
+
+.set {
+    margin-left: auto;
+    margin-top: 8px;
+    margin-right: auto;
+    margin-bottom: 8px;
+
+    border-width: 2px;
 }
 </style>

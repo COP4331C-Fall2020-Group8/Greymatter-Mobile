@@ -21,12 +21,12 @@ export default {
 </script>
 
 <style>
-.setCategory{
+.setCategory {
     font-size: 18px;
     text-align: center;
 }
 
-.setName{
+.setName {
     font-size: 30px;
     font-weight: bold;
     text-align: center;
@@ -36,11 +36,6 @@ export default {
     background-color: lightgray;
     border-style: solid;
     border-width: 2px;
-
-    margin-left: auto;
-    margin-top: 8px;
-    margin-right: auto;
-    margin-bottom: 8px;
     padding: 20px;
 
     width: 360px;
