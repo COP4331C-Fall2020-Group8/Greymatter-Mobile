@@ -113,7 +113,7 @@ export default {
     methods: {
         //Adds a set to the database.
         addSet() {
-            alert("Under construction.");
+            this.navigation.navigate("AddSet");
         },
 
         //Removes a set from the database.
