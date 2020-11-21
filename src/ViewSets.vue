@@ -21,7 +21,7 @@
                 </view>
                 <view v-else>
                     <template v-for="setObj in sets">
-                        <touchable-opacity class="set" :key="setObj.name" :style="{ borderColor: setBorderColor[setObj.name] }" :on-press="() => { selectSet(setObj.name) }">
+                        <touchable-opacity class="set" :key="setObj._id" :style="{ borderColor: setBorderColor[setObj._id] }" :on-press="() => { selectSet(setObj._id) }">
                             <set
                                 :name="setObj.name"
                                 :category="setObj.category"
@@ -161,7 +161,6 @@ export default {
             
             setTimeout(() => {
                 AsyncStorage.getItem("setSearch").then((val) => {
-                    console.log(val);
                     if (val) {
                         this.sets = JSON.parse(val);
                         for (var i = 0; i < this.sets.length; i++) {
@@ -212,6 +211,8 @@ export default {
 
 .content{
     flex: 1;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .disabled {
@@ -247,14 +248,8 @@ export default {
     text-align: center;
 }
 
-.searchBtn {
-    margin-left: 8px;
-    margin-right: 16px;
-}
-
 .searchHorizWrapper {
     flex-direction: row;
-    width: auto;
 }
 
 .searchInput {
@@ -274,7 +269,6 @@ export default {
 }
 
 .searchView {
-    margin-left: 8px;
     margin-bottom: 8px;
 }
 

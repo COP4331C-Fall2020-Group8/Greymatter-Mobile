@@ -54,6 +54,24 @@ export function logout ({ commit, state}, callback) {
   })
 }
 
+export function addSet({commit, state}, {setObj}) {
+  return new Promise((resolve, reject) => {
+    axios.post(dbUrl + 'addSet', {
+      user_id: setObj.user_id,
+      name: setObj.setName,
+      category: setObj.setCategory
+    })
+    .then(function(response) {
+      alert("Set has been added.");
+      console.log("Set has been added:\n" + setObj);
+      resolve();
+    })
+    .catch(function(error) {
+      console.error("There was an error adding set:\n" + setObj);
+    });
+  });
+}
+
 export function searchSets({commit, state}, {queryObj}) {
   return new Promise((resolve, reject) => {
     axios.post(dbUrl + 'searchSet', {
@@ -65,7 +83,7 @@ export function searchSets({commit, state}, {queryObj}) {
       resolve();
     })
     .catch(function(error) {
-      console.log(error);
+      console.error(error);
       reject(error);
     });
   });
