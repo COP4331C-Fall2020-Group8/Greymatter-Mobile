@@ -21,7 +21,7 @@
                 </view>
                 <view v-else>
                     <template v-for="setObj in sets">
-                        <touchable-opacity class="set" :key="setObj.name" :style="{ borderColor: setBorderColor[setObj.name] }" :on-press="() => { selectSet(setObj.name) }">
+                        <touchable-opacity class="set" :key="setObj._id" :style="{ borderColor: setBorderColor[setObj._id] }" :on-press="() => { selectSet(setObj._id) }">
                             <set
                                 :name="setObj.name"
                                 :category="setObj.category"
