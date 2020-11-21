@@ -63,7 +63,7 @@ export function addSet({commit, state}, {setObj}) {
     })
     .then(function(response) {
       alert("Set has been added.");
-      console.log("Set has been added:\n" + setObj);
+      console.log("Set has been added:\n" + JSON.stringify(setObj));
       resolve();
     })
     .catch(function(error) {
