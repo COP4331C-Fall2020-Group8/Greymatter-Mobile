@@ -204,8 +204,9 @@ export default {
 
         //
         quizSet() {
-            if (this.selectedSet != null)
-            alert("Under construction");
+            if (this.selectedSet != null) {
+                this.navigation.navigate("QuizFR");
+            }
         },
         viewSet(num) {
             this.selectedSet = num;

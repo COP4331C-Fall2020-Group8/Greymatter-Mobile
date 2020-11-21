@@ -62,8 +62,8 @@ export function addSet({commit, state}, {setObj}) {
       category: setObj.setCategory
     })
     .then(function(response) {
-      alert("Set has been added.");
-      console.log("Set has been added:\n" + setObj);
+      alert("Set has been added.\nPlease run the search again to refresh the list.");
+      console.log("Set has been added:\n" + JSON.stringify(setObj));
       resolve();
     })
     .catch(function(error) {
@@ -79,7 +79,6 @@ export function remove({commit, state}, {deleteObj}) {
       id: deleteObj.id
     })
     .then(function(response) {
-      alert(deleteObj.deleteType + " has been removed.");
       console.log(deleteObj.deleteType + " has been removed.");
       resolve();
     })
