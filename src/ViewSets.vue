@@ -250,7 +250,6 @@ export default {
 
 .searchHorizWrapper {
     flex-direction: row;
-    width: auto;
 }
 
 .searchInput {
