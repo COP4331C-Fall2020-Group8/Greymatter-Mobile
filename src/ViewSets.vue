@@ -203,7 +203,7 @@ export default {
                 this.selectedSet = index;
 
                 var selSet = this.sets.find((setObj) => { return setObj._id == index });
-                AsyncStorage.setItem("selectedSet", selSet);
+                AsyncStorage.setItem("selectedSet", JSON.stringify(selSet));
             }
         },
 

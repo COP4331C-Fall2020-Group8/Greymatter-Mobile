@@ -2,7 +2,7 @@
     <view class="container">
         <view class="header">
             <text class="headerText" v-if="deleteMode">Delete which cards?</text>
-            <text class="headerText" v-else>Set Name</text>
+            <text class="headerText" v-else>{{setName}}</text>
         </view>
 
         <view class="content">
@@ -16,16 +16,13 @@
                 </view>
             </view>
             <scroll-view class="cardView">
-                <template v-for="cardObj in 10">
-                    <touchable-opacity :key="cardObj" class="cardWrapper"
-                            :style="{ borderColor: cardBorderColors[cardObj] }" :on-press="() => { selectCard(cardObj) }">
+                    <touchable-opacity class="cardWrapper" :style="{ borderColor: 'green' }" :on-press="() => { selectCard(0) }">
                         <card
                             class="card"
                             front="What does flipping this card do?"
                             back="It flips the card around!"
                         />
                     </touchable-opacity>
-                </template>
             </scroll-view>
         </view>
         
@@ -49,7 +46,7 @@
 <script>
 import statusbar from "./components/statusbar.vue";
 import card from "./components/Card.vue"
-import { Alert, CheckBox } from "react-native";
+import { Alert, AsyncStorage } from "react-native";
 
 export default {
     data() {
@@ -57,8 +54,17 @@ export default {
             deleteMode: false,
             searchStr: '',
             selectedCard: null,
+            searching: false,
+            user: "user",
 
-            cardBorderColors: ["black", "orange", "black", "black", "black", "black", "black", "black", "black", "black", "black"]
+            setId: "",
+            setName: "",
+            setCategory: "",
+
+            cards: [],
+
+            //Dynamic border colors
+            cardBorderColors: ["black", "white"]
         }
     },
 
@@ -71,6 +77,22 @@ export default {
         navigation: {
             type: Object
         }
+    },
+
+    created() {
+        AsyncStorage.getItem("id").then((val) => {
+            console.log("Logged in user: " + val);
+            this.user = (val == null ? "user" : val);
+            this.search("");
+        });
+        AsyncStorage.getItem("selectedSet").then((val) => {
+            if (val) {
+                var set = JSON.parse(val);
+                this.setId = set._id;
+                this.setName = set.name;
+                this.setCategory = set.category;
+            }
+        })
     },
 
     methods: {
