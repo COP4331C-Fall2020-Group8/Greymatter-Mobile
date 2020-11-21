@@ -89,6 +89,23 @@ export function remove({commit, state}, {deleteObj}) {
   });
 }
 
+export function searchCards({commit, state}, {queryObj}) {
+  return new Promise((resolve, reject) => {
+    axios.post(dbUrl + 'searchCard', {
+      set_id: queryObj.set_id,
+      search: queryObj.searchStr
+    })
+    .then(function(response) {
+      AsyncStorage.setItem("cardSearch", JSON.stringify(response.data.results));
+      resolve();
+    })
+    .catch(function(error) {
+      console.error(error);
+      reject(error);
+    });
+  });
+}
+
 export function searchSets({commit, state}, {queryObj}) {
   return new Promise((resolve, reject) => {
     axios.post(dbUrl + 'searchSet', {

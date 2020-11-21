@@ -16,13 +16,15 @@
                 </view>
             </view>
             <scroll-view class="cardView">
-                    <touchable-opacity class="cardWrapper" :style="{ borderColor: 'green' }" :on-press="() => { selectCard(0) }">
+                <template v-for="card in cards">
+                    <touchable-opacity class="cardWrapper" :key="card._id" :style="{ borderColor: cardBorderColors[card._id] }" :on-press="() => { selectCard(card._id) }">
                         <card
                             class="card"
-                            front="What does flipping this card do?"
-                            back="It flips the card around!"
+                            :front="card.card.front"
+                            :back="card.card.back"
                         />
                     </touchable-opacity>
+                </template>
             </scroll-view>
         </view>
         
@@ -47,6 +49,9 @@
 import statusbar from "./components/statusbar.vue";
 import card from "./components/Card.vue"
 import { Alert, AsyncStorage } from "react-native";
+
+import axios from "axios";
+import store from './store';
 
 export default {
     data() {
@@ -83,7 +88,6 @@ export default {
         AsyncStorage.getItem("id").then((val) => {
             console.log("Logged in user: " + val);
             this.user = (val == null ? "user" : val);
-            this.search("");
         });
         AsyncStorage.getItem("selectedSet").then((val) => {
             if (val) {
@@ -91,6 +95,7 @@ export default {
                 this.setId = set._id;
                 this.setName = set.name;
                 this.setCategory = set.category;
+                this.search("");
             }
         })
     },
@@ -103,9 +108,30 @@ export default {
             this.navigation.goBack();
         },
         search(str) {
-            alert("Search term entered:\n" + str);
+            this.selectCard(this.selectedCard);
+            this.cards = [];
+            this.cardBorderColors = [];
+            this.searching = true;
+
+            store.dispatch("searchCards", {
+                queryObj: {
+                    set_id: this.setId,
+                    searchStr: this.searchStr
+                }
+            })
+
+            setTimeout(() => {
+                AsyncStorage.getItem("cardSearch").then((val) => {
+                    if (val) {
+                        this.cards = JSON.parse(val);
+                    }
+                    this.searching = false;
+                    AsyncStorage.removeItem("cardSearch");
+                });
+            }, 250);
         },
         selectCard(cardId) {
+            console.log(this.cardBorderColors[cardId]);
             //Unselect if card is already selected.
             if (cardId == this.selectedCard) {
                 this.cardBorderColors[cardId] = "black";
@@ -114,12 +140,10 @@ export default {
 
             //Select if card is not selected.
             else {
-                console.log("changing color to yellow");
                 if (this.selectedCard != null)
                     this.cardBorderColors[this.selectedCard] = "black";
                 this.selectedCard = cardId;
                 this.cardBorderColors[cardId] = "yellow";
-                console.log(this.cardBorderColors[cardId]);
             }
         }
     }
