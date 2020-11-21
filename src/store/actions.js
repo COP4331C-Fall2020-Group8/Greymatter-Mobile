@@ -79,7 +79,6 @@ export function remove({commit, state}, {deleteObj}) {
       id: deleteObj.id
     })
     .then(function(response) {
-      alert(deleteObj.deleteType + " has been removed.");
       console.log(deleteObj.deleteType + " has been removed.");
       resolve();
     })
