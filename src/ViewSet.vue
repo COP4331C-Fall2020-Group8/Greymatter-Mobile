@@ -2,83 +2,29 @@
     <view class="container">
         <view class="header">
             <text class="headerText" v-if="deleteMode">Delete which cards?</text>
-            <text class="headerText" v-else>Set Name</text>
+            <text class="headerText" v-else>{{setName}}</text>
         </view>
 
         <view class="content">
+            <view class="searchView">
+                <text class="searchLabel">Search Sets</text>
+                <view class="searchHorizWrapper">
+                    <text-input class="searchInput" v-model="searchStr" hint="Search set name here" />
+                    <touchable-opacity class="searchBtn" :on-press="() => search(searchStr)">
+                        <image class="icon searchImg" :source="require('./images/icon/search.png') "/>
+                    </touchable-opacity>
+                </view>
+            </view>
             <scroll-view class="cardView">
-                <view class="cardPair">
-                    <card
-                        class="card"
-                        front="What does flipping this card do?"
-                        back="It flips the card around!"
-                    />
-                    <card
-                        class="card"
-                        front="Hello."
-                        back="Goodbye!"
-                    />
-                </view>
-                <view class="cardPair">
-                    <card
-                        class="card"
-                        front="What does flipping this card do?"
-                        back="It flips the card around!"
-                    />
-                    <card
-                        class="card"
-                        front="Hello."
-                        back="Goodbye!"
-                    />
-                </view>
-                <view class="cardPair">
-                    <card
-                        class="card"
-                        front="What does flipping this card do?"
-                        back="It flips the card around!"
-                    />
-                    <card
-                        class="card"
-                        front="Hello."
-                        back="Goodbye!"
-                    />
-                </view>
-                <view class="cardPair">
-                    <card
-                        class="card"
-                        front="What does flipping this card do?"
-                        back="It flips the card around!"
-                    />
-                    <card
-                        class="card"
-                        front="Hello."
-                        back="Goodbye!"
-                    />
-                </view>
-                <view class="cardPair">
-                    <card
-                        class="card"
-                        front="What does flipping this card do?"
-                        back="It flips the card around!"
-                    />
-                    <card
-                        class="card"
-                        front="Hello."
-                        back="Goodbye!"
-                    />
-                </view>
-                <view class="cardPair">
-                    <card
-                        class="card"
-                        front="What does flipping this card do?"
-                        back="It flips the card around!"
-                    />
-                    <card
-                        class="card"
-                        front="Hello."
-                        back="Goodbye!"
-                    />
-                </view>
+                <template v-for="card in cards">
+                    <touchable-opacity class="cardWrapper" :key="card._id" :style="{ borderColor: cardBorderColors[card._id] }" :on-press="() => { selectCard(card._id) }">
+                        <card
+                            class="card"
+                            :front="card.card.front"
+                            :back="card.card.back"
+                        />
+                    </touchable-opacity>
+                </template>
             </scroll-view>
         </view>
         
@@ -102,14 +48,28 @@
 <script>
 import statusbar from "./components/statusbar.vue";
 import card from "./components/Card.vue"
-import { Alert, CheckBox } from "react-native";
+import { Alert, AsyncStorage } from "react-native";
+
+import axios from "axios";
+import store from './store';
 
 export default {
     data() {
         return {
-            delete0: false,
             deleteMode: false,
-            selectedCard: -1
+            searchStr: '',
+            selectedCard: null,
+            searching: false,
+            user: "user",
+
+            setId: "",
+            setName: "",
+            setCategory: "",
+
+            cards: [],
+
+            //Dynamic border colors
+            cardBorderColors: ["black", "white"]
         }
     },
 
@@ -124,6 +84,22 @@ export default {
         }
     },
 
+    created() {
+        AsyncStorage.getItem("id").then((val) => {
+            console.log("Logged in user: " + val);
+            this.user = (val == null ? "user" : val);
+        });
+        AsyncStorage.getItem("selectedSet").then((val) => {
+            if (val) {
+                var set = JSON.parse(val);
+                this.setId = set._id;
+                this.setName = set.name;
+                this.setCategory = set.category;
+                this.search("");
+            }
+        })
+    },
+
     methods: {
         addCard() {
             alert("Under construction");
@@ -131,24 +107,50 @@ export default {
         goBack() {
             this.navigation.goBack();
         },
+        search(str) {
+            this.selectCard(this.selectedCard);
+            this.cards = [];
+            this.cardBorderColors = [];
+            this.searching = true;
+
+            store.dispatch("searchCards", {
+                queryObj: {
+                    set_id: this.setId,
+                    searchStr: this.searchStr
+                }
+            })
+
+            setTimeout(() => {
+                AsyncStorage.getItem("cardSearch").then((val) => {
+                    if (val) {
+                        this.cards = JSON.parse(val);
+                    }
+                    this.searching = false;
+                    AsyncStorage.removeItem("cardSearch");
+                });
+            }, 250);
+        },
+        selectCard(cardId) {
+            console.log(this.cardBorderColors[cardId]);
+            //Unselect if card is already selected.
+            if (cardId == this.selectedCard) {
+                this.cardBorderColors[cardId] = "black";
+                this.selectedCard = null;
+            }
+
+            //Select if card is not selected.
+            else {
+                if (this.selectedCard != null)
+                    this.cardBorderColors[this.selectedCard] = "black";
+                this.selectedCard = cardId;
+                this.cardBorderColors[cardId] = "yellow";
+            }
+        }
     }
 }
 </script>
 
 <style>
-.card {
-    flex-direction: row;
-
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.cardPair {
-    flex-direction: row;
-    margin-bottom: 8px;
-    margin-top: 8px;
-}
-
 .cardText {
     margin-bottom: auto;
     margin-left: auto;
@@ -158,8 +160,12 @@ export default {
     text-align: center;
 }
 
-.checkBox {
-    opacity: 100;
+.cardWrapper {
+    border-width: 4px;
+
+    margin-bottom: 8px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .container {
@@ -191,12 +197,37 @@ export default {
 }
 
 .headerText {
-    font-size: 40px;
+    font-size: 32px;
+    font-weight: bold;
     text-align: center;
 }
 
 .icon {
-    height: 66px;
-    width: 66px;
+    height: 50px;
+    width: 50px;
+}
+
+.searchHorizWrapper {
+    flex-direction: row;
+}
+
+.searchInput {
+    background-color: white;
+    flex-grow: 1;
+    font-size: 24px;
+    margin-left: 10px;
+    padding: 10px;
+    width: 300px;
+}
+
+.searchLabel {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 4px;
+    margin-left: 10px;
+}
+
+.searchView {
+    margin-bottom: 8px;
 }
 </style>
