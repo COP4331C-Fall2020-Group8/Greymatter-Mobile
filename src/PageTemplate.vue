@@ -48,6 +48,8 @@ export default {
 }
 
 .content{
+    margin-left:10px;
+    margin-right:10px;
     flex: 1;
 }
 
@@ -62,6 +64,8 @@ export default {
 }
 
 .header {
+    margin-left: 10px;
+    margin-right: 10px;
     margin-bottom: auto;
 }
 
