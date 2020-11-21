@@ -125,7 +125,18 @@ export default {
                     [
                         {
                             text: "Yes",
-                            onPress: () => alert("Under construction")
+                            onPress: () => {
+                                console.log("Removing set " + this.selectedSet);
+                                store.dispatch("remove", {
+                                    deleteObj: {
+                                        id: this.selectedSet,
+                                        deleteType: "Set"
+                                    }
+                                });
+
+                                //Does a search after the delete to refresh the list.
+                                this.search(this.searchStr);
+                            }
                         },
                         {
                             text: "No"
