@@ -191,6 +191,8 @@ export default {
             if (this.selectedSet == index) {
                 this.setBorderColor[index] = "black";
                 this.selectedSet = null;
+
+                AsyncStorage.removeItem("selectedSet");
             }
 
             //Highlights the unselected set.
@@ -199,6 +201,9 @@ export default {
                     this.setBorderColor[this.selectedSet] = "black";
                 this.setBorderColor[index] = "yellow";
                 this.selectedSet = index;
+
+                var selSet = this.sets.find((setObj) => { return setObj._id == index });
+                AsyncStorage.setItem("selectedSet", selSet);
             }
         },
 
