@@ -68,6 +68,24 @@ export function addSet({commit, state}, {setObj}) {
     })
     .catch(function(error) {
       console.error("There was an error adding set:\n" + setObj);
+      reject(error);
+    });
+  });
+}
+
+export function remove({commit, state}, {deleteObj}) {
+  return new Promise((resolve, reject) => {
+    axios.post(dbUrl + 'remove' + deleteObj.deleteType, {
+      id: deleteObj.id
+    })
+    .then(function(response) {
+      alert(deleteObj.deleteType + " has been removed.");
+      console.log(deleteObj.deleteType + " has been removed.");
+      resolve();
+    })
+    .catch(function(error) {
+      console.error("There was an error removing " + deleteObj.deleteType + ".");
+      reject(error);
     });
   });
 }
