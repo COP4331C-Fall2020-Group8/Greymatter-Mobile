@@ -6,79 +6,24 @@
         </view>
 
         <view class="content">
+            <view class="searchView">
+                <text class="searchLabel">Search Sets</text>
+                <view class="searchHorizWrapper">
+                    <text-input class="searchInput" v-model="searchStr" hint="Search set name here" />
+                    <touchable-opacity class="searchBtn" :on-press="() => search(searchStr)">
+                        <image class="icon searchImg" :source="require('./images/icon/search.png') "/>
+                    </touchable-opacity>
+                </view>
+            </view>
             <scroll-view class="cardView">
-                <view class="cardPair">
+                <template v-for="cardObj in 10">
                     <card
+                        :key="cardObj"
                         class="card"
                         front="What does flipping this card do?"
                         back="It flips the card around!"
                     />
-                    <card
-                        class="card"
-                        front="Hello."
-                        back="Goodbye!"
-                    />
-                </view>
-                <view class="cardPair">
-                    <card
-                        class="card"
-                        front="What does flipping this card do?"
-                        back="It flips the card around!"
-                    />
-                    <card
-                        class="card"
-                        front="Hello."
-                        back="Goodbye!"
-                    />
-                </view>
-                <view class="cardPair">
-                    <card
-                        class="card"
-                        front="What does flipping this card do?"
-                        back="It flips the card around!"
-                    />
-                    <card
-                        class="card"
-                        front="Hello."
-                        back="Goodbye!"
-                    />
-                </view>
-                <view class="cardPair">
-                    <card
-                        class="card"
-                        front="What does flipping this card do?"
-                        back="It flips the card around!"
-                    />
-                    <card
-                        class="card"
-                        front="Hello."
-                        back="Goodbye!"
-                    />
-                </view>
-                <view class="cardPair">
-                    <card
-                        class="card"
-                        front="What does flipping this card do?"
-                        back="It flips the card around!"
-                    />
-                    <card
-                        class="card"
-                        front="Hello."
-                        back="Goodbye!"
-                    />
-                </view>
-                <view class="cardPair">
-                    <card
-                        class="card"
-                        front="What does flipping this card do?"
-                        back="It flips the card around!"
-                    />
-                    <card
-                        class="card"
-                        front="Hello."
-                        back="Goodbye!"
-                    />
-                </view>
+                </template>
             </scroll-view>
         </view>
         
@@ -107,8 +52,8 @@ import { Alert, CheckBox } from "react-native";
 export default {
     data() {
         return {
-            delete0: false,
             deleteMode: false,
+            searchStr: '',
             selectedCard: -1
         }
     },
@@ -131,6 +76,9 @@ export default {
         goBack() {
             this.navigation.goBack();
         },
+        search(str) {
+            alert("Search term entered:\n" + str);
+        }
     }
 }
 </script>
@@ -139,6 +87,7 @@ export default {
 .card {
     flex-direction: row;
 
+    margin-bottom: 8px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -191,12 +140,37 @@ export default {
 }
 
 .headerText {
-    font-size: 40px;
+    font-size: 32px;
+    font-weight: bold;
     text-align: center;
 }
 
 .icon {
-    height: 66px;
-    width: 66px;
+    height: 50px;
+    width: 50px;
+}
+
+.searchHorizWrapper {
+    flex-direction: row;
+}
+
+.searchInput {
+    background-color: white;
+    flex-grow: 1;
+    font-size: 24px;
+    margin-left: 10px;
+    padding: 10px;
+    width: 300px;
+}
+
+.searchLabel {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 4px;
+    margin-left: 10px;
+}
+
+.searchView {
+    margin-bottom: 8px;
 }
 </style>

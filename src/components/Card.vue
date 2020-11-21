@@ -36,16 +36,19 @@ export default {
     padding-right: 8px;
     padding-top: 8px;
 
-    height: 150px;
-    width: 150px;
+    height: 250px;
+    width: 250px;
 }
 
 .cardText {
+    font-size: 18px;
+
     margin-bottom: auto;
     margin-left: auto;
     margin-right: auto;
     margin-top: auto;
 
+    padding: 8px;
     text-align: center;
 }
 
