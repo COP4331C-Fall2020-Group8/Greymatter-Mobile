@@ -15,9 +15,10 @@ import UserDashboard from "./src/UserDashboard.vue";
 import ViewIndividualSetPage from "./src/ViewSet.vue";
 import ViewSetsPage from "./src/ViewSets.vue";
 import AddSetPage from "./src/AddSet.vue";
+import QuizFRPage from "./src/QuizFR.vue";
+import QuizMCPage from "./src/QuizMC.vue";
 //import PreWrittenSetsPage from "./src/PreWrittenSets.vue";
 //import PreWrittenCardPage from "./src/PreWrittenCard.vue";
-import QuizFRPage from "./src/QuizFR.vue";
 
 const StackNavigator = createStackNavigator(
   {
@@ -28,12 +29,13 @@ const StackNavigator = createStackNavigator(
     ViewIndividualSet: ViewIndividualSetPage,
     ViewSets: ViewSetsPage,
     AddSet: AddSetPage,
+    QuizFR: QuizFRPage,
+    QuizMC: QuizMCPage
     //PreWrittenSets: PreWrittenSetsPage,
     //PreWrittenCard: PreWrittenCardPage,
-    QuizFR: QuizFRPage
   },
   {
-    initialRouteName: 'Home',
+    initialRouteName: 'QuizMC',
     headerMode: 'none'
   }
 );

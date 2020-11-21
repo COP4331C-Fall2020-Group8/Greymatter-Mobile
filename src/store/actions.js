@@ -35,7 +35,7 @@ export function login ({ commit, state}, {userObj, navigate}) {
           }
         })
         .catch(function (error) {
-          console.log("Invalid Username or Password");
+          console.log("Invalid Login.  Please create and account or verify your email address");
           reject(error);
       });
   })
