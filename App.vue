@@ -35,7 +35,7 @@ const StackNavigator = createStackNavigator(
     //PreWrittenCard: PreWrittenCardPage,
   },
   {
-    initialRouteName: 'QuizMC',
+    initialRouteName: 'Home',
     headerMode: 'none'
   }
 );

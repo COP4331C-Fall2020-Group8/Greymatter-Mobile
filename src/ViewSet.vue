@@ -17,12 +17,14 @@
             </view>
             <scroll-view class="cardView">
                 <template v-for="cardObj in 10">
-                    <card
-                        :key="cardObj"
-                        class="card"
-                        front="What does flipping this card do?"
-                        back="It flips the card around!"
-                    />
+                    <touchable-opacity :key="cardObj" class="cardWrapper"
+                            :style="{ borderColor: cardBorderColors[cardObj] }" :on-press="() => { selectCard(cardObj) }">
+                        <card
+                            class="card"
+                            front="What does flipping this card do?"
+                            back="It flips the card around!"
+                        />
+                    </touchable-opacity>
                 </template>
             </scroll-view>
         </view>
@@ -54,7 +56,9 @@ export default {
         return {
             deleteMode: false,
             searchStr: '',
-            selectedCard: -1
+            selectedCard: null,
+
+            cardBorderColors: ["black", "orange", "black", "black", "black", "black", "black", "black", "black", "black", "black"]
         }
     },
 
@@ -78,26 +82,29 @@ export default {
         },
         search(str) {
             alert("Search term entered:\n" + str);
+        },
+        selectCard(cardId) {
+            //Unselect if card is already selected.
+            if (cardId == this.selectedCard) {
+                this.cardBorderColors[cardId] = "black";
+                this.selectedCard = null;
+            }
+
+            //Select if card is not selected.
+            else {
+                console.log("changing color to yellow");
+                if (this.selectedCard != null)
+                    this.cardBorderColors[this.selectedCard] = "black";
+                this.selectedCard = cardId;
+                this.cardBorderColors[cardId] = "yellow";
+                console.log(this.cardBorderColors[cardId]);
+            }
         }
     }
 }
 </script>
 
 <style>
-.card {
-    flex-direction: row;
-
-    margin-bottom: 8px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.cardPair {
-    flex-direction: row;
-    margin-bottom: 8px;
-    margin-top: 8px;
-}
-
 .cardText {
     margin-bottom: auto;
     margin-left: auto;
@@ -107,8 +114,12 @@ export default {
     text-align: center;
 }
 
-.checkBox {
-    opacity: 100;
+.cardWrapper {
+    border-width: 4px;
+
+    margin-bottom: 8px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .container {
