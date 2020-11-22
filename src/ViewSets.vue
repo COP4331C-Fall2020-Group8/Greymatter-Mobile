@@ -6,32 +6,28 @@
         </view>
 
         <view class="content">
-            <view class="addSetView" v-if="pageMode == 1">
+            <view class="addSetView" v-if="pageMode == addMode">
                 <text class="configSetHeader">Add a New Set</text>
                 <text class="label">Name</text>
-                <text-input class="input" v-model="newSetName" />
+                <text-input class="input" v-model="inputSetName" />
                 <text class="label">Category</text>
-                <text-input class="input" v-model="newSetCategory" />
+                <text-input class="input" v-model="inputSetCategory" />
                 <touchable-opacity class="configButton" :on-press="addSet">
                     <text class="configButtonText">Add New Set</text>
                 </touchable-opacity>
             </view>
-            <view class="editSetView" v-else-if="pageMode == 2">
+            <view class="editSetView" v-else-if="pageMode == editMode">
                 <text class="configSetHeader">Edit Set</text>
                 <text class="label">Name</text>
-                <text-input class="input" v-model="newSetName" />
+                <text-input class="input" v-model="inputSetName" />
                 <text class="label">Category</text>
-                <text-input class="input" v-model="newSetCategory" />
-                <button
-                    class="button"
-                    title="Edit Set"
-                    :on-press="editSet"
-                />
-                <button
-                    class="button"
-                    title="Delete Set"
-                    :on-press="deleteSet"
-                />
+                <text-input class="input" v-model="inputSetCategory" />
+                <touchable-opacity class="configButton" :on-press="editSet">
+                    <text class="configButtonText">Edit Set</text>
+                </touchable-opacity>
+                <touchable-opacity class="configButton" :on-press="deleteSet">
+                    <text class="configButtonText">Delete Set</text>
+                </touchable-opacity>
             </view>
             <view v-else>
                 <view class="searchView">
@@ -66,19 +62,13 @@
             <touchable-opacity class="logoutBtn footerBtn" v-if="pageMode == 0" :on-press="logout">
                 <image class="logoutImg icon" :source="require('./images/icon/exit.png')" />
             </touchable-opacity>
-            <touchable-opacity class="backBtn footerBtn" v-else :on-press="() => { pageMode = 0 }">
+            <touchable-opacity class="backBtn footerBtn" v-else :on-press="() => { configSet(searchMode) }">
                 <image class="backImg icon" :source="require('./images/icon/return.png')" />
             </touchable-opacity>
-            <touchable-opacity class="addBtn footerBtn" :on-press="() => { pageMode = (pageMode == 1 ? 0 : 1) }">
+            <touchable-opacity class="addBtn footerBtn" :on-press="() => { configSet(addMode) }">
                 <image class="addBtn icon" :source="require('./images/icon/plus.png')" />
             </touchable-opacity>
-            <touchable-opacity class="deleteBtn footerBtn" v-if="selectedSet != null" :on-press="deleteSet">
-                <image class="deleteImg icon" :source="require('./images/icon/trashcanOpen.png')" />
-            </touchable-opacity>
-            <view class="deleteBtn footerBtn disabled" v-else>
-                <image class="deleteImg icon" :source="require('./images/icon/trashcanOpen.png')" />
-            </view>
-            <touchable-opacity class="editBtn footerBtn" v-if="selectedSet != null" :on-press="() => { pageMode = (pageMode == 2 ? 0 : 2) }">
+            <touchable-opacity class="editBtn footerBtn" v-if="selectedSet != null" :on-press="() => { configSet(editMode) }">
                 <image class="openImg icon" :source="require('./images/icon/gear.png')" />
             </touchable-opacity>
             <view class="editBtn footerBtn disabled" v-else>
@@ -125,8 +115,12 @@ export default {
             sets: [],
 
             pageMode: 0, //0 = main, 1 = add, 2 = edit
-            newSetName: "",
-            newSetCategory: "",
+            inputSetName: "",
+            inputSetCategory: "",
+
+            searchMode: 0,
+            addMode: 1,
+            editMode: 2,
 
             //Dynamic style variables.
             setBorderColor: []
@@ -155,24 +149,50 @@ export default {
     methods: {
         //Adds a set to the database.
         addSet() {
-            if (this.newSetName == "" || this.newSetCategory == "")
+            if (this.inputSetName == "" || this.inputSetCategory == "")
                 alert("Please fill in all fields.");
             else {
-                console.log("Adding set " + this.newSetName);
+                console.log("Adding set " + this.inputSetName);
                 store.dispatch("addSet", {
                     setObj: {
                         user_id: this.user,
-                        setName: this.newSetName,
-                        setCategory: this.newSetCategory
+                        setName: this.inputSetName,
+                        setCategory: this.inputSetCategory
                     }
                 });
-                setTimeout(() => {
-                    this.search(this.searchStr);
-                    this.newSetName = "";
-                    this.newSetCategory = "";
-                    this.pageMode = 0;
-                }, 250);
+                this.clearFields();
             }
+        },
+
+        configSet(mode) {
+            
+            //Sends the user back to search screen if pagemode is the same. Clears input fields if mode itself is 0.
+            if (mode == this.searchMode || mode == this.pageMode) {
+                this.pageMode = this.searchMode;
+                setTimeout(() => {
+                        this.search(this.searchStr);
+                        this.inputSetName = "";
+                        this.inputSetCategory = "";
+                    }, 250);
+            }
+
+            //Add Set
+            else if (mode == this.addMode) {
+                this.pageMode = mode;
+                this.selectedSet = null;
+                this.inputSetName = "";
+                this.inputSetCategory = "";
+            }
+
+            //Edit Set
+            else if (mode == this.editMode && this.selectedSet != null) {
+                this.pageMode = mode;
+                var selSet = this.getSelectedSet();
+                this.inputSetName = selSet.name;
+                this.inputSetCategory = selSet.category;
+            }
+
+            //Do nothing if mode not valid
         },
 
         //Removes a set from the database.
@@ -207,9 +227,11 @@ export default {
 
         //Edits the set's name and category.
         editSet() {
-            if (this.selectedSet != null) {
-                alert("Under construction");
-            }
+            alert("Under construction");
+        },
+
+        getSelectedSet() {
+            return this.sets.find((setObj) => { return setObj._id == this.selectedSet });
         },
 
         //Logs the user out.
@@ -273,7 +295,7 @@ export default {
 
         //Begins a quiz.
         quizSet() {
-            var selSet = this.sets.find((setObj) => { return setObj._id == this.selectedSet });
+            var selSet = this.getSelectedSet();
             if (this.selectedSet != null) {
                 if (selSet.num_cards > 4)
                     this.navigation.navigate("QuizFR");
@@ -293,7 +315,7 @@ export default {
     background-color: lightgrey;
     border-width: 2px;
 
-    padding: 8px;
+    padding: 20px;
 
     margin-top: 8px;
     margin-left: auto;
@@ -302,7 +324,7 @@ export default {
 }
 
 .configButtonText {
-    font-size: 18px;
+    font-size: 24px;
     font-weight: bold;
 }
 
