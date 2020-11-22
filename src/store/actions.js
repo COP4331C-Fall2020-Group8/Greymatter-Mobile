@@ -35,7 +35,17 @@ export function login ({ commit, state}, {userObj, navigate}) {
           }
         })
         .catch(function (error) {
-          console.log("Invalid Login.  Please create and account or verify your email address");
+          console.log(error);
+          var errorCode = JSON.stringify(error.response.status);
+          if (errorCode == "401")
+          {
+            alert("Invalid Username or Password");
+          }
+          if (errorCode == "402")
+          {
+            alert("Please Verify Your Email");
+          }
+
           reject(error);
       });
   })
