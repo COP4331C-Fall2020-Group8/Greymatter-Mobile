@@ -61,20 +61,28 @@ export default {
     }
   },
 
-  /*created () {
+  created () {
     axios.post('https://grey-matter-backend.herokuapp.com/api/searchCard', {
       set_id: "5fb7220e995f5a00170b919c",
       search: ""
     })
       .then(function (response) {
-        this.cards = JSON.stringify(response.data.results.cards);
-        //console.log(response.data.results);
+        //this.cards = JSON.stringify(response.data.results.cards);
+        this.cards = JSON.parse(JSON.stringify(response.data.results.card));
+        //this.cards = (obj.card);
+
+        //this.cards = obj.data.results.card
+        /*for(var i = 0; i < response.data.results.length; i++)
+        {
+          this.cards[i]
+          //console.log(response.data.results[i].card);
+        }*/
         console.log(this.cards);
       })
       .catch(function (error) {
         console.log(error);
       });
-  },*/
+  },
 
   computed: {
     // gets all of the possible answers from backs of cards

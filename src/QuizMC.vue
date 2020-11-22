@@ -6,7 +6,6 @@
          <text class="resultOfChoice" v-else>Incorrect</text>
       </view>
       <view v-if="!isFinished" class="questionBox">
-         <text>{{ correctAnswer }} </text>
          <text>Question: {{ questionNum + 1 }} of {{ cards.length }}</text>
          <text v-if="cards[questionNum]" class="cardBack">
             {{ cards[questionNum].back }}
@@ -57,19 +56,17 @@ export default {
               {front: "its 10", back: "what is 10"},
               {front: "its 11", back: "what is 11"},
               {front: "its 12", back: "what is 12"}
+       
             ],
             userAnswer: 0,
             isFinished: false,
             correctOrNot: false,
-            correctAnswer: "",
+            //correctAnswer: "",
             answerList: [],
+            correctIndex: 0,
             questionNum: 0,
             numCorrect: 0
         }
-     },
-
-      mounted () {
-         this.answerList = this.shuffleAnswers.slice(0);
      },
 
   components: {
@@ -83,6 +80,7 @@ export default {
   },
 
   computed: {
+
     // gets all of the possible answers from backs of cards
     answers () {
         var answers = [];
@@ -93,19 +91,23 @@ export default {
         return answers;
     },
 
-    getCorrectAnswer () {
+     getCorrectAnswer () {
 
         var correctAnswer = this.answers[this.questionNum];
+        console.log(correctAnswer);
         
         return correctAnswer;
     },
 
     shuffleAnswers () {
         var randomAnswers = [3];
-        var indexes = [this.answers.length];
+        var length = this.answers.length;
+        var indexes = [length];
+
+        //console.log(length);
 
         // creating an array of possible indexes
-        for (var i = 0; i < this.answers.length; i++)
+        for (var i = 0; i < length; i++)
         {
             indexes[i] = i;
         }
@@ -113,17 +115,34 @@ export default {
         indexes.sort(() => Math.random() - 0.5);
 
         // adding random answers to the array
-        for (var i = 0; i < 3; i++)
+        for (var j = 0; j <= 3; j++)
         {      
+            //console.log(j);
             // making sure not to add the correct answer
-            if (this.answers[indexes[i]] == this.getCorrectAnswer)
+            // lol
+            /*if (this.answers[indexes[j]] == this.getCorrectAnswer)
             {
-                i--;
+                j--;
                 continue;
             }
             else
             {
-                randomAnswers[i] = this.answers[indexes[i]];
+                randomAnswers[j] = this.answers[indexes[j]];
+            }*/
+
+            // new
+            /*if ((this.answers[indexes[j]].localeCompare(this.getCorrectAnswer)) == 0)
+            {
+                j--;
+                continue;
+            }*/
+
+            randomAnswers[j] = this.answers[indexes[j]];
+
+             if ((randomAnswers[j].localeCompare(this.getCorrectAnswer)) == 0)
+            {
+                randomAnswers.splice(j, 1);
+                console.log("yep");
             }
         }
 
@@ -137,7 +156,7 @@ export default {
     },
 
     // determines the index of the correct answer after it has been shuffled
-    getCorrectIndex () {
+    /*getCorrectIndex () {
         var correctIndex = -1;
 
         for (var i = 0; i < this.shuffleAnswers.length; i++)
@@ -150,12 +169,19 @@ export default {
         }
 
         return correctIndex;
-    },
+    },*/
 
     // should keep the user logged in
     userData () {
         return store.state.userObj;
     }
+  },
+
+   mounted () {
+       this.answerList = this.shuffleAnswers.slice(0);
+       //this.correctAnswer = this.getCorrectAnswer;
+       //console.log(this.correctAnswer);
+       console.log(this.answerList);
   },
 
   methods: {
@@ -166,19 +192,23 @@ export default {
 
     // What happens when user clicks on button
     submitAnswer(value) {
-        console.log(this.getCorrectIndex);
-       //console.log(this.shuffleAnswers);
+        //console.log(this.correctIndex);
+       //console.log(this.answers);
        console.log(value);
+        this.correctAnswer = this.getCorrectAnswer;
+       //console.log(this.shuffleAnswers);
+           
+        console.log(this.answerList[value]);
 
-       this.answerList = this.shuffleAnswers.slice(0);
+        this.questionNum = this.questionNum + 1;
 
         //console.log(this.answerList);
 
-        this.questionNum = this.questionNum + 1;
-        
+        //console.log(this.getCorrectAnswer);
+
         if(this.questionNum <= this.answers.length)
         {
-            if (this.getCorrectIndex == value)
+            /*if (this.getCorrectIndex == value)
             {
                 this.numCorrect = this.numCorrect + 1;
                 this.correctOrNot = true;
@@ -188,19 +218,37 @@ export default {
             {
                 this.correctOrNot = false;
                 //alert("Incorrect :(");
+            }*/
+
+            if ((this.answerList[value].localeCompare(this.correctAnswer)) == 0)
+            {
+                this.correctOrNot = true;
+                this.numCorrect = this.numCorrect + 1;
+                //alert("Correct!");
             }
+            else
+            {
+                this.correctOrNot = false;
+                //alert("Incorrect :(");
+            }
+
+            //this.answerList = this.shuffleAnswers.slice(0);
             //return this.numCorrect;
         }
 
         // Determines if all questions have been ask
         // If true, we transition to results view
         // If not, clear the text the user entered previously
-         if (this.questionNum == this.answers.length)
+        if (this.questionNum == this.answers.length)
         {
             this.isFinished = true;
         }
+        else
+        {
+            this.answerList = this.shuffleAnswers.slice(0); 
+        }
     }
-  }
+  },
 }
 </script>
 
