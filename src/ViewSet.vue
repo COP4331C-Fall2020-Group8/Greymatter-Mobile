@@ -16,9 +16,10 @@
             </view>
             <scroll-view class="cardView">
                 <template v-for="cardObj in cards">
-                    <touchable-opacity class="cardWrapper" :key="cardObj._id" :style="{ fontColor: cardBorderColors[cardObj._id] }" :on-press="() => { selectCard(cardObj._id) }">
+                    <touchable-opacity class="cardWrapper" :key="cardObj._id" :style="{ borderColor: border[cardObj._id] }" :on-press="() => { selectCard(cardObj._id) }">
                         <card
                             class="card"
+                            :ref="cardObj._id"
                             :front="cardObj.card.front"
                             :back="cardObj.card.back"
                         />
@@ -29,14 +30,23 @@
         
         <view class="footer">
             <touchable-opacity class="backBtn footerBtn" :on-press="goBack">
-                <image class="backImg icon" :source="require('./images/icon/return.png') "/>
+                <image class="backImg icon" :source="require('./images/icon/return.png')" />
             </touchable-opacity>
             <touchable-opacity class="openBtn footerBtn" :on-press="addCard">
-                <image class="openImg icon" :source="require('./images/icon/plus.png') "/>
+                <image class="openImg icon" :source="require('./images/icon/plus.png')" />
             </touchable-opacity>
-            <touchable-opacity class="deleteBtn footerBtn" :on-press="deleteCard">
-                <image class="deleteImg icon" :source="require('./images/icon/trashcanOpen.png') "/>
+            <touchable-opacity class="deleteBtn footerBtn" v-if="selectedCard != null" :on-press="deleteCard">
+                <image class="deleteImg icon" :source="require('./images/icon/trashcanOpen.png')" />
             </touchable-opacity>
+            <view class="deleteBtn footerBtn disabled" v-else>
+                <image class="deleteImg icon" :source="require('./images/icon/trashcanOpen.png')" />
+            </view>
+            <touchable-opacity class="editBtn footerBtn" v-if="selectedCard != null" :on-press="editCard">
+                <image class="editImg icon" :source="require('./images/icon/gear.png')" />
+            </touchable-opacity>
+            <view class="editBtn footerBtn disabled" v-else>
+                <image class="editImg icon" :source="require('./images/icon/gear.png')" />
+            </view>
         </view>
     </view>
 </template>
@@ -64,7 +74,7 @@ export default {
             cards: [],
 
             //Dynamic border colors
-            cardBorderColors: []
+            border: []
         }
     },
 
@@ -102,13 +112,16 @@ export default {
         deleteCard() {
             alert("Under construction");
         },
+        editCard() {
+            alert("Under construction");
+        },
         goBack() {
             this.navigation.goBack();
         },
         search(str) {
             this.selectCard(this.selectedCard);
             this.cards = [];
-            this.cardBorderColors = [];
+            this.border = [];
             this.searching = true;
 
             store.dispatch("searchCards", {
@@ -116,7 +129,7 @@ export default {
                     set_id: this.setId,
                     searchStr: this.searchStr
                 }
-            })
+            });
 
             setTimeout(() => {
                 AsyncStorage.getItem("cardSearch").then((val) => {
@@ -129,18 +142,17 @@ export default {
             }, 250);
         },
         selectCard(cardId) {
-            console.log(this.cardBorderColors[cardId]);
             //Unhighlights the already selected card.
             if (this.selectedCard == cardId) {
-                this.cardBorderColors[cardId] = "black";
+                this.border[cardId] = "black";
                 this.selectedCard = null;
             }
 
             //Highlights the unselected card.
             else {
                 if (this.selectedCard != null)
-                    this.cardBorderColors[this.selectedCard] = "black";
-                this.cardBorderColors[cardId] = "yellow";
+                    this.border[this.selectedCard] = "black";
+                this.border[cardId] = "yellow";
                 this.selectedCard = cardId;
             }
         }
@@ -159,11 +171,11 @@ export default {
 }
 
 .cardWrapper {
-    border-width: 4px;
-
     margin-bottom: 8px;
     margin-left: auto;
     margin-right: auto;
+
+    border-width: 4px;
 }
 
 .container {
