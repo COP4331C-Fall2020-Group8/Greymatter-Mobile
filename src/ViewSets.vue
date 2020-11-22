@@ -142,7 +142,9 @@ export default {
         AsyncStorage.getItem("id").then((val) => {
             console.log("Logged in user: " + val);
             this.user = (val == null ? "user" : val);
-            this.search("");
+            setTimeout(() => {
+                this.search("");
+            }, 500);
         });
     },
 
