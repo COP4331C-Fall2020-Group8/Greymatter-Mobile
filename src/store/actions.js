@@ -67,7 +67,29 @@ export function addSet({commit, state}, {setObj}) {
       resolve();
     })
     .catch(function(error) {
-      console.error("There was an error adding set:\n" + setObj);
+      console.error("There was an error adding set:\n" + JSON.stringify(setObj));
+      reject(error);
+    });
+  });
+}
+
+export function addCard({commit, state}, {cardObj}) {
+  return new Promise((resolve, reject) => {
+    axios.post(dbUrl + 'addCard', {
+      user_id: cardObj.user_id,
+      set_id: cardObj.set_id,
+      card: {
+        front: cardObj.front,
+        back: cardObj.back
+      }
+    })
+    .then(function(response) {
+      alert("Card has been added.\nPlease run the search again to refresh the list.");
+      console.log("Card has been added:\n" + JSON.stringify(cardObj));
+      resolve();
+    })
+    .catch(function(error) {
+      console.error("There was an error adding card:\n" + JSON.stringify(cardObj));
       reject(error);
     });
   });
