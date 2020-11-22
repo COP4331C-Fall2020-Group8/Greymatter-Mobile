@@ -11,7 +11,8 @@
 export default {
     data() {
         return {
-            flipped: false
+            flipped: false,
+            bck: "white"
         }
     },
 
@@ -37,7 +38,6 @@ export default {
 .card {
     background-color: lightgrey;
     border-style: solid;
-    border-width: 1px;
 
     padding-bottom: 8px;
     padding-left: 8px;
@@ -61,6 +61,6 @@ export default {
 }
 
 .cardWrapper {
-    flex-direction: row;
+    border-width: 2px;
 }
 </style>
