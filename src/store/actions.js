@@ -72,7 +72,6 @@ export function addSet({commit, state}, {setObj}) {
       category: setObj.setCategory
     })
     .then(function(response) {
-      alert("Set has been added.\nPlease run the search again to refresh the list.");
       console.log("Set has been added:\n" + JSON.stringify(setObj));
       resolve();
     })
