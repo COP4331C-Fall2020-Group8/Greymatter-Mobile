@@ -17,7 +17,6 @@ import ViewSetsPage from "./src/ViewSets.vue";
 import AddSetPage from "./src/AddSet.vue";
 import QuizFRPage from "./src/QuizFR.vue";
 import QuizMCPage from "./src/QuizMC.vue";
-import QuizMC2Page from "./src/QuizMC2.vue";
 //import PreWrittenSetsPage from "./src/PreWrittenSets.vue";
 //import PreWrittenCardPage from "./src/PreWrittenCard.vue";
 
@@ -32,7 +31,6 @@ const StackNavigator = createStackNavigator(
     AddSet: AddSetPage,
     QuizFR: QuizFRPage,
     QuizMC: QuizMCPage,
-    QuizMC2: QuizMC2Page
     //PreWrittenSets: PreWrittenSetsPage,
     //PreWrittenCard: PreWrittenCardPage,
   },
