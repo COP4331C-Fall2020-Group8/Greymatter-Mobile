@@ -204,10 +204,14 @@ export default {
             }
         },
 
-        //
+        //Begins a quiz.
         quizSet() {
+            var selSet = this.sets.find((setObj) => { return setObj._id == this.selectedSet });
             if (this.selectedSet != null) {
-                this.navigation.navigate("QuizFR");
+                if (selSet.num_cards > 4)
+                    this.navigation.navigate("QuizFR");
+                else
+                    alert("You do not have enough cards to quiz yourself with this set.");
             }
         },
         viewSet(num) {
