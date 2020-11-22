@@ -174,9 +174,6 @@ export default {
                 AsyncStorage.getItem("setSearch").then((val) => {
                     if (val) {
                         this.sets = JSON.parse(val);
-                        for (var i = 0; i < this.sets.length; i++) {
-                            this.setBorderColor.push("black");
-                        }
                         console.log(this.sets);
                     }
                 });
