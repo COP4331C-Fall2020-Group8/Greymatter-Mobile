@@ -1,13 +1,12 @@
 <template>
     <view class="container">
         <view class="header">
-            <text class="headerText" v-if="deleteMode">Delete which cards?</text>
-            <text class="headerText" v-else>{{setName}}</text>
+            <text class="headerText">{{setName}}</text>
         </view>
 
         <view class="content">
             <view class="searchView">
-                <text class="searchLabel">Search Sets</text>
+                <text class="searchLabel">Search Cards</text>
                 <view class="searchHorizWrapper">
                     <text-input class="searchInput" v-model="searchStr" hint="Search set name here" />
                     <touchable-opacity class="searchBtn" :on-press="() => search(searchStr)">
@@ -16,12 +15,12 @@
                 </view>
             </view>
             <scroll-view class="cardView">
-                <template v-for="card in cards">
-                    <touchable-opacity class="cardWrapper" :key="card._id" :style="{ borderColor: cardBorderColors[card._id] }" :on-press="() => { selectCard(card._id) }">
+                <template v-for="cardObj in cards">
+                    <touchable-opacity class="cardWrapper" :key="cardObj._id" :style="{ fontColor: cardBorderColors[cardObj._id] }" :on-press="() => { selectCard(cardObj._id) }">
                         <card
                             class="card"
-                            :front="card.card.front"
-                            :back="card.card.back"
+                            :front="cardObj.card.front"
+                            :back="cardObj.card.back"
                         />
                     </touchable-opacity>
                 </template>
@@ -32,14 +31,11 @@
             <touchable-opacity class="backBtn footerBtn" :on-press="goBack">
                 <image class="backImg icon" :source="require('./images/icon/return.png') "/>
             </touchable-opacity>
-            <touchable-opacity class="deleteBtn footerBtn" :on-press="() => { deleteMode = !deleteMode }">
-                <image class="deleteImg icon" :source="require('./images/icon/trashcanOpen.png') "/>
+            <touchable-opacity class="openBtn footerBtn" :on-press="addCard">
+                <image class="openImg icon" :source="require('./images/icon/plus.png') "/>
             </touchable-opacity>
-            <view class="openBtn footerBtn disabled" v-if="deleteMode">
-                <image class="openImg icon" :source="require('./images/icon/plus.png') "/>
-            </view>
-            <touchable-opacity class="openBtn footerBtn" v-else :on-press="addCard">
-                <image class="openImg icon" :source="require('./images/icon/plus.png') "/>
+            <touchable-opacity class="deleteBtn footerBtn" :on-press="deleteCard">
+                <image class="deleteImg icon" :source="require('./images/icon/trashcanOpen.png') "/>
             </touchable-opacity>
         </view>
     </view>
@@ -56,7 +52,6 @@ import store from './store';
 export default {
     data() {
         return {
-            deleteMode: false,
             searchStr: '',
             selectedCard: null,
             searching: false,
@@ -69,7 +64,7 @@ export default {
             cards: [],
 
             //Dynamic border colors
-            cardBorderColors: ["black", "white"]
+            cardBorderColors: []
         }
     },
 
@@ -102,6 +97,9 @@ export default {
 
     methods: {
         addCard() {
+            this.navigation.navigate("AddCard");
+        },
+        deleteCard() {
             alert("Under construction");
         },
         goBack() {
@@ -132,18 +130,18 @@ export default {
         },
         selectCard(cardId) {
             console.log(this.cardBorderColors[cardId]);
-            //Unselect if card is already selected.
-            if (cardId == this.selectedCard) {
+            //Unhighlights the already selected card.
+            if (this.selectedCard == cardId) {
                 this.cardBorderColors[cardId] = "black";
                 this.selectedCard = null;
             }
 
-            //Select if card is not selected.
+            //Highlights the unselected card.
             else {
                 if (this.selectedCard != null)
                     this.cardBorderColors[this.selectedCard] = "black";
-                this.selectedCard = cardId;
                 this.cardBorderColors[cardId] = "yellow";
+                this.selectedCard = cardId;
             }
         }
     }
