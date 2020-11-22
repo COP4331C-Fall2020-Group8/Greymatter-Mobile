@@ -6,38 +6,51 @@
         </view>
 
         <view class="content">
-            <view class="searchView">
-                <text class="searchLabel">Search Sets</text>
-                <view class="searchHorizWrapper">
-                    <text-input class="searchInput" v-model="searchStr" hint="Search set name here" />
-                    <touchable-opacity class="searchBtn" :on-press="() => search(searchStr)">
-                        <image class="icon searchImg" :source="require('./images/icon/search.png') "/>
-                    </touchable-opacity>
-                </view>
+            <view class="addSetView" v-if="addMode">
+                <text class="addSetHeader">Add a New Set</text>
+                <text class="label">Name</text>
+                <text-input class="input" v-model="newSetName" />
+                <text class="label">Category</text>
+                <text-input class="input" v-model="newSetCategory" />
+                <button
+                    title="Add New Set"
+                    :on-press="addSet"
+                />
             </view>
-            <scroll-view class="setView">
-                <view v-if="searching">
-                    <text class="noSets" v-if="searching">Searching for sets...</text>
-                </view>
-                <view v-else>
-                    <template v-for="setObj in sets">
-                        <touchable-opacity class="set" :key="setObj._id" :style="{ borderColor: setBorderColor[setObj._id] }" :on-press="() => { selectSet(setObj._id) }">
-                            <set
-                                :name="setObj.name"
-                                :category="setObj.category"
-                                :numCards="setObj.num_cards"
-                            />
+            <view v-else>
+                <view class="searchView">
+                    <text class="searchLabel">Search Sets</text>
+                    <view class="searchHorizWrapper">
+                        <text-input class="searchInput" v-model="searchStr" hint="Search set name here" />
+                        <touchable-opacity class="searchBtn" :on-press="() => search(searchStr)">
+                            <image class="icon searchImg" :source="require('./images/icon/search.png') "/>
                         </touchable-opacity>
-                    </template>
+                    </view>
                 </view>
-            </scroll-view>
+                <scroll-view class="setView">
+                    <view v-if="searching">
+                        <text class="noSets" v-if="searching">Searching for sets...</text>
+                    </view>
+                    <view v-else>
+                        <template v-for="setObj in sets">
+                            <touchable-opacity class="set" :key="setObj._id" :style="{ borderColor: setBorderColor[setObj._id] }" :on-press="() => { selectSet(setObj._id) }">
+                                <set
+                                    :name="setObj.name"
+                                    :category="setObj.category"
+                                    :numCards="setObj.num_cards"
+                                />
+                            </touchable-opacity>
+                        </template>
+                    </view>
+                </scroll-view>
+            </view>
         </view>
 
         <view class="footer">
             <touchable-opacity class="logoutBtn footerBtn" :on-press="logout">
                 <image class="logoutImg icon" :source="require('./images/icon/exit.png')" />
             </touchable-opacity>
-            <touchable-opacity class="addBtn footerBtn" :on-press="addSet">
+            <touchable-opacity class="addBtn footerBtn" :on-press="() => { addMode = !addMode }">
                 <image class="addBtn icon" :source="require('./images/icon/plus.png')" />
             </touchable-opacity>
             <touchable-opacity class="deleteBtn footerBtn" v-if="selectedSet != null" :on-press="deleteSet">
@@ -86,6 +99,10 @@ export default {
 
             sets: [],
 
+            addMode: false,
+            newSetName: "",
+            newSetCategory: "",
+
             //Dynamic style variables.
             setBorderColor: []
         }
@@ -113,7 +130,23 @@ export default {
     methods: {
         //Adds a set to the database.
         addSet() {
-            this.navigation.navigate("AddSet");
+            if (this.newSetName == "" || this.newSetCategory == "")
+                alert("Please fill in all fields.");
+            else {
+                console.log("Adding set " + this.newSetName);
+                store.dispatch("addSet", {
+                    setObj: {
+                        user_id: this.user,
+                        setName: this.newSetName,
+                        setCategory: this.newSetCategory
+                    }
+                }).then(() => {
+                    this.search(this.searchStr);
+                    this.newSetName = "";
+                    this.newSetCategory = "";
+                    this.addMode = false;
+                });
+            }
         },
 
         //Removes a set from the database.
@@ -174,9 +207,6 @@ export default {
                 AsyncStorage.getItem("setSearch").then((val) => {
                     if (val) {
                         this.sets = JSON.parse(val);
-                        for (var i = 0; i < this.sets.length; i++) {
-                            this.setBorderColor.push("black");
-                        }
                         console.log(this.sets);
                     }
                 });
@@ -207,10 +237,14 @@ export default {
             }
         },
 
-        //
+        //Begins a quiz.
         quizSet() {
+            var selSet = this.sets.find((setObj) => { return setObj._id == this.selectedSet });
             if (this.selectedSet != null) {
-                this.navigation.navigate("QuizFR");
+                if (selSet.num_cards > 4)
+                    this.navigation.navigate("QuizFR");
+                else
+                    alert("You do not have enough cards to quiz yourself with this set.");
             }
         },
         viewSet(num) {
@@ -221,6 +255,14 @@ export default {
 </script>
 
 <style>
+.addSetHeader {
+    font-size: 20px;
+    font-weight: bold;
+
+    margin-bottom: 4px;
+    margin-top: 4px;
+}
+
 .container {
     background-color: grey;
     flex: 1;
@@ -239,6 +281,8 @@ export default {
 .footer {
     background-color: black;
     flex-direction: row;
+
+    margin-top: auto;
 }
 
 .footerBtn {
@@ -258,6 +302,19 @@ export default {
 .icon {
     height: 50px;
     width: 50px;
+}
+
+.input {
+    background-color: white;
+    font-size: 14px;
+    padding: 4px;
+    margin-bottom: 12px;
+}
+
+.label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 4px;
 }
 
 .noSets {
@@ -296,5 +353,9 @@ export default {
     margin-bottom: 8px;
 
     border-width: 4px;
+}
+
+.setView {
+    margin-bottom: auto;
 }
 </style>
