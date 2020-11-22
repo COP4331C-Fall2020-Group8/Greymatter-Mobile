@@ -6,15 +6,31 @@
         </view>
 
         <view class="content">
-            <view class="addSetView" v-if="addMode">
-                <text class="addSetHeader">Add a New Set</text>
+            <view class="addSetView" v-if="pageMode == 1">
+                <text class="configSetHeader">Add a New Set</text>
+                <text class="label">Name</text>
+                <text-input class="input" v-model="newSetName" />
+                <text class="label">Category</text>
+                <text-input class="input" v-model="newSetCategory" />
+                <touchable-opacity class="configButton" :on-press="addSet">
+                    <text class="configButtonText">Add New Set</text>
+                </touchable-opacity>
+            </view>
+            <view class="editSetView" v-else-if="pageMode == 2">
+                <text class="configSetHeader">Edit Set</text>
                 <text class="label">Name</text>
                 <text-input class="input" v-model="newSetName" />
                 <text class="label">Category</text>
                 <text-input class="input" v-model="newSetCategory" />
                 <button
-                    title="Add New Set"
-                    :on-press="addSet"
+                    class="button"
+                    title="Edit Set"
+                    :on-press="editSet"
+                />
+                <button
+                    class="button"
+                    title="Delete Set"
+                    :on-press="deleteSet"
                 />
             </view>
             <view v-else>
@@ -47,10 +63,13 @@
         </view>
 
         <view class="footer">
-            <touchable-opacity class="logoutBtn footerBtn" :on-press="logout">
+            <touchable-opacity class="logoutBtn footerBtn" v-if="pageMode == 0" :on-press="logout">
                 <image class="logoutImg icon" :source="require('./images/icon/exit.png')" />
             </touchable-opacity>
-            <touchable-opacity class="addBtn footerBtn" :on-press="() => { addMode = !addMode }">
+            <touchable-opacity class="backBtn footerBtn" v-else :on-press="() => { pageMode = 0 }">
+                <image class="backImg icon" :source="require('./images/icon/return.png')" />
+            </touchable-opacity>
+            <touchable-opacity class="addBtn footerBtn" :on-press="() => { pageMode = (pageMode == 1 ? 0 : 1) }">
                 <image class="addBtn icon" :source="require('./images/icon/plus.png')" />
             </touchable-opacity>
             <touchable-opacity class="deleteBtn footerBtn" v-if="selectedSet != null" :on-press="deleteSet">
@@ -58,6 +77,12 @@
             </touchable-opacity>
             <view class="deleteBtn footerBtn disabled" v-else>
                 <image class="deleteImg icon" :source="require('./images/icon/trashcanOpen.png')" />
+            </view>
+            <touchable-opacity class="editBtn footerBtn" v-if="selectedSet != null" :on-press="() => { pageMode = (pageMode == 2 ? 0 : 2) }">
+                <image class="openImg icon" :source="require('./images/icon/gear.png')" />
+            </touchable-opacity>
+            <view class="editBtn footerBtn disabled" v-else>
+                <image class="openImg icon" :source="require('./images/icon/gear.png')" />
             </view>
             <touchable-opacity class="openBtn footerBtn" v-if="selectedSet != null" :on-press="openSet">
                 <image class="openImg icon" :source="require('./images/icon/toolPencil.png')" />
@@ -99,7 +124,7 @@ export default {
 
             sets: [],
 
-            addMode: false,
+            pageMode: 0, //0 = main, 1 = add, 2 = edit
             newSetName: "",
             newSetCategory: "",
 
@@ -140,12 +165,13 @@ export default {
                         setName: this.newSetName,
                         setCategory: this.newSetCategory
                     }
-                }).then(() => {
+                });
+                setTimeout(() => {
                     this.search(this.searchStr);
                     this.newSetName = "";
                     this.newSetCategory = "";
-                    this.addMode = false;
-                });
+                    this.pageMode = 0;
+                }, 250);
             }
         },
 
@@ -169,6 +195,7 @@ export default {
 
                                 //Does a search after the delete to refresh the list.
                                 this.search(this.searchStr);
+                                this.pageMode = 0;
                             }
                         },
                         {
@@ -176,6 +203,13 @@ export default {
                         }
                     ]
                 );
+        },
+
+        //Edits the set's name and category.
+        editSet() {
+            if (this.selectedSet != null) {
+                alert("Under construction");
+            }
         },
 
         //Logs the user out.
@@ -255,7 +289,24 @@ export default {
 </script>
 
 <style>
-.addSetHeader {
+.configButton {
+    background-color: lightgrey;
+    border-width: 2px;
+
+    padding: 8px;
+
+    margin-top: 8px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 8px;
+}
+
+.configButtonText {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.configSetHeader {
     font-size: 20px;
     font-weight: bold;
 
