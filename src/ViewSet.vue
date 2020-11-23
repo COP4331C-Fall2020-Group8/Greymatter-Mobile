@@ -39,16 +39,21 @@
                     </view>
                 </view>
                 <scroll-view class="cardView">
-                    <template v-for="cardObj in cards">
-                        <touchable-opacity class="cardWrapper" :key="cardObj._id" :style="{ borderColor: border[cardObj._id] }" :on-press="() => { selectCard(cardObj._id) }">
-                            <card
-                                class="card"
-                                :ref="cardObj._id"
-                                :front="cardObj.card.front"
-                                :back="cardObj.card.back"
-                            />
-                        </touchable-opacity>
-                    </template>
+                    <view v-if="searching">
+                        <text class="noCards" v-if="searching">Searching for cards...</text>
+                    </view>
+                    <view v-else>
+                        <template v-for="cardObj in cards">
+                            <touchable-opacity class="cardWrapper" :key="cardObj._id" :style="{ borderColor: border[cardObj._id] }" :on-press="() => { selectCard(cardObj._id) }">
+                                <card
+                                    class="card"
+                                    :ref="cardObj._id"
+                                    :front="cardObj.card.front"
+                                    :back="cardObj.card.back"
+                                />
+                            </touchable-opacity>
+                        </template>
+                    </view>
                 </scroll-view>
             </view>
         </view>
@@ -398,6 +403,11 @@ export default {
     font-size: 14px;
     padding: 4px;
     margin-bottom: 12px;
+}
+
+.noCards {
+    font-size: 20px;
+    text-align: center;
 }
 
 .label {
