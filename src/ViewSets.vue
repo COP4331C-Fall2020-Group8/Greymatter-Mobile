@@ -234,8 +234,8 @@ export default {
                 store.dispatch("editSet", {
                     setObj: {
                         id: selSet._id,
-                        name: selSet.name,
-                        category: selSet.category
+                        name: this.inputSetName,
+                        category: this.inputSetCategory
                     }
                 });
                 this.pageMode = this.searchMode;

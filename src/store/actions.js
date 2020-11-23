@@ -105,7 +105,7 @@ export function editSet({commit, state}, {setObj}) {
     axios.post(dbUrl + 'updateSet', {
       id: setObj.id,
       name: setObj.name,
-      cateogry: setObj.category
+      category: setObj.category
     })
     .then(function(response) {
       console.log("Set has been updated.");
