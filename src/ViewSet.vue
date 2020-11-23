@@ -44,14 +44,16 @@
                     </view>
                     <view v-else>
                         <template v-for="cardObj in cards">
-                            <touchable-opacity class="cardWrapper" :key="cardObj._id" :style="{ borderColor: border[cardObj._id] }" :on-press="() => { selectCard(cardObj._id) }">
+                            <view class="cardWrapper" :key="cardObj._id" :style="{ borderColor: border[cardObj._id] }" :on-press="() => { selectCard(cardObj._id) }">
                                 <card
                                     class="card"
-                                    :ref="cardObj._id"
+                                    :key="cardObj._id"
+                                    :style="{ borderColor: border[cardObj._id] }"
                                     :front="cardObj.card.front"
                                     :back="cardObj.card.back"
+                                    @flipped="() => { selectCard(cardObj._id) }"
                                 />
-                            </touchable-opacity>
+                            </view>
                         </template>
                     </view>
                 </scroll-view>
@@ -230,6 +232,12 @@ export default {
             }
         },
 
+        //Flips the card.
+        flipCard() {
+            if (this.selectedCard != null) {
+            }
+        },
+
         //Gets the currently selected card.
         getSelectedCard() {
             return this.cards.find((cardObj) => { return cardObj._id == this.selectedCard });
@@ -258,7 +266,7 @@ export default {
 
         //Searches for cards matching the string.
         search(str) {
-            this.selectCard(this.selectedCard);
+            this.selectCard(null); //Unselects the card.
             this.cards = [];
             this.border = [];
             this.searching = true;
@@ -283,20 +291,17 @@ export default {
 
         //Selects a card.
         selectCard(cardId) {
-            //Unhighlights the already selected card.
-            if (this.selectedCard == cardId) {
-                if (cardId != null)
-                    this.border[cardId] = "black";
-                this.selectedCard = null;
+            //Unselects a card.
+            if (cardId == null) {
+                this.border[this.selectedCard] = "black";
 
                 AsyncStorage.removeItem("selectedCard");
             }
 
-            //Highlights the unselected card.
+            //Selects the touched card.
             else {
                 if (this.selectedCard != null)
                     this.border[this.selectedCard] = "black";
-                this.selectedCard = cardId;
 
                 if (cardId != null) {
                     this.border[cardId] = "yellow";
@@ -304,12 +309,23 @@ export default {
                     AsyncStorage.setItem("selectedCard", JSON.stringify(selCard));
                 }
             }
+
+            this.selectedCard = cardId;
         }
     }
 }
 </script>
 
 <style>
+.card {
+    margin-bottom: 8px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 8px;
+
+    border-width: 4px;
+}
+
 .cardText {
     margin-bottom: auto;
     margin-left: auto;
@@ -321,15 +337,6 @@ export default {
 
 .cardView {
     margin-bottom: auto;
-}
-
-.cardWrapper {
-    margin-bottom: 8px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 8px;
-
-    border-width: 4px;
 }
 
 .configButton {
