@@ -73,12 +73,6 @@
             <view class="editBtn footerBtn disabled" v-else>
                 <image class="editImg icon" :source="require('./images/icon/gear.png')" />
             </view>
-            <touchable-opacity class="flipBtn footerBtn" v-if="selectedCard != null" :on-press="flipCard">
-                <image class="editImg icon" :source="require('./images/icon/open.png')" />
-            </touchable-opacity>
-            <view class="flipBtn footerBtn disabled" v-else>
-                <image class="editImg icon" :source="require('./images/icon/open.png')" />
-            </view>
         </view>
     </view>
 </template>
@@ -272,7 +266,7 @@ export default {
 
         //Searches for cards matching the string.
         search(str) {
-            this.selectCard(this.selectedCard);
+            this.selectCard(null); //Unselects the card.
             this.cards = [];
             this.border = [];
             this.searching = true;
@@ -297,20 +291,17 @@ export default {
 
         //Selects a card.
         selectCard(cardId) {
-            //Unhighlights the already selected card.
-            if (this.selectedCard == cardId) {
-                if (cardId != null)
-                    this.border[cardId] = "black";
-                this.selectedCard = null;
+            //Unselects a card.
+            if (cardId == null) {
+                this.border[this.selectedCard] = "black";
 
                 AsyncStorage.removeItem("selectedCard");
             }
 
-            //Highlights the unselected card.
+            //Selects the touched card.
             else {
                 if (this.selectedCard != null)
                     this.border[this.selectedCard] = "black";
-                this.selectedCard = cardId;
 
                 if (cardId != null) {
                     this.border[cardId] = "yellow";
@@ -318,6 +309,8 @@ export default {
                     AsyncStorage.setItem("selectedCard", JSON.stringify(selCard));
                 }
             }
+
+            this.selectedCard = cardId;
         }
     }
 }
