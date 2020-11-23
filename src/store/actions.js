@@ -90,7 +90,6 @@ export function addCard({commit, state}, {cardObj}) {
       }
     })
     .then(function(response) {
-      alert("Card has been added.\nPlease run the search again to refresh the list.");
       console.log("Card has been added:\n" + JSON.stringify(cardObj));
       resolve();
     })
