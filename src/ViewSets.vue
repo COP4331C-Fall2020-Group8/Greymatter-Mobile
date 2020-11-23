@@ -29,6 +29,18 @@
                     <text class="configButtonText">Delete Set</text>
                 </touchable-opacity>
             </view>
+            <view class="quizSetView" v-else-if="pageMode == quizMode">
+                <text class="quizSetHeader">Quiz yourself!</text>
+                <text class="quizSetSubheader">Set: {{inputSetName}}</text>
+                <text class="quizSetSubheader">Category: {{inputSetCategory}}</text>
+                <text class="quizSetSubheader">Number of Cards: {{inputNumCards}}</text>
+                <touchable-opacity class="configButton" :on-press="() => { navigation.navigate('QuizFR') }">
+                    <text class="configButtonText">Free Response</text>
+                </touchable-opacity>
+                <touchable-opacity class="configButton" :on-press="() => { navigation.navigate('QuizMC') }">
+                    <text class="configButtonText">Multiple Choice</text>
+                </touchable-opacity>
+            </view>
             <view v-else>
                 <view class="searchView">
                     <text class="searchLabel">Search Sets</text>
@@ -117,10 +129,12 @@ export default {
             pageMode: 0, //0 = main, 1 = add, 2 = edit
             inputSetName: "",
             inputSetCategory: "",
+            inputNumCards: 0,
 
             searchMode: 0,
             addMode: 1,
             editMode: 2,
+            quizMode: 3,
 
             //Dynamic style variables.
             setBorderColor: []
@@ -163,7 +177,7 @@ export default {
                     }
                 });
                 this.pageMode = this.searchMode;
-                this.refresh();
+                this.refresh(true);
             }
         },
 
@@ -172,7 +186,7 @@ export default {
             //Sends the user back to search screen if pagemode is the same. Clears input fields if mode itself is 0.
             if (mode == this.searchMode || mode == this.pageMode) {
                 this.pageMode = this.searchMode;
-                this.refresh();
+                this.refresh(true);
             }
 
             //Add Set
@@ -181,14 +195,16 @@ export default {
                 this.selectedSet = null;
                 this.inputSetName = "";
                 this.inputSetCategory = "";
+                this.inputNumCards = 0;
             }
 
-            //Edit Set
-            else if (mode == this.editMode && this.selectedSet != null) {
+            //Edit/Quiz Set
+            else if ((mode == this.editMode || mode == this.quizMode) && this.selectedSet != null) {
                 this.pageMode = mode;
                 var selSet = this.getSelectedSet();
                 this.inputSetName = selSet.name;
                 this.inputSetCategory = selSet.category;
+                this.inputNumCards = selSet.num_cards;
             }
 
             //Do nothing if mode not valid
@@ -212,9 +228,8 @@ export default {
                                     }
                                 });
 
-                                //Does a search after the delete to refresh the list.
                                 this.pageMode = this.searchMode;
-                                this.search(this.searchStr);
+                                this.refresh(false);
                             }
                         },
                         {
@@ -239,7 +254,7 @@ export default {
                     }
                 });
                 this.pageMode = this.searchMode;
-                this.refresh();
+                this.refresh(true);
             }
         },
 
@@ -259,17 +274,23 @@ export default {
         },
 
         //Clears out input set fields and does a search.
-        refresh() {
+        refresh(reselect) {
+            if (reselect)
+                var temp = this.selectedSet;
+
             setTimeout(() => {
                 this.search(this.searchStr);
                 this.inputSetName = "";
                 this.inputSetCategory = "";
+                this.inputNumCards = 0;
+                if (reselect)
+                    this.selectSet(temp);
             }, 250);
         },
 
         //Returns a list of sets based on the search string.
         search(str) {
-            this.selectSet(this.selectedSet); //Auto unselects any set.
+            this.selectSet(null); //Auto unselects any set.
             this.searching = true;
             this.sets = [];
             this.setBorderColor = [];
@@ -296,7 +317,8 @@ export default {
         selectSet(index) {
             //Unhighlights the already selected set.
             if (this.selectedSet == index) {
-                this.setBorderColor[index] = "black";
+                if (index != null)
+                    this.setBorderColor[index] = "black";
                 this.selectedSet = null;
 
                 AsyncStorage.removeItem("selectedSet");
@@ -304,13 +326,16 @@ export default {
 
             //Highlights the unselected set.
             else {
-                if (this.selectedSet != null)
-                    this.setBorderColor[this.selectedSet] = "black";
-                this.setBorderColor[index] = "yellow";
                 this.selectedSet = index;
 
-                var selSet = this.sets.find((setObj) => { return setObj._id == index });
-                AsyncStorage.setItem("selectedSet", JSON.stringify(selSet));
+                if (this.selectedSet != null)
+                    this.setBorderColor[this.selectedSet] = "black";
+
+                if (index != null) {
+                    this.setBorderColor[index] = "yellow";
+                    var selSet = this.sets.find((setObj) => { return setObj._id == index });
+                    AsyncStorage.setItem("selectedSet", JSON.stringify(selSet));
+                }
             }
         },
 
@@ -319,7 +344,7 @@ export default {
             var selSet = this.getSelectedSet();
             if (this.selectedSet != null) {
                 if (selSet.num_cards > 4)
-                    this.navigation.navigate("QuizFR");
+                    this.configSet(this.quizMode);
                 else
                     alert("You do not have enough cards to quiz yourself with this set.");
             }
@@ -413,6 +438,19 @@ export default {
 
 .noSets {
     font-size: 20px;
+    text-align: center;
+}
+
+.quizSetHeader {
+    font-size: 28px;
+    font-weight: bold;
+
+    text-align: center;
+}
+
+.quizSetSubheader {
+    font-size: 20px;
+
     text-align: center;
 }
 
