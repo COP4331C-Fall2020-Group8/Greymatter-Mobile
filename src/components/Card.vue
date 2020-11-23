@@ -1,10 +1,8 @@
 <template>
-    <view class="cardWrapper" :activeOpacity="0.5" :on-press="() => { if (flippable) { flipped = !flipped } }">
-        <view class="card">
-            <text class="cardText" v-if="flipped">{{back}}</text>
-            <text class="cardText" v-else>{{front}}</text>
-        </view>
-    </view>
+    <touchable-opacity class="card" :on-press="flip">
+        <text class="cardText" v-if="flipped">{{back}}</text>
+        <text class="cardText" v-else>{{front}}</text>
+    </touchable-opacity>
 </template>
 
 <script>
@@ -27,8 +25,8 @@ export default {
 
     methods: {
         flip() {
-            if (this.flippable)
-                this.flipped = !(this.flipped);
+            this.flipped = !(this.flipped);
+            this.$emit("flipped");
         }
     }
 }
@@ -46,6 +44,8 @@ export default {
 
     height: 250px;
     width: 250px;
+
+    border-width: 2px;
 }
 
 .cardText {
@@ -58,9 +58,5 @@ export default {
 
     padding: 8px;
     text-align: center;
-}
-
-.cardWrapper {
-    border-width: 2px;
 }
 </style>

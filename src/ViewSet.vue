@@ -44,14 +44,16 @@
                     </view>
                     <view v-else>
                         <template v-for="cardObj in cards">
-                            <touchable-opacity class="cardWrapper" :key="cardObj._id" :style="{ borderColor: border[cardObj._id] }" :on-press="() => { selectCard(cardObj._id) }">
+                            <view class="cardWrapper" :key="cardObj._id" :style="{ borderColor: border[cardObj._id] }" :on-press="() => { selectCard(cardObj._id) }">
                                 <card
                                     class="card"
-                                    :ref="cardObj._id"
+                                    :key="cardObj._id"
+                                    :style="{ borderColor: border[cardObj._id] }"
                                     :front="cardObj.card.front"
                                     :back="cardObj.card.back"
+                                    @flipped="() => { selectCard(cardObj._id) }"
                                 />
-                            </touchable-opacity>
+                            </view>
                         </template>
                     </view>
                 </scroll-view>
@@ -70,6 +72,12 @@
             </touchable-opacity>
             <view class="editBtn footerBtn disabled" v-else>
                 <image class="editImg icon" :source="require('./images/icon/gear.png')" />
+            </view>
+            <touchable-opacity class="flipBtn footerBtn" v-if="selectedCard != null" :on-press="flipCard">
+                <image class="editImg icon" :source="require('./images/icon/open.png')" />
+            </touchable-opacity>
+            <view class="flipBtn footerBtn disabled" v-else>
+                <image class="editImg icon" :source="require('./images/icon/open.png')" />
             </view>
         </view>
     </view>
@@ -230,6 +238,12 @@ export default {
             }
         },
 
+        //Flips the card.
+        flipCard() {
+            if (this.selectedCard != null) {
+            }
+        },
+
         //Gets the currently selected card.
         getSelectedCard() {
             return this.cards.find((cardObj) => { return cardObj._id == this.selectedCard });
@@ -310,6 +324,15 @@ export default {
 </script>
 
 <style>
+.card {
+    margin-bottom: 8px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 8px;
+
+    border-width: 4px;
+}
+
 .cardText {
     margin-bottom: auto;
     margin-left: auto;
@@ -321,15 +344,6 @@ export default {
 
 .cardView {
     margin-bottom: auto;
-}
-
-.cardWrapper {
-    margin-bottom: 8px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 8px;
-
-    border-width: 4px;
 }
 
 .configButton {
