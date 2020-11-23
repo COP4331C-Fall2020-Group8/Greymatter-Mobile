@@ -181,11 +181,12 @@ export default {
             }
         },
 
+        //Takes the user to a different section of this page.
         configSet(mode) {
             
-            //Sends the user back to search screen if pagemode is the same. Clears input fields if mode itself is 0.
-            if (mode == this.searchMode || mode == this.pageMode) {
-                this.pageMode = this.searchMode;
+            //SearchMode
+            if (mode == this.searchMode) {
+                this.pageMode = mode;
                 this.refresh(true);
             }
 
@@ -314,30 +315,24 @@ export default {
 
         //Highlights or un-highlights a set when touched.
         selectSet(index) {
-            console.log(this.selectedSet);
-            console.log(index);
-            //Unhighlights the already selected set.
-            if (this.selectedSet == index) {
-                if (index != null)
-                    this.setBorderColor[index] = "black";
-                this.selectedSet = null;
+            //Unselects a set.
+            if (index == null) {
+                this.setBorderColor[this.selectedSet] = "black";
 
                 AsyncStorage.removeItem("selectedSet");
             }
 
-            //Highlights the unselected set.
+            //Selects the touched set.
             else {
                 if (this.selectedSet != null)
                     this.setBorderColor[this.selectedSet] = "black";
                 
-                this.selectedSet = index;
-
-                if (index != null) {
-                    this.setBorderColor[index] = "yellow";
-                    var selSet = this.sets.find((setObj) => { return setObj._id == index });
-                    AsyncStorage.setItem("selectedSet", JSON.stringify(selSet));
-                }
+                this.setBorderColor[index] = "yellow";
+                var selSet = this.sets.find((setObj) => { return setObj._id == index });
+                AsyncStorage.setItem("selectedSet", JSON.stringify(selSet));
             }
+
+            this.selectedSet = index;
         },
 
         //Begins a quiz.
@@ -347,7 +342,7 @@ export default {
                 if (selSet.num_cards > 4)
                     this.configSet(this.quizMode);
                 else
-                    alert("You do not have enough cards to quiz yourself with this set.");
+                    alert("You do not have enough cards to quiz yourself with this set.\nYou currently have " + selSet.num_cards + " card(s).\n(Required: 5+)");
             }
         },
         viewSet(num) {
