@@ -1,39 +1,36 @@
 <template>
    <view class="container">
-     <statusbar/>
+      <statusbar/>
       <view class="content">
-        <image class="logoImage" :source="require('./images/brain.png')"/>
-
+         <image class="logoImage" :source="require('./images/brain.png')"/>
          <view v-if="!isFinished" class="questionBox">
-          <view class="result" v-if="questionNum!=0">
-            <image class="resultOfChoiceImg" v-if="correctOrNot" :source="require('./images/bl_ch.png')"/>
-            <image class="resultOfChoiceImg" v-else :source="require('./images/bl_x.png')"/>
-          </view>
+            <view class="result" v-if="questionNum!=0">
+               <image class="resultOfChoiceImg" v-if="correctOrNot" :source="require('./images/bl_ch.png')"/>
+               <image class="resultOfChoiceImg" v-else :source="require('./images/bl_x.png')"/>
+            </view>
             <text class="questionNumTxt">
-              Card: {{ questionNum + 1 }}/{{ cards.length }}
+               Card: {{ questionNum + 1 }}/{{ cards.length }}
             </text>
             <view class="card">
-            <text v-if="cards[questionNum]" class="cardText">
-               {{ cards[questionNum].card.front }}
-            </text>
+               <text v-if="cards[questionNum]" class="cardText">
+                  {{ cards[questionNum].card.front }}
+               </text>
             </view>
             <TextInput class="user-input" v-model="userAnswer" placeholder="answer"/>
             <touchable-opacity class="answerBtn" @press="submitAnswer()">
-              <text class="btnText">SUBMIT</text>
+               <text class="btnText">SUBMIT</text>
             </touchable-opacity>
          </view>
-
          <view v-if="isFinished" class="resultsView">
             <text class="resultTxt">Final Score: {{ numCorrect }}/{{ cards.length }}</text>
             <text class="resultTxt">{{  ((Math.round((numCorrect/cards.length) * 100) / 100).toFixed(2)) * 100 }}%</text>
             <text class="resultTxt" v-if="numCorrect/cards.length >= .7">Good Job</text>
             <text class="resultTxt" v-else>Keep Studying</text>
             <touchable-opacity class="backBtn" @press="goBack()">
-              <text class="btnText">START OVER</text>
+               <text class="btnText">START OVER</text>
             </touchable-opacity>
          </view>
       </view>
-
    </view>
 </template>
 

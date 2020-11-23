@@ -111,7 +111,7 @@ export default {
 
 .signUpBtn {
   width: 250;
-  height: 75;
+  height: 68;
   margin-top: 10;
   background-color: black;
   padding: 15;
@@ -122,7 +122,7 @@ export default {
 
   .signInBtn {
   width: 250;
-  height: 75;
+  height: 68;
   margin-top: 20;
   background-color: black;
   padding: 15;
