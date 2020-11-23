@@ -232,12 +232,6 @@ export default {
             }
         },
 
-        //Flips the card.
-        flipCard() {
-            if (this.selectedCard != null) {
-            }
-        },
-
         //Gets the currently selected card.
         getSelectedCard() {
             return this.cards.find((cardObj) => { return cardObj._id == this.selectedCard });
@@ -303,11 +297,9 @@ export default {
                 if (this.selectedCard != null)
                     this.border[this.selectedCard] = "black";
 
-                if (cardId != null) {
-                    this.border[cardId] = "yellow";
-                    var selCard = this.getSelectedCard();
-                    AsyncStorage.setItem("selectedCard", JSON.stringify(selCard));
-                }
+                this.border[cardId] = "yellow";
+                var selCard = this.getSelectedCard();
+                AsyncStorage.setItem("selectedCard", JSON.stringify(selCard));
             }
 
             this.selectedCard = cardId;
