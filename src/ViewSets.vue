@@ -181,11 +181,12 @@ export default {
             }
         },
 
+        //Takes the user to a different section of this page.
         configSet(mode) {
             
-            //Sends the user back to search screen if pagemode is the same. Clears input fields if mode itself is 0.
-            if (mode == this.searchMode || mode == this.pageMode) {
-                this.pageMode = this.searchMode;
+            //SearchMode
+            if (mode == this.searchMode) {
+                this.pageMode = mode;
                 this.refresh(true);
             }
 
