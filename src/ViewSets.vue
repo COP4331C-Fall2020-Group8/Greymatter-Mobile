@@ -192,7 +192,6 @@ export default {
             //Add Set
             else if (mode == this.addMode) {
                 this.pageMode = mode;
-                this.selectedSet = null;
                 this.inputSetName = "";
                 this.inputSetCategory = "";
                 this.inputNumCards = 0;
