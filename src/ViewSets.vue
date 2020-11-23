@@ -342,7 +342,7 @@ export default {
                 if (selSet.num_cards > 4)
                     this.configSet(this.quizMode);
                 else
-                    alert("You do not have enough cards to quiz yourself with this set.");
+                    alert("You do not have enough cards to quiz yourself with this set.\nYou currently have " + selSet.num_cards + " card(s).\n(Required: 5+)");
             }
         },
         viewSet(num) {
