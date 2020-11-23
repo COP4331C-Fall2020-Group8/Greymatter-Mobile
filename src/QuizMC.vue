@@ -281,7 +281,6 @@ export default {
     margin-left: auto;
     margin-right: auto;
     margin-top: auto;
-
     text-align: center;
 }
 
@@ -295,7 +294,7 @@ export default {
 
 .answerBtn {
     width: 200;
-    height: 75;
+    height: 68;
     margin: 5px;
     background-color: black;
     padding: 20;

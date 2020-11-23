@@ -57,13 +57,13 @@ export default {
     }
 
     .headText {
-        font-size: 70;
+        font-size: 65;
         color: 	#131313;
     }
 
     .logoImage {
-        width: 340;
-        height: 340;
+        width: 320;
+        height: 320;
     }
 
     .btnText {
@@ -74,8 +74,8 @@ export default {
 
     .signUpBtn {
       width: 300;
-      height: 100;
-      margin-top: 20;
+      height: 90;
+      margin-top: 10;
       background-color: black;
       padding: 15;
       border-width: 5px;
@@ -85,8 +85,8 @@ export default {
 
     .signInBtn {
       width: 300;
-      height: 100;
-      margin-top: 20;
+      height: 90;
+      margin-top: 10;
       background-color: black;
       padding: 15;
       border-width: 5px;

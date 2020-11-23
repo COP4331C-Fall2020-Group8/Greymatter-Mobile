@@ -108,8 +108,8 @@ export default {
 
 .signUpBtn {
   width: 250;
-  height: 75;
-  margin-top: 10;
+  height: 68;
+  margin-top: 6px;
   background-color: black;
   padding: 15;
   border-width: 5px;
@@ -119,8 +119,8 @@ export default {
 
   .signInBtn {
   width: 250;
-  height: 75;
-  margin-top: 10;
+  height: 68;
+  margin-top: 8px;
   background-color: black;
   padding: 15;
   border-width: 5px;
@@ -131,7 +131,7 @@ export default {
 .user-input {
   padding: 5px;
   margin: 3px;
-  height: 38px;
+  height: 36px;
   background-color:white;
   width: 170;
 }
