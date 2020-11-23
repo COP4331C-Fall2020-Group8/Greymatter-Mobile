@@ -1,31 +1,39 @@
 <template>
    <view class="container">
-      <statusbar/>
-      <view v-if="questionNum!=0 && !isFinished">
-         <text class="resultOfChoice" v-if="correctOrNot">Correct</text>
-         <text class="resultOfChoice" v-else>Incorrect</text>
+     <statusbar/>
+      <view class="content">
+        <image class="logoImage" :source="require('./images/brain.png')"/>
+
+         <view v-if="!isFinished" class="questionBox">
+          <view class="result" v-if="questionNum!=0">
+            <image class="resultOfChoiceImg" v-if="correctOrNot" :source="require('./images/bl_ch.png')"/>
+            <image class="resultOfChoiceImg" v-else :source="require('./images/bl_x.png')"/>
+          </view>
+            <text class="questionNumTxt">
+              Card: {{ questionNum + 1 }}/{{ cards.length }}
+            </text>
+            <view class="card">
+            <text v-if="cards[questionNum]" class="cardText">
+               {{ cards[questionNum].card.front }}
+            </text>
+            </view>
+            <TextInput class="user-input" v-model="userAnswer" placeholder="answer"/>
+            <touchable-opacity class="answerBtn" @press="submitAnswer()">
+              <text class="btnText">SUBMIT</text>
+            </touchable-opacity>
+         </view>
+
+         <view v-if="isFinished" class="resultsView">
+            <text class="resultTxt">Final Score: {{ numCorrect }}/{{ cards.length }}</text>
+            <text class="resultTxt">{{  ((Math.round((numCorrect/cards.length) * 100) / 100).toFixed(2)) * 100 }}%</text>
+            <text class="resultTxt" v-if="numCorrect/cards.length >= .7">Good Job</text>
+            <text class="resultTxt" v-else>Keep Studying</text>
+            <touchable-opacity class="backBtn" @press="goBack()">
+              <text class="btnText">START OVER</text>
+            </touchable-opacity>
+         </view>
       </view>
-      <view v-if="!isFinished" class="questionBox">
-         <text>Question Num: {{ questionNum + 1 }}/{{ cards.length }}</text>
-         <text v-if="cards[questionNum]" class="cardBack">
-            {{ cards[questionNum].card.back }}
-         </text>
-         <text>Type Your Answer</text>
-         <TextInput class="user-input" v-model="userAnswer" hint="Answer"/>
-         <button
-            color="black"
-            title="Check Answer"
-            @press="submitAnswer"
-            />
-      </view>
-      <view v-if="isFinished" class="resultsView">
-         <text>{{ numCorrect}} </text>
-         <button
-            color="black"
-            title="Return to Sets"
-            @press="returnToSets"
-            />
-      </view>
+
    </view>
 </template>
 
@@ -34,16 +42,11 @@ import statusbar from './components/statusbar.vue';
 import axios from 'axios';
 import store from './store';
 import { Alert, AsyncStorage } from "react-native";
-
+import card from "./components/Card.vue"
 
 export default {
     data() {
         return {
-            /*cards:[
-              {front: "1", back: "what is 1"},
-              {front: "2", back: "what is 2"},
-              {front: "3", back: "what is 3"}
-            ],*/
             cards: [],
             userAnswer: "",
             isFinished: false,
@@ -83,7 +86,7 @@ export default {
     answers() {
       var answers = [];
       this.cards.forEach(function(item) {
-      var val = item.card.front;
+      var val = item.card.back;
       answers.push(val);
       });
 
@@ -98,6 +101,10 @@ export default {
 
   methods: {
 
+    goBack () {
+      this.navigation.goBack();
+    },
+
     returnToSets () {
       this.navigation.navigate("ViewSets");
     },
@@ -107,7 +114,7 @@ export default {
       this.questionNum = this.questionNum + 1;
       if(this.questionNum <= this.answers.length)
       {
-        if (this.cards[this.questionNum - 1].card.front == this.userAnswer)
+        if (this.cards[this.questionNum - 1].card.back == this.userAnswer)
         {
           this.numCorrect = this.numCorrect + 1;
           this.correctOrNot = true;
@@ -160,15 +167,127 @@ export default {
 </script>
 
 <style>
-    .container {
-     align-items: center;
-    justify-content: center;
+
+.logoImage {
+  width: 75;
+  height: 75;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.resultOfChoiceImg {
+  width: 20;
+  height: 20;
+}
+
+.card {
+    background-color: lightgrey;
+    border-style: solid;
+
+    padding-bottom: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 8px;
+
+    height: 250px;
+    width: 250px;
+
+    margin-bottom: 5px;
+
+    border-width: 2px;
+}
+
+.cardText {
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+
+    text-align: center;
+}
+
+.container {
     background-color: grey;
     flex: 1;
-    }
+}
 
-    .user-input {
-      background-color:white;
-      width: 150;
-    }
+  .resultsView {
+    font-size: 30;
+    font-weight: bold;
+  }
+
+  .result {
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .backBtn {
+    width: 175;
+    height: 75;
+    margin: 5px;
+    background-color: black;
+    padding: 20;
+    border-width: 5px;
+    align-items: center;
+    justify-content: center;
+    border-color: lightgray;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .btnText {
+    color: lightgray;
+    text-align: center;
+    font-size: 22px;
+  }
+
+  .content  {
+     flex: 1;
+     justify-content: center;
+     align-items: center;
+     margin-top: 10px;
+     background-color: grey;
+     padding: 5px;
+  }
+
+   .resultTxt {
+    font-size: 30;
+    font-weight: bold;
+    margin-bottom: 8px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .questionNumTxt {
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: bold;
+    font-size: 15;
+  }
+
+  .answerBtn {
+    width: 175;
+    height: 50;
+    margin: 5px;
+    background-color: black;
+    padding: 20;
+    border-width: 5px;
+    align-items: center;
+    justify-content: center;
+    border-color: lightgray;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .user-input {
+    height: 38px;
+    padding: 3px;
+    background-color:white;
+    margin-left: auto;
+    margin-right: auto;
+    width: 200;
+  }
 </style>

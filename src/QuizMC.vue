@@ -1,37 +1,46 @@
 <template>
     <view class="container">
       <statusbar/>
-      <view v-if="questionNum!=0">
-         <text class="resultOfChoice" v-if="correctOrNot">Correct</text>
-         <text class="resultOfChoice" v-else>Incorrect</text>
+      
+      <view class="content">
+        <image class="logoImage" :source="require('./images/brain.png')"/>
+      <view v-if="questionNum!=0 && !isFinished">
+          <image class="resultOfChoiceImg" v-if="correctOrNot" :source="require('./images/bl_ch.png')"/>
+          <image class="resultOfChoiceImg" v-else :source="require('./images/bl_x.png')"/>
       </view>
       <view v-if="!isFinished" class="questionBox">
-         <text>Question: {{ questionNum + 1 }}/{{ cards.length }}</text>
-         <text v-if="cards[questionNum]" class="cardBack">
-            {{ cards[questionNum].card.back }}
+          <text class="questionNumTxt">
+           Question: {{ questionNum + 1 }}/{{ cards.length }}
+          </text>
+          <view class="card">
+         <text v-if="cards[questionNum]" class="cardText">
+            {{ cards[questionNum].card.front }}
          </text>
-         <text>Select the Correct Answer</text>
-         <touchable-opacity @press="submitAnswer(options[0])">
-            <text>{{ options[0] }}</text>
+          </view>
+         <touchable-opacity class="answerBtn" @press="submitAnswer(options[0])">
+            <text class="btnText">{{ options[0] }}</text>
          </touchable-opacity>
-         <touchable-opacity @press="submitAnswer(options[1])">
-            <text>{{ options[1] }}</text>
+         <touchable-opacity  class="answerBtn" @press="submitAnswer(options[1])">
+            <text class="btnText">{{ options[1] }}</text>
          </touchable-opacity>
-         <touchable-opacity @press="submitAnswer(options[2])">
-            <text>{{ options[2] }}</text>
+         <touchable-opacity class="answerBtn" @press="submitAnswer(options[2])">
+            <text class="btnText">{{ options[2] }}</text>
          </touchable-opacity>
-         <touchable-opacity @press="submitAnswer(options[3])">
-            <text>{{ options[3] }}</text>
+         <touchable-opacity class="answerBtn" @press="submitAnswer(options[3])">
+            <text class="btnText">{{ options[3] }}</text>
          </touchable-opacity>
       </view>
       <view v-if="isFinished" class="resultsView">
-         <text>{{ numCorrect }} </text>
-         <button
-            color="black"
-            title="Return to Sets"
-            @press="returnToSets"
-            />
+         <text class="resultTxt">Final Score: {{ numCorrect }}/{{ cards.length }} </text>
+         <text class="resultTxt">{{  ((Math.round((numCorrect/cards.length) * 100) / 100).toFixed(2)) * 100 }}%</text>
+          <text class="resultTxt" v-if="numCorrect/cards.length >= .7">Good Job</text>
+          <text class="resultTxt" v-else>Keep Studying</text>
+         <touchable-opacity class="backBtn" @press="goBack()">
+              <text class="btnText">START OVER</text>
+          </touchable-opacity>
       </view>
+      </view>
+
     </view>
 </template>
 
@@ -40,24 +49,11 @@ import statusbar from './components/statusbar.vue';
 import axios from 'axios';
 import store from './store';
 import { Alert, AsyncStorage } from "react-native";
+import card from "./components/Card.vue"
 
 export default {
     data() {
         return {
-            /*cards: [
-              {front: "its 1", back: "what is 1"},
-              {front: "its 2", back: "what is 2"},
-              {front: "its 3", back: "what is 3"},
-              {front: "its 4", back: "what is 4"},
-              {front: "its 5", back: "what is 5"},
-              {front: "its 6", back: "what is 6"},
-              {front: "its 7", back: "what is 7"},
-              {front: "its 8", back: "what is 8"},
-              {front: "its 9", back: "what is 9"},
-              {front: "its 10", back: "what is 10"},
-              {front: "its 11", back: "what is 11"},
-              {front: "its 12", back: "what is 12"}
-            ],*/
             cards: [],
             options: [],
             userAnswer: "",
@@ -117,7 +113,7 @@ export default {
     answersList() {
       var answers = [];
       this.cards.forEach(function(item) {
-      var val = item.card.front;
+      var val = item.card.back;
       answers.push(val);
       });
 
@@ -168,6 +164,10 @@ export default {
 
   methods: {
 
+    goBack () {
+      this.navigation.goBack();
+    },
+
     returnToSets () {
       this.navigation.navigate("ViewSets");
     },
@@ -180,7 +180,7 @@ export default {
       //console.log(this.answers.length);
       if(this.questionNum <= this.answers.length)
       {
-        if (this.cards[this.questionNum - 1].card.front == value)
+        if (this.cards[this.questionNum - 1].card.back == value)
         {
 
           this.numCorrect = this.numCorrect + 1;
@@ -211,15 +211,115 @@ export default {
 </script>
 
 <style>
-    .container {
-     align-items: center;
-    justify-content: center;
-    background-color: grey;
-    flex: 1;
-    }
 
-    .user-input {
-      background-color:white;
-      width: 150;
-    }
+.logoImage {
+  width: 75;
+  height: 75;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.resultOfChoiceImg {
+  width: 20;
+  height: 20;
+}
+
+   .container {
+  background-color: grey;
+  flex: 1;
+}
+
+  .resultTxt {
+    font-size: 30;
+    font-weight: bold;
+    margin-bottom: 8px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+ .backBtn {
+    width: 175;
+    height: 75;
+    margin: 5px;
+    background-color: black;
+    padding: 20;
+    border-width: 5px;
+    align-items: center;
+    justify-content: center;
+    border-color: lightgray;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+.content{
+    margin-left:10px;
+    margin-right:10px;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    background-color: lightgrey;
+    border-style: solid;
+
+    padding-bottom: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 8px;
+
+    height: 250px;
+    width: 250px;
+
+    margin-bottom: 5px;
+
+    border-width: 2px;
+}
+
+.cardText {
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+
+    text-align: center;
+}
+
+    .questionNumTxt {
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: bold;
+    font-size: 15;
+  }
+
+.answerBtn {
+    width: 200;
+    height: 75;
+    margin: 5px;
+    background-color: black;
+    padding: 20;
+    border-width: 5px;
+    align-items: center;
+    justify-content: center;
+    border-color: lightgray;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .btnText {
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    text-align: center;
+    color: lightgray;
+    font-size: 15px;
+  }
+
+    .resultsView {
+    font-size: 30;
+    font-weight: bold;
+  }
+
 </style>

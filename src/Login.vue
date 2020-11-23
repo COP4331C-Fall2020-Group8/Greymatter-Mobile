@@ -2,21 +2,14 @@
   <view class="container">
     <statusbar/>
     <image class="logoImage" :source="require('./images/brain.png')"/>
-    <text>Login</text>
-    <TextInput class="user-input" v-model="id" hint="Username"/>
-    <text>Password</text>
-    <TextInput class="user-input" secureTextEntry v-model="password" hint="Password" secure="true"/>
-    <button
-      color="black"
-      title="Login"
-      @press="loginButton"
-    />
-    <button
-      color="black"
-      title="Test Login"
-      @press="testLogin"
-    />
-    <text @press="goToCreateUserScreen">Create Account</text>
+    <TextInput class="user-input" v-model="id" placeholder="username"/>
+    <TextInput class="user-input" secureTextEntry v-model="password" placeholder="password" secure="true"/>
+    <touchable-opacity class="signInBtn" @press="loginButton()">
+        <text class="btnTextL">LOGIN</text>
+    </touchable-opacity>
+     <touchable-opacity class="signUpBtn" @press="goToCreateUserScreen()">
+        <text class="btnTextS">CREATE ACCOUNT</text>
+    </touchable-opacity>
   </view>
 </template>
 
@@ -25,6 +18,7 @@ import statusbar from './components/statusbar.vue';
 import axios from 'axios';
 import { Dimensions, Platform, AsyncStorage } from "react-native";
 import store from './store';
+import ViewSet from './ViewSet.vue';
 
 export default {
   data () {
@@ -42,7 +36,8 @@ export default {
   },
 
   components: {
-    statusbar
+    statusbar,
+    ViewSet
   },
 
   props: {
@@ -91,8 +86,8 @@ export default {
 
 <style>
 .logoImage {
-  width: 200;
-  height: 200;
+  width: 250;
+  height: 250;
 }
 
 .container {
@@ -102,13 +97,45 @@ export default {
   flex: 1;
 }
 
-.login-btn {
-  background-color: lightblue;
-  padding: 5;
+ .btnTextL {
+    color: lightgray;
+    text-align: center;
+    font-size: 22px;
+  }
+
+   .btnTextS {
+    color: lightgray;
+    text-align: center;
+    font-size: 22px;
+  }
+
+.signUpBtn {
+  width: 250;
+  height: 75;
+  margin-top: 10;
+  background-color: black;
+  padding: 15;
+  border-width: 5px;
+  border-color: lightgray;
+  justify-content: center;
+  }
+
+  .signInBtn {
+  width: 250;
+  height: 75;
+  margin-top: 20;
+  background-color: black;
+  padding: 15;
+  border-width: 5px;
+  border-color: lightgray;
+  justify-content: center;
 }
 
 .user-input {
+  padding: 5px;
+  margin: 3px;
+  height: 38px;
   background-color:white;
-  width: 150;
+  width: 170;
 }
 </style>

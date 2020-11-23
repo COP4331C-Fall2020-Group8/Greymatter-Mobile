@@ -4,9 +4,9 @@
     "slug": "grey-matter",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./src/images/brainicon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./src/images/brain.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -31,6 +31,10 @@
         "tsx",
         "vue"
       ]
+    },
+    "android": {
+      "package": "com.anthonyd25.greymatter",
+      "versionCode": 1
     }
   }
 }

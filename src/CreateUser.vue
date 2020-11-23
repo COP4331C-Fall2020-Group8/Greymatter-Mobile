@@ -2,29 +2,18 @@
   <view class="container">
     <statusbar/>
     <image class="logoImage" :source="require('./images/brain.png')"/>
-    <text>Username</text>
-    <TextInput class="user-input" v-model="usernameInput" hint="Username" />
-    <text>Password</text>
-    <TextInput class="user-input" secureTextEntry v-model="passwordInput" hint="Password" />
-    <text>Confirm Password</text>
-    <TextInput class="user-input" secureTextEntry v-model="confirmPasswordInput" hint="Confirm Password" />
-    <text>First Name</text>
-    <TextInput class="user-input" v-model="nameInput.first" hint="First Name" />
-    <text>Last Name</text>
-    <TextInput class="user-input" v-model="nameInput.last" hint="Last Name" />
-    <text>E-mail Address</text>
-    <TextInput class="user-input" v-model="emailInput" hint="E-mail Address" />
-    <button 
-      color="black" 
-      class="createBtn" 
-      title="Go Back" 
-      @press="goToHomeScreen"
-    />
-    <button
-      color="black"
-      title="Create User"
-      @press="createUser"
-    />
+    <TextInput class="user-input" v-model="usernameInput" placeholder="username" />
+    <TextInput class="user-input" secureTextEntry v-model="passwordInput" placeholder="password" />
+    <TextInput class="user-input" secureTextEntry v-model="confirmPasswordInput" placeholder="re-type password" />
+    <TextInput class="user-input" v-model="nameInput.first" placeholder="first name" />
+    <TextInput class="user-input" v-model="nameInput.last" placeholder="last name" />
+    <TextInput class="user-input" v-model="emailInput" placeholder="e-mail" />
+    <touchable-opacity class="signUpBtn" @press="createUser()">
+        <text class="btnTextS">SIGN UP</text>
+    </touchable-opacity>
+    <touchable-opacity class="signInBtn" @press="goToHomeScreen()">
+        <text class="btnTextL">GO BACK</text>
+    </touchable-opacity>
   </view>
 </template>
 
@@ -94,8 +83,8 @@ export default {
 
 <style>
 .logoImage {
-  width: 200;
-  height: 200;
+  width: 250;
+  height: 250;
 }
 
 .container {
@@ -105,14 +94,46 @@ export default {
   flex: 1;
 }
 
-.login-btn {
-  background-color: lightblue;
-  padding: 5;
+.btnTextL {
+    color: lightgray;
+    text-align: center;
+    font-size: 22px;
+  }
+
+   .btnTextS {
+    color: lightgray;
+    text-align: center;
+    font-size: 22px;
+  }
+
+.signUpBtn {
+  width: 250;
+  height: 75;
+  margin-top: 10;
+  background-color: black;
+  padding: 15;
+  border-width: 5px;
+  border-color: lightgray;
+  justify-content: center;
+  }
+
+  .signInBtn {
+  width: 250;
+  height: 75;
+  margin-top: 10;
+  background-color: black;
+  padding: 15;
+  border-width: 5px;
+  border-color: lightgray;
+  justify-content: center;
 }
 
 .user-input {
+  padding: 5px;
+  margin: 3px;
+  height: 38px;
   background-color:white;
-  width: 150;
+  width: 170;
 }
 </style>
 
