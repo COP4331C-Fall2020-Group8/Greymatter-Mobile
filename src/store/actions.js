@@ -90,7 +90,6 @@ export function addCard({commit, state}, {cardObj}) {
       }
     })
     .then(function(response) {
-      alert("Card has been added.\nPlease run the search again to refresh the list.");
       console.log("Card has been added:\n" + JSON.stringify(cardObj));
       resolve();
     })
@@ -113,6 +112,23 @@ export function editSet({commit, state}, {setObj}) {
     })
     .catch(function(error) {
       console.error("There was an error updating the set.");
+    });
+  });
+}
+
+export function editCard({commit, state}, {cardObj}) {
+  return new Promise((resolve, reject) => {
+    axios.post(dbUrl + 'updateCard', {
+      id: cardObj.id,
+      front: cardObj.front,
+      back: cardObj.back
+    })
+    .then(function(response) {
+      console.log("Card has been updated.");
+      resolve();
+    })
+    .catch(function(error) {
+      console.error("There was an error updating the card.");
     });
   });
 }
