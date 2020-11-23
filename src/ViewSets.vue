@@ -314,30 +314,24 @@ export default {
 
         //Highlights or un-highlights a set when touched.
         selectSet(index) {
-            console.log(this.selectedSet);
-            console.log(index);
-            //Unhighlights the already selected set.
-            if (this.selectedSet == index) {
-                if (index != null)
-                    this.setBorderColor[index] = "black";
-                this.selectedSet = null;
+            //Unselects a set.
+            if (index == null) {
+                this.setBorderColor[this.selectedSet] = "black";
 
                 AsyncStorage.removeItem("selectedSet");
             }
 
-            //Highlights the unselected set.
+            //Selects the touched set.
             else {
                 if (this.selectedSet != null)
                     this.setBorderColor[this.selectedSet] = "black";
                 
-                this.selectedSet = index;
-
-                if (index != null) {
-                    this.setBorderColor[index] = "yellow";
-                    var selSet = this.sets.find((setObj) => { return setObj._id == index });
-                    AsyncStorage.setItem("selectedSet", JSON.stringify(selSet));
-                }
+                this.setBorderColor[index] = "yellow";
+                var selSet = this.sets.find((setObj) => { return setObj._id == index });
+                AsyncStorage.setItem("selectedSet", JSON.stringify(selSet));
             }
+
+            this.selectedSet = index;
         },
 
         //Begins a quiz.
