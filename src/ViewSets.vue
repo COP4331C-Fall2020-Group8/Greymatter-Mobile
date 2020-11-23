@@ -314,6 +314,8 @@ export default {
 
         //Highlights or un-highlights a set when touched.
         selectSet(index) {
+            console.log(this.selectedSet);
+            console.log(index);
             //Unhighlights the already selected set.
             if (this.selectedSet == index) {
                 if (index != null)
@@ -325,10 +327,10 @@ export default {
 
             //Highlights the unselected set.
             else {
-                this.selectedSet = index;
-
                 if (this.selectedSet != null)
                     this.setBorderColor[this.selectedSet] = "black";
+                
+                this.selectedSet = index;
 
                 if (index != null) {
                     this.setBorderColor[index] = "yellow";
