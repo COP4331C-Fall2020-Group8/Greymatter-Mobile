@@ -133,6 +133,28 @@ export function editCard({commit, state}, {cardObj}) {
   });
 }
 
+export function forgotPassword({commit, state}, {userObj, navigate}) {
+  return new Promise((resolve, reject) => {
+    axios.post(dbUrl + "forgotPassword", {
+      id: userObj.id
+    })
+    .then(function(response) {
+      console.log("Password reset link sent to user " + userObj.id);
+      alert("A password reset link has been sent to the e-mail registered to this account.");
+      navigate("Home");
+      resolve();
+    })
+    .catch(function(error) {
+      console.error(error);
+      var errorCode = JSON.stringify(error.response.status);
+      if (errorCode = "401") {
+        console.error("User " + userObj.id + " not found.");
+        alert("No user exists with username: " + userObj.id);
+      }
+    }); 
+  });
+}
+
 export function remove({commit, state}, {deleteObj}) {
   return new Promise((resolve, reject) => {
     axios.post(dbUrl + 'remove' + deleteObj.deleteType, {

@@ -2,14 +2,28 @@
   <view class="container">
     <statusbar/>
     <image class="logoImage" :source="require('./images/brain.png')"/>
-    <TextInput class="user-input" v-model="id" placeholder="username"/>
-    <TextInput class="user-input" secureTextEntry v-model="password" placeholder="password" secure="true"/>
-    <touchable-opacity class="signInBtn" @press="loginButton()">
-        <text class="btnTextL">LOGIN</text>
-    </touchable-opacity>
-     <touchable-opacity class="signUpBtn" @press="goToCreateUserScreen()">
-        <text class="btnTextS">CREATE ACCOUNT</text>
-    </touchable-opacity>
+    <view v-if="!forgotPassword">
+      <TextInput class="user-input" v-model="id" placeholder="username"/>
+      <TextInput class="user-input" secureTextEntry v-model="password" placeholder="password" secure="true"/>
+      <touchable-opacity class="forgotPwPressable" @press="forgotPassword = true">
+        <text class="forgotPw">Forgot password?</text>
+      </touchable-opacity>
+      <touchable-opacity class="signInBtn" @press="loginButton()">
+          <text class="btnTextL">LOGIN</text>
+      </touchable-opacity>
+      <touchable-opacity class="signUpBtn" @press="goToCreateUserScreen()">
+          <text class="btnTextS">CREATE ACCOUNT</text>
+      </touchable-opacity>
+    </view>
+    <view v-else>
+      <TextInput class="user-input" v-model="id" placeholder="username" />
+      <touchable-opacity class="signInBtn" @press="resetPassword()">
+        <text class="btnTextL">RESET PASSWORD</text>
+      </touchable-opacity>
+      <touchable-opacity class="signInBtn" @press="forgotPassword = false">
+        <text class="btnTextS">BACK TO SIGN IN</text>
+      </touchable-opacity>
+    </view>
   </view>
 </template>
 
@@ -25,7 +39,8 @@ export default {
     return {
       id: "",
       password: "",
-      loaded: false
+      loaded: false,
+      forgotPassword: false
     }
   },
 
@@ -78,6 +93,18 @@ export default {
           navigate: this.navigation.navigate
         });
       }
+    },
+
+    resetPassword() {
+      if (this.id == "") {
+        alert("No user has been specified.");
+      }
+      else {
+        store.dispatch("forgotPassword", {
+          userObj: {id: this.id},
+          navigate: this.navigation.navigate
+        });
+      }
     }
   }
 
@@ -118,6 +145,8 @@ export default {
   border-width: 5px;
   border-color: lightgray;
   justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
   }
 
   .signInBtn {
@@ -137,5 +166,18 @@ export default {
   height: 38px;
   background-color:white;
   width: 170;
+
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.forgotPw {
+  color: blue;
+  font-size: 18px;
+}
+
+.forgotPwPressable {
+  margin-left: auto;
+  margin-right: auto; 
 }
 </style>
