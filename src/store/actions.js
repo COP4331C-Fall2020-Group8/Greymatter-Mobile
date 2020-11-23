@@ -104,6 +104,24 @@ export function addCard({commit, state}, {cardObj}) {
   });
 }
 
+export function editSet({commit, state}, {setObj}) {
+  return new Promise((resolve, reject) => {
+    axios.post(dbUrl + 'updateSet', {
+      id: setObj.id,
+      name: setObj.name,
+      cateogry: setObj.category
+    })
+    .then(function(response) {
+      console.log("Set has been updated.");
+      resolve();
+    })
+    .catch(function(error) {
+      console.error("There was an error updating the set.");
+      reject(error);
+    });
+  });
+}
+
 export function remove({commit, state}, {deleteObj}) {
   return new Promise((resolve, reject) => {
     axios.post(dbUrl + 'remove' + deleteObj.deleteType, {
@@ -144,6 +162,8 @@ export function searchSets({commit, state}, {queryObj}) {
       search: queryObj.searchStr
     })
     .then(function(response) {
+      console.log("Found sets:");
+      console.log(response.data.results);
       AsyncStorage.setItem("setSearch", JSON.stringify(response.data.results));
       resolve();
     })

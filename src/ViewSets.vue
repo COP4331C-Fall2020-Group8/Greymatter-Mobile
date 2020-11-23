@@ -162,7 +162,7 @@ export default {
                         setCategory: this.inputSetCategory
                     }
                 });
-                this.clearFields();
+                this.refresh();
             }
         },
 
@@ -171,11 +171,7 @@ export default {
             //Sends the user back to search screen if pagemode is the same. Clears input fields if mode itself is 0.
             if (mode == this.searchMode || mode == this.pageMode) {
                 this.pageMode = this.searchMode;
-                setTimeout(() => {
-                        this.search(this.searchStr);
-                        this.inputSetName = "";
-                        this.inputSetCategory = "";
-                    }, 250);
+                this.refresh();
             }
 
             //Add Set
@@ -199,7 +195,7 @@ export default {
 
         //Removes a set from the database.
         deleteSet() {
-            if (this.selectedSet != null)
+            if (this.selectedSet != null) {
                 Alert.alert(
                     "Confirm Delete",
                     "Are you sure you want to delete this set?",
@@ -225,11 +221,24 @@ export default {
                         }
                     ]
                 );
+            }
         },
 
         //Edits the set's name and category.
         editSet() {
-            alert("Under construction");
+            if (this.inputSetName == "" || this.inputSetCategory == "")
+                alert("Please fill in all fields.");
+            else {
+                var selSet = this.getSelectedSet();
+                store.dispatch("editSet", {
+                    setObj: {
+                        id: selSet._id,
+                        name: selSet.name,
+                        category: selSet.category
+                    }
+                });
+                this.refresh();
+            }
         },
 
         getSelectedSet() {
@@ -245,6 +254,15 @@ export default {
         openSet() {
             if (this.selectedSet != null)
                 this.navigation.navigate("ViewIndividualSet");
+        },
+
+        //Clears out input set fields and does a search.
+        refresh() {
+            setTimeout(() => {
+                this.search(this.searchStr);
+                this.inputSetName = "";
+                this.inputSetCategory = "";
+            }, 250);
         },
 
         //Returns a list of sets based on the search string.
@@ -265,7 +283,6 @@ export default {
                 AsyncStorage.getItem("setSearch").then((val) => {
                     if (val) {
                         this.sets = JSON.parse(val);
-                        console.log(this.sets);
                     }
                 });
                 this.searching = false;
