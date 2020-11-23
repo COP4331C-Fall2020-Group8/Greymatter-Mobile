@@ -209,7 +209,20 @@ export default {
 
         //Edits a card in the set.
         editCard() {
-            alert("Under construction");
+            if (this.inputCardFront == "" || this.inputCardBack == "")
+                alert("Please fill in all fields.");
+            else {
+                var selCard = this.getSelectedCard();
+                store.dispatch("editCard", {
+                    cardObj: {
+                        id: selCard._id,
+                        front: this.inputCardFront,
+                        back: this.inputCardBack
+                    }
+                });
+                this.pageMode = this.searchMode;
+                this.refresh(true);
+            }
         },
 
         //Gets the currently selected card.

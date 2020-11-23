@@ -116,6 +116,23 @@ export function editSet({commit, state}, {setObj}) {
   });
 }
 
+export function editCard({commit, state}, {cardObj}) {
+  return new Promise((resolve, reject) => {
+    axios.post(dbUrl + 'updateCard', {
+      id: cardObj.id,
+      front: cardObj.front,
+      back: cardObj.back
+    })
+    .then(function(response) {
+      console.log("Card has been updated.");
+      resolve();
+    })
+    .catch(function(error) {
+      console.error("There was an error updating the card.");
+    });
+  });
+}
+
 export function remove({commit, state}, {deleteObj}) {
   return new Promise((resolve, reject) => {
     axios.post(dbUrl + 'remove' + deleteObj.deleteType, {
