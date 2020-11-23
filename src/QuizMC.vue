@@ -13,22 +13,26 @@
            Question: {{ questionNum + 1 }}/{{ cards.length }}
           </text>
           <view class="card">
-         <text v-if="cards[questionNum]" class="cardText">
-            {{ cards[questionNum].card.front }}
-         </text>
+            <text v-if="cards[questionNum]" class="cardText">
+                {{ cards[questionNum].card.front }}
+            </text>
           </view>
-         <touchable-opacity class="answerBtn" @press="submitAnswer(options[0])">
-            <text class="btnText">{{ options[0] }}</text>
-         </touchable-opacity>
-         <touchable-opacity  class="answerBtn" @press="submitAnswer(options[1])">
-            <text class="btnText">{{ options[1] }}</text>
-         </touchable-opacity>
-         <touchable-opacity class="answerBtn" @press="submitAnswer(options[2])">
-            <text class="btnText">{{ options[2] }}</text>
-         </touchable-opacity>
-         <touchable-opacity class="answerBtn" @press="submitAnswer(options[3])">
-            <text class="btnText">{{ options[3] }}</text>
-         </touchable-opacity>
+          <view class="answerPair">
+            <touchable-opacity class="answerBtn" @press="submitAnswer(options[0])">
+              <text class="btnText">{{ options[0] }}</text>
+            </touchable-opacity>
+            <touchable-opacity  class="answerBtn" @press="submitAnswer(options[1])">
+              <text class="btnText">{{ options[1] }}</text>
+            </touchable-opacity>
+          </view>
+          <view class="answerPair">
+            <touchable-opacity class="answerBtn" @press="submitAnswer(options[2])">
+              <text class="btnText">{{ options[2] }}</text>
+            </touchable-opacity>
+            <touchable-opacity class="answerBtn" @press="submitAnswer(options[3])">
+              <text class="btnText">{{ options[3] }}</text>
+            </touchable-opacity>
+          </view>
       </view>
       <view v-if="isFinished" class="resultsView">
          <text class="resultTxt">Final Score: {{ numCorrect }}/{{ cards.length }} </text>
@@ -211,6 +215,12 @@ export default {
 </script>
 
 <style>
+.answerPair {
+  flex-direction: row;
+  
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
 
 .logoImage {
   width: 75;
@@ -271,6 +281,8 @@ export default {
     height: 250px;
     width: 250px;
 
+    margin-left: auto;
+    margin-right: auto;
     margin-bottom: 5px;
 
     border-width: 2px;
@@ -293,8 +305,8 @@ export default {
   }
 
 .answerBtn {
-    width: 200;
-    height: 68;
+    width: 150;
+    height: 100;
     margin: 5px;
     background-color: black;
     padding: 20;
@@ -302,8 +314,8 @@ export default {
     align-items: center;
     justify-content: center;
     border-color: lightgray;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 8px;
+    margin-right: 8px;
   }
 
   .btnText {
