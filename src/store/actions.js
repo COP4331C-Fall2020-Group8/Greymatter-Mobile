@@ -45,8 +45,6 @@ export function login ({ commit, state}, {userObj, navigate}) {
           {
             alert("Please Verify Your Email");
           }
-
-          reject(error);
       });
   })
 }
@@ -77,7 +75,6 @@ export function addSet({commit, state}, {setObj}) {
     })
     .catch(function(error) {
       console.error("There was an error adding set:\n" + JSON.stringify(setObj));
-      reject(error);
     });
   });
 }
@@ -99,7 +96,23 @@ export function addCard({commit, state}, {cardObj}) {
     })
     .catch(function(error) {
       console.error("There was an error adding card:\n" + JSON.stringify(cardObj));
-      reject(error);
+    });
+  });
+}
+
+export function editSet({commit, state}, {setObj}) {
+  return new Promise((resolve, reject) => {
+    axios.post(dbUrl + 'updateSet', {
+      id: setObj.id,
+      name: setObj.name,
+      category: setObj.category
+    })
+    .then(function(response) {
+      console.log("Set has been updated.");
+      resolve();
+    })
+    .catch(function(error) {
+      console.error("There was an error updating the set.");
     });
   });
 }
@@ -115,7 +128,6 @@ export function remove({commit, state}, {deleteObj}) {
     })
     .catch(function(error) {
       console.error("There was an error removing " + deleteObj.deleteType + ".");
-      reject(error);
     });
   });
 }
@@ -132,7 +144,6 @@ export function searchCards({commit, state}, {queryObj}) {
     })
     .catch(function(error) {
       console.error(error);
-      reject(error);
     });
   });
 }
@@ -144,12 +155,13 @@ export function searchSets({commit, state}, {queryObj}) {
       search: queryObj.searchStr
     })
     .then(function(response) {
+      console.log("Found sets:");
+      console.log(response.data.results);
       AsyncStorage.setItem("setSearch", JSON.stringify(response.data.results));
       resolve();
     })
     .catch(function(error) {
       console.error(error);
-      reject(error);
     });
   });
 }
