@@ -162,6 +162,7 @@ export default {
                         setCategory: this.inputSetCategory
                     }
                 });
+                this.pageMode = this.searchMode;
                 this.refresh();
             }
         },
@@ -212,8 +213,8 @@ export default {
                                 });
 
                                 //Does a search after the delete to refresh the list.
+                                this.pageMode = this.searchMode;
                                 this.search(this.searchStr);
-                                this.pageMode = 0;
                             }
                         },
                         {
@@ -237,6 +238,7 @@ export default {
                         category: selSet.category
                     }
                 });
+                this.pageMode = this.searchMode;
                 this.refresh();
             }
         },
