@@ -7,6 +7,11 @@ import {
   createAppContainer,
   createStackNavigator,
 } from "vue-native-router";
+import Vue from "vue-native-core";
+import { VueNativeBase } from "native-base";
+
+// registering all native-base components to the global scope of the Vue
+Vue.use(VueNativeBase);
 
 import HomePage from "./src/Home.vue";
 import LoginPage from "./src/Login.vue";
