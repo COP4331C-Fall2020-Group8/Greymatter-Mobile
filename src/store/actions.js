@@ -45,8 +45,6 @@ export function login ({ commit, state}, {userObj, navigate}) {
           {
             alert("Please Verify Your Email");
           }
-
-          reject(error);
       });
   })
 }
@@ -77,7 +75,6 @@ export function addSet({commit, state}, {setObj}) {
     })
     .catch(function(error) {
       console.error("There was an error adding set:\n" + JSON.stringify(setObj));
-      reject(error);
     });
   });
 }
@@ -99,7 +96,6 @@ export function addCard({commit, state}, {cardObj}) {
     })
     .catch(function(error) {
       console.error("There was an error adding card:\n" + JSON.stringify(cardObj));
-      reject(error);
     });
   });
 }
@@ -117,7 +113,6 @@ export function editSet({commit, state}, {setObj}) {
     })
     .catch(function(error) {
       console.error("There was an error updating the set.");
-      reject(error);
     });
   });
 }
@@ -133,7 +128,6 @@ export function remove({commit, state}, {deleteObj}) {
     })
     .catch(function(error) {
       console.error("There was an error removing " + deleteObj.deleteType + ".");
-      reject(error);
     });
   });
 }
@@ -150,7 +144,6 @@ export function searchCards({commit, state}, {queryObj}) {
     })
     .catch(function(error) {
       console.error(error);
-      reject(error);
     });
   });
 }
@@ -169,7 +162,6 @@ export function searchSets({commit, state}, {queryObj}) {
     })
     .catch(function(error) {
       console.error(error);
-      reject(error);
     });
   });
 }
