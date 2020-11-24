@@ -139,8 +139,8 @@ export function forgotPassword({commit, state}, {userObj, navigate}) {
       id: userObj.id
     })
     .then(function(response) {
-      console.log("Password reset link sent to user " + userObj.id);
-      alert("A password reset link has been sent to the e-mail registered to this account.");
+      console.log(response.data);
+      alert(response.data.msg);
       navigate("Home");
       resolve();
     })
